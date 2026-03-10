@@ -26,7 +26,7 @@ public class InternalTransferPage {
     public void enterPaymentDescription(String desc){
         DRIVER.findElement(paymentDescriptionTextBoxLocator).sendKeys(desc);
     }
-    public void goToTransferConfirmationPage(){
+    public void goToTransferInformationReviewPage(){
         DRIVER.findElement(confirmButtonlocator).click();
     }
     public void enterTransferInformation(int account,double amount,String desc){

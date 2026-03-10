@@ -24,7 +24,7 @@ public class TestUser extends TestBase {
       //  transferConfirmationPage.enterOTP("abc");
        // transferConfirmationPage.clickTransferButton();
         externalTransferPage.enterFormInformation(10001111,"Nguyen Van A","ck",5000.0);
-        externalTransferPage.goToTransferConfirmationPage();
+        externalTransferPage.goToTransferInformationReviewPage();
         transferInformationReviewPage.goToConfirmationPage();
         transferConfirmationPage.enterOTP("abc");
         transferConfirmationPage.clickBtnExternalTransfer();

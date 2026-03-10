@@ -50,7 +50,7 @@ public class ExternalTransferPage {
     public void enterAmount(Double amount){
         DriverUtils.DRIVER.findElement(AmountTransferTextBoxLocator).sendKeys(String.valueOf(amount));
     }
-    public void goToTransferConfirmationPage(){
+    public void goToTransferInformationReviewPage(){
         DRIVER.findElement(TransferButtonLocator).click();
     }
     public void enterFormInformation(int account,String name,String inf,Double amount){
