@@ -13,6 +13,8 @@ public class InternalTransferPage {
     private final By paymentDescriptionTextBoxLocator = By.xpath("//td[label[text()='Nội dung thanh toán']]//following-sibling::td//input");
     private final By confirmButtonlocator = By.xpath("//td//input[@value=\"Xác nhận\"]");
 
+    // >> reused with external
+
     public void selelectAccountSource(){
         DRIVER.findElement(selectAccountSourceDropdownLocator).click();
         DRIVER.findElement(selectAccountSourceLocator).click();

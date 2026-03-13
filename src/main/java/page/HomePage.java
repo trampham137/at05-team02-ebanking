@@ -12,6 +12,10 @@ public class HomePage {
     private final By internalTransferLocator = By.xpath("//a[span[text()='Chuyển  khoản']]");
     private final By externalTransferLocator = By.xpath("//a[span[text()='Liên Ngân Hàng']]");
     private final By logoutLocator = By.xpath("//a[span[text()='Đăng xuất']]");
+
+    // a[span[text() >> duplicate
+
+
     public void goToPersonalInformationPage(){
         DriverUtils.DRIVER.findElement(personalInformationLocator).click();
     }

@@ -12,18 +12,19 @@ public class TestUser extends TestBase {
     TransferInformationReviewPage transferInformationReviewPage = new TransferInformationReviewPage();
     TransferConfirmationPage transferConfirmationPage = new TransferConfirmationPage();
     ExternalTransferPage externalTransferPage = new ExternalTransferPage();
+
     @Test
-    public void verifyLoginSucessful(){
+    public void verifyLoginSucessful() {
         loginPage.Login(User.STANDARD_USER);
         homePage.goToExternalTransfer();
-       // homePage.goToOpenAccountPage();
-       // openAccountPage.openAccountNonTermDepositAccountType();
-      //  internalTransferPage.enterTransferInformation(100002267,3000,"ck");
-      //  internalTransferPage.goToTransferConfirmationPage();
-      //  transferInformationReviewPage.goToConfirmationPage();
-      //  transferConfirmationPage.enterOTP("abc");
-       // transferConfirmationPage.clickTransferButton();
-        externalTransferPage.enterFormInformation(10001111,"Nguyen Van A","ck",5000.0);
+        // homePage.goToOpenAccountPage();
+        // openAccountPage.openAccountNonTermDepositAccountType();
+        //  internalTransferPage.enterTransferInformation(100002267,3000,"ck");
+        //  internalTransferPage.goToTransferConfirmationPage();
+        //  transferInformationReviewPage.goToConfirmationPage();
+        //  transferConfirmationPage.enterOTP("abc");
+        // transferConfirmationPage.clickTransferButton();
+        //  externalTransferPage.enterFormInformation(10001111,"Nguyen Van A","ck",5000.0);
         externalTransferPage.goToTransferInformationReviewPage();
         transferInformationReviewPage.goToConfirmationPage();
         transferConfirmationPage.enterOTP("abc");

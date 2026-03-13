@@ -9,6 +9,9 @@ public class LoginPage {
     private final By PassWordTextBoxLocator = By.xpath("//p[@class=\"user_name_text1\"][text()='Mật Khẩu']//following-sibling::p[1]//input");
     private final By LoginButtonLocator = By.xpath("//p//input[@value=\"Đặng nhập\"]");
 
+    // //input[@type="text"]
+    // //input[@type="password"]
+
     public void enterAccount(String account){
         DriverUtils.DRIVER.findElement(AccountTextBoxLocator).sendKeys(account);
     }

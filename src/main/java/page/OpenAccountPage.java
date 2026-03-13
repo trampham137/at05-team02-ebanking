@@ -7,6 +7,7 @@ public class OpenAccountPage {
     private final By accountTypeDropDownLocator = By.xpath("//div//label[text()='Chọn tài khoản']");
     private final By nonTermDepositAccountTypeLocator = By.xpath("//div//li[text()='Tài Khoản kỳ gửi không kỳ hạn']");
     private final By savingAccountTypeLocator = By.xpath("//div//li[text()='Tài Khoản tiết kiệm']");
+
     private final By createAccountButton = By.xpath("//td//input[@value='Tạo tài khoản']");
     public void clickAccountTypeDropDown() {
         DriverUtils.DRIVER.findElement(accountTypeDropDownLocator).click();
@@ -30,4 +31,6 @@ public class OpenAccountPage {
         clickSavingAccountType();
         clickCreateAccountButton();
     }
+
+    // add function - dynamic select account type
 }

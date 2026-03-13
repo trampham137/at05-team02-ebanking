@@ -15,12 +15,14 @@ public class ExternalTransferPage {
     private final By receiverAccountTextBoxLocator= By.xpath("//td[label[text()='Số tài khoản nhận ']]//following-sibling::td//input");
     private final By receiverAccountNameTextBoxLocator = By.xpath("//td[label[text()='Tên tài khoản nhận ']]//following-sibling::td//input");
     private final By bankDropdownLocator = By.xpath("//label[text()='Chọn ngân hàng']");
-    private final By selectBankLocator = By.xpath("//li[@data-label=\"Chọn ngân hàng\"]//following-sibling::li[1]");
+    private final By selectBankLocator = By.xpath("//li[@data-label=Chọn ngân hàng]//following-sibling::li[1]");
     private final By branchDropdownLocator = By.xpath("//label[text()='Chọn chi nhánh']");
     private final By selectBranchLocator = By.xpath("//li[@data-label=\"Chọn chi nhánh\"]//following-sibling::li[1]");
     private final By InformationTransferTextBoxLocator = By.xpath("//td[label[text()='Nội dung chuyển tiền ']]//following-sibling::td//input");
     private final By AmountTransferTextBoxLocator = By.xpath("//td[label[text()='Số tiền chuyển khoản']]//following-sibling::td//input");
     private final By TransferButtonLocator = By.xpath("//td//input[@value=\"Chuyển tiền\"]");
+
+    // td[label[text()= >> duplicate
 
     public void selectAccountSource(){
         DriverUtils.DRIVER.findElement(selectAccountSourceDropdownLocator).click();
