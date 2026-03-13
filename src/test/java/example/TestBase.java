@@ -19,14 +19,15 @@ public class TestBase {
         chromeOptions.setExperimentalOption("prefs", prefs);
 
         DriverUtils.DRIVER = new ChromeDriver(chromeOptions);
-        DriverUtils.DRIVER.get("http://14.176.232.213:8080/EBankingWebsite/");
+        //  DriverUtils.DRIVER.get("http://14.176.232.213:8080/EBankingWebsite/");
+        DriverUtils.DRIVER.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
     }
 
 
     @AfterClass(description = "Tear down the test environment")
     public void tearDown() {
         // Tear down the test environment
-       DriverUtils.DRIVER.quit();
+        DriverUtils.DRIVER.quit();
     }
 
 }
