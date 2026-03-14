@@ -3,33 +3,16 @@ package page.user;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import page.base.BasePage;
 import utils.DriverUtils;
 
 import java.time.Duration;
 
 import static utils.DriverUtils.DRIVER;
 
-public class ExternalTransferPage {
+public class ExternalTransferPage extends BasePage {
 
     private final By transferButtonLocator = By.xpath("//td//input[@value='Chuyển tiền']");
-    // dinh nghia 1 trang cho ke thua lai dropdown
-    private final String dynamicDropdownLabelLocator = "//label[text()='%s']";
-    // TODO: khong dung contain
-    private final String dynamicDropdownItemLocator = "//li[contains(@data-label,'%s')]";
-    private final String dynamicTextBoxLocator = "//td[label[text()='%s']]//following-sibling::td//input";
-
-    private By getDropdownLabelLocator(String label) {
-        return By.xpath(String.format(dynamicDropdownLabelLocator, label));
-    }
-
-    private By getDropdownItemLocator(String item) {
-        return By.xpath(String.format(dynamicDropdownItemLocator, item));
-    }
-
-    private By getItemTextBoxLocator(String label) {
-        return By.xpath(String.format(dynamicTextBoxLocator, label));
-    }
-
     private final By selectAccountSourceDropdownLocator = getDropdownLabelLocator("Chọn tài khoản");
     private final By bankDropdownLocator = getDropdownLabelLocator("Chọn ngân hàng");
     private final By branchDropdownLocator = getDropdownLabelLocator("Chọn chi nhánh");

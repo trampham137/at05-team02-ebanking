@@ -1,10 +1,10 @@
-package page.user;
+package page.base;
 
 import org.openqa.selenium.By;
 import utils.DriverUtils;
 
-public class UserSidebarPage {
-    // TODO: tao trang de cac trang khac ke thua viec di toi cac trang
+public class BasePage {
+
     private final String dynamicMenuLocator = "//a[span[text()='%s']]";
     private final By personalInformationLocator = getMenuItemLocator("Thông tin cá nhân");
     private final By accountLocator = getMenuItemLocator("Tài khoản");
@@ -14,6 +14,21 @@ public class UserSidebarPage {
     private final By internalTransferLocator = getMenuItemLocator("Chuyển  khoản");
     private final By externalTransferLocator = getMenuItemLocator("Liên Ngân Hàng");
     private final By logoutLocator = getMenuItemLocator("Đăng xuất");
+    private final String dynamicDropdownLabelLocator = "//label[text()='%s']";
+    private final String dynamicDropdownItemLocator = "//li[@data-label='%s']";
+    private final String dynamicTextBoxLocator = "//td[label[text()='%s']]//following-sibling::td//input";
+
+    public By getDropdownLabelLocator(String label) {
+        return By.xpath(String.format(dynamicDropdownLabelLocator, label));
+    }
+
+    public By getDropdownItemLocator(String item) {
+        return By.xpath(String.format(dynamicDropdownItemLocator, item));
+    }
+
+    public By getItemTextBoxLocator(String label) {
+        return By.xpath(String.format(dynamicTextBoxLocator, label));
+    }
 
     private By getMenuItemLocator(String item) {
         return By.xpath(String.format(dynamicMenuLocator, item));

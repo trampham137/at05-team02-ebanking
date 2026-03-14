@@ -1,9 +1,10 @@
 package page.user;
 
 import org.openqa.selenium.By;
+import page.base.BasePage;
 import utils.DriverUtils;
 
-public class OpenAccountPage {
+public class OpenAccountPage extends BasePage {
     // TODO: fix duplicate
     private final By accountTypeDropDownLocator = By.xpath("//div//label[text()='Chọn tài khoản']");
     private final By nonTermDepositAccountTypeLocator = By.xpath("//div//li[text()='Tài Khoản kỳ gửi không kỳ hạn']");

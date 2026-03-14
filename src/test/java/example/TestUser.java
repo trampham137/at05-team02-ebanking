@@ -2,13 +2,14 @@ package example;
 
 import org.testng.annotations.Test;
 import models.User;
+import page.base.BasePage;
 import page.user.*;
 
 public class TestUser extends TestBase {
     // TODO: tao class model them user trong util vao
 
     LoginPage loginPage = new LoginPage();
-    UserSidebarPage userSidebarPage = new UserSidebarPage();
+    BasePage basePage = new BasePage();
     OpenAccountPage openAccountPage = new OpenAccountPage();
     InternalTransferPage internalTransferPage = new InternalTransferPage();
     TransferInformationReviewPage transferInformationReviewPage = new TransferInformationReviewPage();
@@ -18,7 +19,7 @@ public class TestUser extends TestBase {
     @Test
     public void verifyLoginSucessful() {
         loginPage.Login(User.STANDARD_USER);
-        userSidebarPage.goToInternalTransferPage();
+        openAccountPage.goToExternalTransfer();
 
         // homePage.goToOpenAccountPage();
         // openAccountPage.openAccountNonTermDepositAccountType();
@@ -32,7 +33,7 @@ public class TestUser extends TestBase {
         //  transferInformationReviewPage.goToConfirmationPage();
         // transferConfirmationPage.enterOTP("abc");
         // transferConfirmationPage.clickBtnExternalTransfer();
-        internalTransferPage.enterTransferInformation("100002265", 100002267, 500.0, "ck");
-        // externalTransferPage.enterFormInformation("100002265", 10001111, "Nguyen Van A", "Ngân hàng Đông Á", "Chi nhánh Đà Nẵng", "ck", 5000.0);
+        //  internalTransferPage.enterTransferInformation("100002265", 100002267, 500.0, "ck");
+        externalTransferPage.enterInformation("100002265", 10001111, "Nguyen Van A", "Ngân hàng Đông Á", "Chi nhánh Đà Nẵng", "ck", 5000.0);
     }
 }
