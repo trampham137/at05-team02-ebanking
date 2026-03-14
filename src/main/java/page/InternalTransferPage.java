@@ -53,7 +53,7 @@ public class InternalTransferPage {
         DRIVER.findElement(confirmButtonLocator).click();
     }
 
-    public void enterInternalTransferInformation(String acc, int account, double amount, String desc) {
+    public void enterTransferInformation(String acc, int account, double amount, String desc) {
         selelectAccountSource(acc);
         enterReceiverAccount(account);
         enterAmount(amount);

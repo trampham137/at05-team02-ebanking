@@ -6,12 +6,18 @@ import untils.WaitUtils;
 
 public class AdminSidebarPage {
     private final String sidebarMenuXpath = "//a[span[text()='%s']]";
-    private final By customerListMenuLocator = By.xpath(String.format(sidebarMenuXpath, "Danh sách khách hàng"));
-    private final By depositMenuLocator = By.xpath(String.format(sidebarMenuXpath, "Nộp Tiền"));
-    private final By withdrawMenuLocator = By.xpath(String.format(sidebarMenuXpath, "Rút tiền"));
-    private final By byCustomerMenuLocator = By.xpath(String.format(sidebarMenuXpath, "Theo Khách Hàng"));
-    private final By byDateMenuLocator = By.xpath(String.format(sidebarMenuXpath, "Theo Ngày"));
-    
+
+    private By getSidebarMenuLocator(String item) {
+        return By.xpath(String.format(sidebarMenuXpath, item));
+    }
+
+    private final By customerListMenuLocator = getSidebarMenuLocator("Danh sách khách hàng");
+    private final By depositMenuLocator = getSidebarMenuLocator("Nộp Tiền");
+    private final By withdrawMenuLocator = getSidebarMenuLocator("Rút tiền");
+    private final By byCustomerMenuLocator = getSidebarMenuLocator("Theo Khách Hàng");
+    private final By byDateMenuLocator = getSidebarMenuLocator("Theo Ngày");
+
+
     private final By logoutButtonLocator = By.xpath("//input[@value='Thoát']");
 
     public void goToCustomerListPage() {
