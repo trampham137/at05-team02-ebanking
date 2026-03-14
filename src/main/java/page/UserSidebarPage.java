@@ -3,7 +3,7 @@ package page;
 import org.openqa.selenium.By;
 import untils.DriverUtils;
 
-public class HomePage {
+public class UserSidebarPage {
     private final String dynamicMenuLocator = "//a[span[text()='%s']]";
     private final By personalInformationLocator = getMenuItemLocator("Thông tin cá nhân");
     private final By accountLocator = getMenuItemLocator("Tài khoản");

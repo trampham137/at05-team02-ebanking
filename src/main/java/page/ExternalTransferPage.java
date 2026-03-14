@@ -10,68 +10,81 @@ import java.time.Duration;
 import static untils.DriverUtils.DRIVER;
 
 public class ExternalTransferPage {
-    private final By selectAccountSourceDropdownLocator = By.xpath("//label[text()='Chọn tài khoản']");
-    private final By selectAccountSourceLocator = By.xpath("//li[text()='Chọn tài khoản']//following-sibling::li[1]");
-    private final By receiverAccountTextBoxLocator = By.xpath("//td[label[text()='Số tài khoản nhận ']]//following-sibling::td//input");
-    private final By receiverAccountNameTextBoxLocator = By.xpath("//td[label[text()='Tên tài khoản nhận ']]//following-sibling::td//input");
-    private final By bankDropdownLocator = By.xpath("//label[text()='Chọn ngân hàng']");
-    private final By selectBankLocator = By.xpath("//li[@data-label=Chọn ngân hàng]//following-sibling::li[1]");
-    private final By branchDropdownLocator = By.xpath("//label[text()='Chọn chi nhánh']");
-    private final By selectBranchLocator = By.xpath("//li[@data-label=\"Chọn chi nhánh\"]//following-sibling::li[1]");
-    private final By InformationTransferTextBoxLocator = By.xpath("//td[label[text()='Nội dung chuyển tiền ']]//following-sibling::td//input");
-    private final By AmountTransferTextBoxLocator = By.xpath("//td[label[text()='Số tiền chuyển khoản']]//following-sibling::td//input");
-    private final By TransferButtonLocator = By.xpath("//td//input[@value=\"Chuyển tiền\"]");
 
+    private final By transferButtonLocator = By.xpath("//td//input[@value='Chuyển tiền']");
+
+    private final String dynamicDropdownLabelLocator = "//label[text()='%s']";
+    private final String dynamicDropdownItemLocator = "//li[contains(@data-label,'%s')]";
+    private final String dynamicTextBoxLocator = "//td[label[text()='%s']]//following-sibling::td//input";
+
+    private By getDropdownLabelLocator(String label) {
+        return By.xpath(String.format(dynamicDropdownLabelLocator, label));
+    }
+
+    private By getDropdownItemLocator(String item) {
+        return By.xpath(String.format(dynamicDropdownItemLocator, item));
+    }
+
+    private By getItemTextBoxLocator(String label) {
+        return By.xpath(String.format(dynamicTextBoxLocator, label));
+    }
+
+    private final By selectAccountSourceDropdownLocator = getDropdownLabelLocator("Chọn tài khoản");
+    private final By bankDropdownLocator = getDropdownLabelLocator("Chọn ngân hàng");
+
+    private final By branchDropdownLocator = getDropdownLabelLocator("Chọn chi nhánh");
+    private final By receiverAccountTextBoxLocator = getItemTextBoxLocator("Số tài khoản nhận ");
+    private final By receiverAccountNameTextBoxLocator = getItemTextBoxLocator("Tên tài khoản nhận ");
+    private final By transferInformationTextboxLocator = getItemTextBoxLocator("Nội dung chuyển tiền ");
+    private final By transferAmountTextboxLocator = getItemTextBoxLocator("Số tiền chuyển khoản");
 
     // td[label[text()= >> duplicate
 
-    public void selectAccountSource() {
+
+    public void selectAccountSource(String account) {
         DriverUtils.DRIVER.findElement(selectAccountSourceDropdownLocator).click();
-        DriverUtils.DRIVER.findElement(selectAccountSourceLocator).click();
+        DriverUtils.DRIVER.findElement(getDropdownItemLocator(account)).click();
     }
 
-    public void enterReceiverAccount(int account) {
-        DriverUtils.DRIVER.findElement(receiverAccountTextBoxLocator).sendKeys(String.valueOf(account));
+    public void enterReceiverAccount(int receiveraccount) {
+        DriverUtils.DRIVER.findElement(receiverAccountTextBoxLocator).sendKeys(String.valueOf(receiveraccount));
     }
 
-    public void enterReceiverAccountNameTextBoxLocator(String name) {
+    public void enterReceiverAccountName(String name) {
         DriverUtils.DRIVER.findElement(receiverAccountNameTextBoxLocator).sendKeys(name);
     }
 
-    public void selectBank() {
+    public void selectBank(String bank) {
         DriverUtils.DRIVER.findElement(bankDropdownLocator).click();
-        DriverUtils.DRIVER.findElement(selectBankLocator).click();
+        DriverUtils.DRIVER.findElement(getDropdownItemLocator(bank)).click();
     }
 
-    public void selectBranch() {
-        // DriverUtils.DRIVER.findElement(branchDropdownLocator).click();
-        // DriverUtils.DRIVER.findElement(selectBranchLocator).click();
+    public void selectBranch(String branch) {
         WebDriverWait wait = new WebDriverWait(DriverUtils.DRIVER, Duration.ofSeconds(10));
-
         wait.until(ExpectedConditions.elementToBeClickable(branchDropdownLocator)).click();
-        wait.until(ExpectedConditions.elementToBeClickable(selectBranchLocator)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(getDropdownItemLocator(branch))).click();
     }
 
     public void enterInformationTransfer(String inf) {
-        DriverUtils.DRIVER.findElement(InformationTransferTextBoxLocator).sendKeys(inf);
+        DriverUtils.DRIVER.findElement(transferInformationTextboxLocator).sendKeys(inf);
     }
 
     public void enterAmount(Double amount) {
-        DriverUtils.DRIVER.findElement(AmountTransferTextBoxLocator).sendKeys(String.valueOf(amount));
+        DriverUtils.DRIVER.findElement(transferAmountTextboxLocator).sendKeys(String.valueOf(amount));
     }
 
     //TODO: Update void
     public void goToTransferInformationReviewPage() {
-        DRIVER.findElement(TransferButtonLocator).click();
+        DRIVER.findElement(transferButtonLocator).click();
     }
 
-    public void enterFormInformation(int account, String name, String inf, Double amount) {
-        selectAccountSource();
-        enterReceiverAccount(account);
-        enterReceiverAccountNameTextBoxLocator(name);
-        selectBank();
+    public void enterExternalTransferInformation(String account, int receiveraccount, String name, String bank, String branch, String inf, Double amount) {
+        selectAccountSource(account);
+        enterReceiverAccount(receiveraccount);
+        enterReceiverAccountName(name);
+        selectBank(bank);
 
-        selectBranch();
+        selectBranch(branch);
         enterInformationTransfer(inf);
         enterAmount(amount);
     }

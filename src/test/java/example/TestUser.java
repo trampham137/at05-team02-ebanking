@@ -6,7 +6,7 @@ import untils.User;
 
 public class TestUser extends TestBase {
     LoginPage loginPage = new LoginPage();
-    HomePage homePage = new HomePage();
+    UserSidebarPage userSidebarPage = new UserSidebarPage();
     OpenAccountPage openAccountPage = new OpenAccountPage();
     InternalTransferPage internalTransferPage = new InternalTransferPage();
     TransferInformationReviewPage transferInformationReviewPage = new TransferInformationReviewPage();
@@ -16,7 +16,8 @@ public class TestUser extends TestBase {
     @Test
     public void verifyLoginSucessful() {
         loginPage.Login(User.STANDARD_USER);
-        homePage.goToInternalTransferPage();
+        userSidebarPage.goToInternalTransferPage();
+
         // homePage.goToOpenAccountPage();
         // openAccountPage.openAccountNonTermDepositAccountType();
         //  internalTransferPage.enterTransferInformation(100002267,3000,"ck");
@@ -29,5 +30,7 @@ public class TestUser extends TestBase {
         //  transferInformationReviewPage.goToConfirmationPage();
         // transferConfirmationPage.enterOTP("abc");
         // transferConfirmationPage.clickBtnExternalTransfer();
+        internalTransferPage.enterTransferInformation("100002265", 100002267, 500.0, "ck");
+        // externalTransferPage.enterFormInformation("100002265", 10001111, "Nguyen Van A", "Ngân hàng Đông Á", "Chi nhánh Đà Nẵng", "ck", 5000.0);
     }
 }

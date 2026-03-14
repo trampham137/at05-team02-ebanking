@@ -1,38 +1,60 @@
 package page;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+
+import java.time.Duration;
 
 import static untils.DriverUtils.DRIVER;
 
 public class InternalTransferPage {
-    private final By selectAccountSourceDropdownLocator = By.xpath("//td[label[text()='Tài khoản nguồn']]//following-sibling::td//label");
-    private final By selectAccountSourceLocator = By.xpath("//div//li[text()='Chọn tài khoản']//following-sibling::li[1]");
-    private final By receiverAccountTextBoxLocator = By.xpath("//td[label[text()='Tài khoản nhận']]//following-sibling::td//input");
-    private final By amountTextBoxLocator = By.xpath("//td[label[text()='Số tiền']]//following-sibling::td//input");
-    private final By paymentDescriptionTextBoxLocator = By.xpath("//td[label[text()='Nội dung thanh toán']]//following-sibling::td//input");
-    private final By confirmButtonlocator = By.xpath("//td//input[@value=\"Xác nhận\"]");
+    private final By selectAccountSource = By.xpath("//label[text()='Chọn tài khoản']");
+    private final String dynamicLocator = "//td[label[text()='%s']]//following-sibling::td//input";
+
+    private By getItemLocator(String label) {
+        return By.xpath(String.format(dynamicLocator, label));
+    }
+
+    private final By receiverAccountTextBoxLocator = getItemLocator("Tài khoản nhận");
+    private final By amountTextBoxLocator = getItemLocator("Số tiền");
+    private final By paymentDescriptionTextBoxLocator = getItemLocator("Nội dung thanh toán");
+    private final String accountItemLocator = "//li[contains(@data-label,'%s')]";
+
+    private final By confirmButtonLocator = By.xpath("//td//input[@value='Xác nhận']");
 
     // >> reused with external
 
-    public void selelectAccountSource(){
-        DRIVER.findElement(selectAccountSourceDropdownLocator).click();
-        DRIVER.findElement(selectAccountSourceLocator).click();
+    private By getLocatorByAccount(String acc) {
+        return By.xpath(String.format(accountItemLocator, acc));
     }
-    public void enterReceiverAccount(int account){
+
+    public void selelectAccountSource(String acc) {
+        WebDriverWait wait = new WebDriverWait(DRIVER, Duration.ofSeconds(10));
+
+        wait.until(ExpectedConditions.elementToBeClickable(selectAccountSource)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(getLocatorByAccount(acc))).click();
+    }
+
+    public void enterReceiverAccount(int account) {
         DRIVER.findElement(receiverAccountTextBoxLocator).sendKeys(String.valueOf(account));
     }
-    public void enterAmount( double amount){
+
+    public void enterAmount(double amount) {
         DRIVER.findElement(amountTextBoxLocator).sendKeys(String.valueOf(amount));
     }
-    public void enterPaymentDescription(String desc){
+
+    public void enterPaymentDescription(String desc) {
         DRIVER.findElement(paymentDescriptionTextBoxLocator).sendKeys(desc);
     }
-    public void goToTransferInformationReviewPage(){
-        DRIVER.findElement(confirmButtonlocator).click();
+
+    public void goToTransferInformationReviewPage() {
+        DRIVER.findElement(confirmButtonLocator).click();
     }
-    public void enterTransferInformation(int account,double amount,String desc){
-        selelectAccountSource();
+
+    public void enterInternalTransferInformation(String acc, int account, double amount, String desc) {
+        selelectAccountSource(acc);
         enterReceiverAccount(account);
         enterAmount(amount);
         enterPaymentDescription(desc);
