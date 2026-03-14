@@ -4,40 +4,50 @@ import org.openqa.selenium.By;
 import untils.DriverUtils;
 
 public class HomePage {
-    private final By personalInformationLocator = By.xpath("//a[span[text()='Thông tin cá nhân']]");
-    private final By accountLocator = By.xpath("//a[span[text()='Tài khoản']]");
-    private final By openAccountLocator = By.xpath("//a[span[text()='Mở tài khoản']]");
-    private final By changePassWordLocator = By.xpath("//a[span[text()='Đổi mật khẩu']]");
-    private final By transactionHistorylocator = By.xpath("//a[span[text()='Nhật kí giao dịch']]");
-    private final By internalTransferLocator = By.xpath("//a[span[text()='Chuyển  khoản']]");
-    private final By externalTransferLocator = By.xpath("//a[span[text()='Liên Ngân Hàng']]");
-    private final By logoutLocator = By.xpath("//a[span[text()='Đăng xuất']]");
+    private final String dynamicMenuLocator = "//a[span[text()='%s']]";
+    private final By personalInformationLocator = getMenuItemLocator("Thông tin cá nhân");
+    private final By accountLocator = getMenuItemLocator("Tài khoản");
+    private final By openAccountLocator = getMenuItemLocator("Mở tài khoản");
+    private final By changePassWordLocator = getMenuItemLocator("Đổi mật khẩu");
+    private final By transactionHistoryLocator = getMenuItemLocator("Nhật kí giao dịch");
+    private final By internalTransferLocator = getMenuItemLocator("Chuyển  khoản");
+    private final By externalTransferLocator = getMenuItemLocator("Liên Ngân Hàng");
+    private final By logoutLocator = getMenuItemLocator("Đăng xuất");
 
+    private By getMenuItemLocator(String item) {
+        return By.xpath(String.format(dynamicMenuLocator, item));
+    }
     // a[span[text() >> duplicate
 
-
-    public void goToPersonalInformationPage(){
+    public void goToPersonalInformationPage() {
         DriverUtils.DRIVER.findElement(personalInformationLocator).click();
     }
-    public void goToAccountPage(){
+
+    public void goToAccountPage() {
         DriverUtils.DRIVER.findElement(accountLocator).click();
     }
-    public void goToOpenAccountPage(){
+
+    public void goToOpenAccountPage() {
         DriverUtils.DRIVER.findElement(openAccountLocator).click();
     }
-    public void goToChangePasswordPage(){
+
+    public void goToChangePasswordPage() {
         DriverUtils.DRIVER.findElement(changePassWordLocator).click();
     }
-    public void goToTransactionHistoryPage(){
-        DriverUtils.DRIVER.findElement(transactionHistorylocator).click();
+
+    public void goToTransactionHistoryPage() {
+        DriverUtils.DRIVER.findElement(transactionHistoryLocator).click();
     }
-    public void goToInternalTransferPage(){
+
+    public void goToInternalTransferPage() {
         DriverUtils.DRIVER.findElement(internalTransferLocator).click();
     }
-    public void goToExternalTransfer(){
+
+    public void goToExternalTransfer() {
         DriverUtils.DRIVER.findElement(externalTransferLocator).click();
     }
-    public void goToLogoutPage(){
+
+    public void goToLogoutPage() {
         DriverUtils.DRIVER.findElement(logoutLocator).click();
     }
 

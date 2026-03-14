@@ -22,6 +22,7 @@ public class ExternalTransferPage {
     private final By AmountTransferTextBoxLocator = By.xpath("//td[label[text()='Số tiền chuyển khoản']]//following-sibling::td//input");
     private final By TransferButtonLocator = By.xpath("//td//input[@value=\"Chuyển tiền\"]");
 
+
     // td[label[text()= >> duplicate
 
     public void selectAccountSource() {

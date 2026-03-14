@@ -16,7 +16,7 @@ public class TestUser extends TestBase {
     @Test
     public void verifyLoginSucessful() {
         loginPage.Login(User.STANDARD_USER);
-        homePage.goToExternalTransfer();
+        //  homePage.goToExternalTransfer();
         // homePage.goToOpenAccountPage();
         // openAccountPage.openAccountNonTermDepositAccountType();
         //  internalTransferPage.enterTransferInformation(100002267,3000,"ck");
