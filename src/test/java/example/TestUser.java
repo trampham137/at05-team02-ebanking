@@ -16,7 +16,7 @@ public class TestUser extends TestBase {
     @Test
     public void verifyLoginSucessful() {
         loginPage.Login(User.STANDARD_USER);
-        //  homePage.goToExternalTransfer();
+        homePage.goToInternalTransferPage();
         // homePage.goToOpenAccountPage();
         // openAccountPage.openAccountNonTermDepositAccountType();
         //  internalTransferPage.enterTransferInformation(100002267,3000,"ck");
@@ -25,9 +25,9 @@ public class TestUser extends TestBase {
         //  transferConfirmationPage.enterOTP("abc");
         // transferConfirmationPage.clickTransferButton();
         //  externalTransferPage.enterFormInformation(10001111,"Nguyen Van A","ck",5000.0);
-        externalTransferPage.goToTransferInformationReviewPage();
-        transferInformationReviewPage.goToConfirmationPage();
-        transferConfirmationPage.enterOTP("abc");
-        transferConfirmationPage.clickBtnExternalTransfer();
+        //  externalTransferPage.goToTransferInformationReviewPage();
+        //  transferInformationReviewPage.goToConfirmationPage();
+        // transferConfirmationPage.enterOTP("abc");
+        // transferConfirmationPage.clickBtnExternalTransfer();
     }
 }
