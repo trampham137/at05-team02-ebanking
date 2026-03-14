@@ -1,4 +1,4 @@
-package page.base;
+package base;
 
 import org.openqa.selenium.By;
 import utils.DriverUtils;

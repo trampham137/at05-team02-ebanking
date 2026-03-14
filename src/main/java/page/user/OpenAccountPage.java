@@ -1,7 +1,7 @@
 package page.user;
 
 import org.openqa.selenium.By;
-import page.base.BasePage;
+import base.BasePage;
 import utils.DriverUtils;
 
 public class OpenAccountPage extends BasePage {

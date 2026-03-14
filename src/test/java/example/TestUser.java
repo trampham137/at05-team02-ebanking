@@ -2,7 +2,9 @@ package example;
 
 import org.testng.annotations.Test;
 import models.User;
-import page.base.BasePage;
+import base.BasePage;
+import enums.Bank;
+import enums.Branch;
 import page.user.*;
 
 public class TestUser extends TestBase {
@@ -34,6 +36,6 @@ public class TestUser extends TestBase {
         // transferConfirmationPage.enterOTP("abc");
         // transferConfirmationPage.clickBtnExternalTransfer();
         //  internalTransferPage.enterTransferInformation("100002265", 100002267, 500.0, "ck");
-        externalTransferPage.enterInformation("100002265", 10001111, "Nguyen Van A", "Ngân hàng Đông Á", "Chi nhánh Đà Nẵng", "ck", 5000.0);
+        externalTransferPage.enterInformation("100002265", 10001111, "Nguyen Van A", Bank.DONGA, Branch.DANANG, "ck", 5000.0);
     }
 }

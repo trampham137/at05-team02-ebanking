@@ -1,9 +1,10 @@
 package page.user;
 
+import models.InternalTransferInfo;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import page.base.BasePage;
+import base.BasePage;
 
 
 import java.time.Duration;
@@ -18,11 +19,11 @@ public class InternalTransferPage extends BasePage {
     private final By paymentDescriptionTextBoxLocator = getItemTextBoxLocator("Nội dung thanh toán");
     private final By confirmButtonLocator = By.xpath("//td//input[@value='Xác nhận']");
 
-    public void selelectAccountSource(String acc) {
+    public void selelectAccountSource(int acc) {
         WebDriverWait wait = new WebDriverWait(DRIVER, Duration.ofSeconds(10));
 
         wait.until(ExpectedConditions.elementToBeClickable(selectAccountSource)).click();
-        wait.until(ExpectedConditions.elementToBeClickable(getDropdownItemLocator(acc))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(getDropdownItemLocator(String.valueOf(acc)))).click();
     }
 
     public void enterReceiverAccount(int account) {
@@ -42,11 +43,11 @@ public class InternalTransferPage extends BasePage {
     }
 
     // TODO: Them ... luu bien
-    public void enterTransferInformation(String acc, int account, double amount, String desc) {
-        selelectAccountSource(acc);
-        enterReceiverAccount(account);
-        enterAmount(amount);
-        enterPaymentDescription(desc);
+    public void enterTransferInformation(InternalTransferInfo info) {
+        selelectAccountSource(info.sourceAccount);
+        enterReceiverAccount(info.receiverAccount);
+        enterAmount(info.amount);
+        enterPaymentDescription(info.transferDescription);
     }
 
 

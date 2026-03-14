@@ -1,9 +1,12 @@
 package page.user;
 
+import models.ExternalTransferInfo;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import page.base.BasePage;
+import base.BasePage;
+import enums.Bank;
+import enums.Branch;
 import utils.DriverUtils;
 
 import java.time.Duration;
@@ -22,9 +25,9 @@ public class ExternalTransferPage extends BasePage {
     private final By transferAmountTextboxLocator = getItemTextBoxLocator("Số tiền chuyển khoản");
 
 
-    public void selectAccountSource(String account) {
+    public void selectAccountSource(int account) {
         DriverUtils.DRIVER.findElement(selectAccountSourceDropdownLocator).click();
-        DriverUtils.DRIVER.findElement(getDropdownItemLocator(account)).click();
+        DriverUtils.DRIVER.findElement(getDropdownItemLocator(String.valueOf(account))).click();
     }
 
     public void enterReceiverAccount(int receiveraccount) {
@@ -35,19 +38,19 @@ public class ExternalTransferPage extends BasePage {
         DriverUtils.DRIVER.findElement(receiverAccountNameTextBoxLocator).sendKeys(name);
     }
 
-    public void selectBank(String bank) {
+    public void selectBank(Bank bank) {
         DriverUtils.DRIVER.findElement(bankDropdownLocator).click();
-        DriverUtils.DRIVER.findElement(getDropdownItemLocator(bank)).click();
+        DriverUtils.DRIVER.findElement(getDropdownItemLocator(bank.getValue())).click();
     }
 
     // TODO: enum thay vi string
-    public void selectBranch(String branch) {
+    public void selectBranch(Branch branch) {
         WebDriverWait wait = new WebDriverWait(DriverUtils.DRIVER, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(branchDropdownLocator)).click();
-        wait.until(ExpectedConditions.elementToBeClickable(getDropdownItemLocator(branch))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(getDropdownItemLocator(branch.getValue()))).click();
     }
 
-    public void enterInformationTransfer(String inf) {
+    public void enterTransferDescription(String inf) {
         DriverUtils.DRIVER.findElement(transferInformationTextboxLocator).sendKeys(inf);
     }
 
@@ -61,14 +64,13 @@ public class ExternalTransferPage extends BasePage {
     }
 
     // TODO: them ... luu 7 bien
-    public void enterInformation(String account, int receiveraccount, String name, String bank, String branch, String inf, Double amount) {
-        selectAccountSource(account);
-        enterReceiverAccount(receiveraccount);
-        enterReceiverAccountName(name);
-        selectBank(bank);
-
-        selectBranch(branch);
-        enterInformationTransfer(inf);
-        enterAmount(amount);
+    public void enterInformation(ExternalTransferInfo info) {
+        selectAccountSource(info.sourceAccount);
+        enterReceiverAccount(info.receiverAccount);
+        enterReceiverAccountName(info.receiverName);
+        selectBank(info.bank);
+        selectBranch(info.branch);
+        enterTransferDescription(info.transferDescription);
+        enterAmount(info.amount);
     }
 }
