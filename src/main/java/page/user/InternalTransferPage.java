@@ -1,4 +1,4 @@
-package page;
+package page.user;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -7,9 +7,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-import static untils.DriverUtils.DRIVER;
+import static utils.DriverUtils.DRIVER;
 
 public class InternalTransferPage {
+    // TODO: Dinh nghia 1 trang cho ke thua lai (trung voi dynamicDropdownLabelLocator ben external)
     private final By selectAccountSource = By.xpath("//label[text()='Chọn tài khoản']");
     private final String dynamicLocator = "//td[label[text()='%s']]//following-sibling::td//input";
 
@@ -20,8 +21,8 @@ public class InternalTransferPage {
     private final By receiverAccountTextBoxLocator = getItemLocator("Tài khoản nhận");
     private final By amountTextBoxLocator = getItemLocator("Số tiền");
     private final By paymentDescriptionTextBoxLocator = getItemLocator("Nội dung thanh toán");
+    // TODO: Dinh nghia 1 trang cho ke thua lai
     private final String accountItemLocator = "//li[contains(@data-label,'%s')]";
-
     private final By confirmButtonLocator = By.xpath("//td//input[@value='Xác nhận']");
 
     // >> reused with external
@@ -53,6 +54,7 @@ public class InternalTransferPage {
         DRIVER.findElement(confirmButtonLocator).click();
     }
 
+    // TODO: Them ... luu bien
     public void enterTransferInformation(String acc, int account, double amount, String desc) {
         selelectAccountSource(acc);
         enterReceiverAccount(account);

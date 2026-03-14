@@ -1,7 +1,7 @@
-package page;
+package page.admin;
 
 import org.openqa.selenium.By;
-import untils.DriverUtils;
+import utils.DriverUtils;
 
 public class AdminLoginPage {
     private final By idTextBoxLocator = By.xpath("//td[label[text()='ID']]//following-sibling::td//input");

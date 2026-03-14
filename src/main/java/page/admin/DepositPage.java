@@ -1,9 +1,10 @@
-package page;
+package page.admin;
 
 import org.openqa.selenium.By;
-import untils.DriverUtils;
+import utils.DriverUtils;
 
 public class DepositPage {
+    //TODO: tao 2 package : admin , user
     private final By receiverAccountTextBoxLocator = By.name("j_idt23:j_idt27");
     private final By amountTextBoxLocator = By.name("j_idt23:j_idt29");
     private final By informationTransferTextBoxLocator = By.name("j_idt23:j_idt31");
@@ -17,7 +18,7 @@ public class DepositPage {
         DriverUtils.DRIVER.findElement(amountTextBoxLocator).sendKeys(String.valueOf(amount));
     }
 
-    public void enterInformationTransfer(String desc) {
+    public void enterPaymentDescription(String desc) {
         DriverUtils.DRIVER.findElement(informationTransferTextBoxLocator).sendKeys(desc);
     }
 
@@ -28,6 +29,6 @@ public class DepositPage {
     public void enterDepositForm(int receiver, double amount, String desc) {
         enterReceiverAccount(receiver);
         enterAmount(amount);
-        enterInformationTransfer(desc);
+        enterPaymentDescription(desc);
     }
 }

@@ -1,13 +1,9 @@
 package example;
 
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.Test;
-import page.AdminLoginPage;
-import page.AdminSidebarPage;
-import page.DepositPage;
-import untils.DriverUtils;
-
-import java.util.HashMap;
+import page.admin.AdminLoginPage;
+import page.admin.AdminSidebarPage;
+import page.admin.DepositPage;
 
 public class TestAdmin extends TestBase {
     // Set up the test environment
@@ -18,7 +14,8 @@ public class TestAdmin extends TestBase {
     @Test
     public void verifyAdminLogin() {
         adminLoginPage.Login("1", "admin");
-        // adminSidebarPage.goToCustomerListPage();
+
+        adminSidebarPage.goToCustomerListPage();
         // adminSidebarPage.Logout();
         // adminSidebarPage.goToByDatePage();
         // adminSidebarPage.goToWithdrawPage();

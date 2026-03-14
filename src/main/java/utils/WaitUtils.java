@@ -1,4 +1,4 @@
-package untils;
+package utils;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;

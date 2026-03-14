@@ -1,9 +1,10 @@
-package page;
+package page.user;
 
 import org.openqa.selenium.By;
-import untils.DriverUtils;
+import utils.DriverUtils;
 
 public class UserSidebarPage {
+    // TODO: tao trang de cac trang khac ke thua viec di toi cac trang
     private final String dynamicMenuLocator = "//a[span[text()='%s']]";
     private final By personalInformationLocator = getMenuItemLocator("Thông tin cá nhân");
     private final By accountLocator = getMenuItemLocator("Tài khoản");

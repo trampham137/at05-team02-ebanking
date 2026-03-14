@@ -1,23 +1,16 @@
-package page;
+package page.admin;
 
 import org.openqa.selenium.By;
-import untils.DriverUtils;
-import untils.WaitUtils;
+import utils.DriverUtils;
+import utils.WaitUtils;
 
 public class AdminSidebarPage {
-    private final String sidebarMenuXpath = "//a[span[text()='%s']]";
-
-    private By getSidebarMenuLocator(String item) {
-        return By.xpath(String.format(sidebarMenuXpath, item));
-    }
-
-    private final By customerListMenuLocator = getSidebarMenuLocator("Danh sách khách hàng");
-    private final By depositMenuLocator = getSidebarMenuLocator("Nộp Tiền");
-    private final By withdrawMenuLocator = getSidebarMenuLocator("Rút tiền");
-    private final By byCustomerMenuLocator = getSidebarMenuLocator("Theo Khách Hàng");
-    private final By byDateMenuLocator = getSidebarMenuLocator("Theo Ngày");
-
-
+    // TODO: Bat theo link text
+    private final By customerListMenuLocator = By.linkText("Danh sách khách hàng");
+    private final By depositMenuLocator = By.linkText("Nộp Tiền");
+    private final By withdrawMenuLocator = By.linkText("Rút tiền");
+    private final By byCustomerMenuLocator = By.linkText("Theo Khách Hàng");
+    private final By byDateMenuLocator = By.linkText("Theo Ngày");
     private final By logoutButtonLocator = By.xpath("//input[@value='Thoát']");
 
     public void goToCustomerListPage() {

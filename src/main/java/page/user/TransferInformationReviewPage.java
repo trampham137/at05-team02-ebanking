@@ -1,13 +1,13 @@
-package page;
+package page.user;
 
 import org.openqa.selenium.By;
-import untils.DriverUtils;
+import utils.DriverUtils;
 
+// TODO: update name
 public class TransferInformationReviewPage {
-    private final By confirmButtonLocator = By.xpath("//td//input[@value=\"Xác nhận\"]");
+    private final By confirmButtonLocator = By.xpath("//input[@value='Xác nhận']");
 
     public void goToConfirmationPage() {
         DriverUtils.DRIVER.findElement(confirmButtonLocator).click();
     }
 }
-// check class name

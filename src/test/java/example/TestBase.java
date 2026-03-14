@@ -4,7 +4,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import untils.DriverUtils;
+import utils.DriverUtils;
 
 import java.util.HashMap;
 
@@ -19,8 +19,8 @@ public class TestBase {
         chromeOptions.setExperimentalOption("prefs", prefs);
 
         DriverUtils.DRIVER = new ChromeDriver(chromeOptions);
-        DriverUtils.DRIVER.get("http://14.176.232.213:8080/EBankingWebsite/");
-        // DriverUtils.DRIVER.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
+        //  DriverUtils.DRIVER.get("http://14.176.232.213:8080/EBankingWebsite/");
+        DriverUtils.DRIVER.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
     }
 
 

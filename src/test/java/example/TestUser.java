@@ -1,10 +1,12 @@
 package example;
 
 import org.testng.annotations.Test;
-import page.*;
-import untils.User;
+import models.User;
+import page.user.*;
 
 public class TestUser extends TestBase {
+    // TODO: tao class model them user trong util vao
+
     LoginPage loginPage = new LoginPage();
     UserSidebarPage userSidebarPage = new UserSidebarPage();
     OpenAccountPage openAccountPage = new OpenAccountPage();
