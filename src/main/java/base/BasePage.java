@@ -1,71 +1,57 @@
 package base;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import utils.DriverUtils;
 
+import java.util.List;
+
 public class BasePage {
+    protected WebDriver driver;
 
-    private final String dynamicMenuLocator = "//a[span[text()='%s']]";
-    private final By personalInformationLocator = getMenuItemLocator("Thông tin cá nhân");
-    private final By accountLocator = getMenuItemLocator("Tài khoản");
-    private final By openAccountLocator = getMenuItemLocator("Mở tài khoản");
-    private final By changePassWordLocator = getMenuItemLocator("Đổi mật khẩu");
-    private final By transactionHistoryLocator = getMenuItemLocator("Nhật kí giao dịch");
-    private final By internalTransferLocator = getMenuItemLocator("Chuyển  khoản");
-    private final By externalTransferLocator = getMenuItemLocator("Liên Ngân Hàng");
-    private final By logoutLocator = getMenuItemLocator("Đăng xuất");
-    private final String dynamicDropdownLabelLocator = "//label[text()='%s']";
-    private final String dynamicDropdownItemLocator = "//li[@data-label='%s']";
-    private final String dynamicTextBoxLocator = "//td[label[text()='%s']]//following-sibling::td//input";
-
-    public By getDropdownLabelLocator(String label) {
-        return By.xpath(String.format(dynamicDropdownLabelLocator, label));
+    public BasePage(WebDriver driver) {
+        this.driver = driver;
     }
 
-    public By getDropdownItemLocator(String item) {
-        return By.xpath(String.format(dynamicDropdownItemLocator, item));
+    protected WebElement find(By locator) {
+        return driver.findElement(locator);
     }
 
-    public By getItemTextBoxLocator(String label) {
-        return By.xpath(String.format(dynamicTextBoxLocator, label));
+    protected List<WebElement> finds(By locator) {
+        return driver.findElements(locator);
     }
 
-    private By getMenuItemLocator(String item) {
-        return By.xpath(String.format(dynamicMenuLocator, item));
-    }
-    // a[span[text() >> duplicate
-
-    public void goToPersonalInformationPage() {
-        DriverUtils.DRIVER.findElement(personalInformationLocator).click();
+    protected void type(By locator, String text) {
+        WebElement element = this.driver.findElement(locator);
+        element.clear();
+        element.sendKeys(text);
     }
 
-    public void goToAccountPage() {
-        DriverUtils.DRIVER.findElement(accountLocator).click();
+    protected void selectByVisibleText(By locator, String visibleText) {
+        Select select = new Select(find(locator));
+        select.selectByVisibleText(visibleText);
     }
 
-    public void goToOpenAccountPage() {
-        DriverUtils.DRIVER.findElement(openAccountLocator).click();
+    protected void click(By locator) {
+        this.driver.findElement(locator).click();
     }
 
-    public void goToChangePasswordPage() {
-        DriverUtils.DRIVER.findElement(changePassWordLocator).click();
+    protected String getText(By locator) {
+        return this.driver.findElement(locator).getText();
     }
 
-    public void goToTransactionHistoryPage() {
-        DriverUtils.DRIVER.findElement(transactionHistoryLocator).click();
+    protected boolean isDisplayed(By locator) {
+        return !driver.findElements(locator).isEmpty() && driver.findElement(locator).isDisplayed();
     }
 
-    public void goToInternalTransferPage() {
-        DriverUtils.DRIVER.findElement(internalTransferLocator).click();
+    protected long parseCurrencyToLong(String text) {
+        String digits = text.replaceAll("[^0-9-]", "");
+        if (digits == null || digits.isBlank() || digits.equals("-")) {
+            return 0L;
+        }
+
+        return Long.parseLong(digits);
     }
-
-    public void goToExternalTransfer() {
-        DriverUtils.DRIVER.findElement(externalTransferLocator).click();
-    }
-
-    public void goToLogoutPage() {
-        DriverUtils.DRIVER.findElement(logoutLocator).click();
-    }
-
-
 }
