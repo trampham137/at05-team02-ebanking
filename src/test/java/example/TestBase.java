@@ -4,6 +4,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import page.user.AccountDetailsPage;
+import page.user.AccountPage;
+import page.user.LoginPage;
+import page.user.OpenAccountPage;
 import utils.DriverUtils;
 
 import java.util.HashMap;
@@ -30,4 +34,8 @@ public class TestBase {
         // DriverUtils.DRIVER.quit();
     }
 
+    protected LoginPage loginPage = new LoginPage();
+    protected AccountPage accountPage = new AccountPage();
+    protected OpenAccountPage openAccountPage = new OpenAccountPage();
+    protected AccountDetailsPage accountDetailsPage = new AccountDetailsPage();
 }
