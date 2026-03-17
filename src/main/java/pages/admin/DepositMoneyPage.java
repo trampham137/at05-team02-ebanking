@@ -7,9 +7,14 @@ import org.openqa.selenium.WebDriver;
 import utils.DriverUtils;
 
 public class DepositMoneyPage extends BasePage {
-    private final By receiverAccountTextboxLocator = By.xpath("//td[text()='Tài khoản nhận']/following-sibling::td[2]/input");
-    private final By amountTextboxLocator = By.xpath("//td[text()='Số tiền']/following-sibling::td[2]/input");
-    private final By descriptionTextboxLocator = By.xpath("//td[text()='Nội dung thanh toán']/following-sibling::td[2]/input");
+    private By inputByLabel(String label) {
+        return By.xpath("//td[normalize-space()='" + label + "']/following-sibling::td[2]//input");
+    }
+
+    private final By receiverAccountTextboxLocator = inputByLabel("Tài khoản nhận");
+    private final By amountTextboxLocator = inputByLabel("Số tiền");
+    private final By descriptionTextboxLocator = inputByLabel("Nội dung thanh toán");
+
     private final By confirmButtonLocator = By.cssSelector("input[type=submit]");
     private final By successMessageLocator = By.xpath("//td/label[text()='nộp tiền thành công']");
 

@@ -10,12 +10,16 @@ import pages.transfer.interbank.InterbankTransferPage;
 import pages.transfer.internal.InternalTransferPage;
 
 public class SidebarComponent extends BasePage {
-    private final By accountMenuLocator = By.xpath("//a[.//span[text()='Tài khoản']]");
-    private final By openAccountMenuLocator = By.xpath("//a[.//span[text()='Mở tài khoản']]");
-    private final By transactionLogMenuLocator = By.xpath("//a[.//span[text()='Nhật kí giao dịch']]");
-    private final By internalTransferMenuLocator = By.xpath("//a[.//span[text()='Chuyển khoản']]");
-    private final By interbankTransferMenuLocator = By.xpath("//a[.//span[text()='Liên ngân hàng']]");
-    private final By logoutMenuLocator = By.xpath("//a[.//span[text()='Đăng xuất']]");
+    public By getMenuItem(String menuName) {
+        return By.xpath("//a[.//span[text()='" + menuName + "']]");
+    }
+
+    private final By accountMenuLocator = getMenuItem("Tài khoản");
+    private final By openAccountMenuLocator = getMenuItem("Mở tài khoản");
+    private final By transactionLogMenuLocator = getMenuItem("Nhật kí giao dịch");
+    private final By internalTransferMenuLocator = getMenuItem("Chuyển khoản");
+    private final By interbankTransferMenuLocator = getMenuItem("Liên ngân hàng");
+    private final By logoutMenuLocator = getMenuItem("Đăng xuất");
 
     public SidebarComponent(WebDriver driver) {
         super(driver);

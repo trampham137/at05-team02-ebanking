@@ -1,6 +1,7 @@
 package pages.transfer.internal;
 
 import models.InternalTransferData;
+import models.OpenAccountData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -11,11 +12,28 @@ import base.BasePage;
 import java.time.Duration;
 
 public class InternalTransferPage extends BasePage {
-    private final By sourceAccountDropdownLocator = By.xpath("");
-    private final By availableBalanceValueLocator = By.xpath("");
-    private final By receiverAccountTextboxLocator = By.xpath("");
-    private final By amountTextboxLocator = By.xpath("");
-    private final By descriptionTextboxLocator = By.xpath("");
+
+    private By dropdownByLabel(String label) {
+        return By.xpath("//td[label[normalize-space()='" + label + "']]/following-sibling::td//div[contains(@class,'ui-selectonemenu')]");
+    }
+
+    private By inputByLabel(String label) {
+        return By.xpath("//td[label[normalize-space()='" + label + "']]/following-sibling::td//input[@type='text']");
+    }
+
+    private By valueByLabel(String label) {
+        return By.xpath("//td[label[normalize-space()='" + label + "']]/following-sibling::td//label");
+    }
+
+    private By dropdownOption(String optionText) {
+        return By.xpath("//li[normalize-space()='" + optionText + "']");
+    }
+
+    private final By sourceAccountDropdownLocator = dropdownByLabel("Tài khoản nguồn");
+    private final By availableBalanceValueLocator = valueByLabel("Số dư khả dụng");
+    private final By receiverAccountTextboxLocator = inputByLabel("Tài khoản nhận");
+    private final By amountTextboxLocator = inputByLabel("Số tiền");
+    private final By descriptionTextboxLocator = inputByLabel("Nội dung thanh toán");
     private final By confirmButtonLocator = By.xpath("//td//input[@value='Xác nhận']");
 
     public InternalTransferPage(WebDriver driver) {
@@ -23,7 +41,8 @@ public class InternalTransferPage extends BasePage {
     }
 
     public void selectSourceAccount(String sourceAccount) {
-        selectByVisibleText(sourceAccountDropdownLocator, sourceAccount);
+        click(sourceAccountDropdownLocator);
+        click(dropdownOption(sourceAccount));
     }
 
     public long getAvailableBalance() {
@@ -42,7 +61,6 @@ public class InternalTransferPage extends BasePage {
         type(descriptionTextboxLocator, description);
     }
 
-    // TODO: Them ... luu bien?
     public void fillTransferForm(InternalTransferData data) {
         selectSourceAccount(data.getSourceAccount());
         enterReceiverAccount(data.getReceiverAccount());
@@ -53,5 +71,4 @@ public class InternalTransferPage extends BasePage {
     public void clickConfirmButton() {
         click(confirmButtonLocator);
     }
-
 }

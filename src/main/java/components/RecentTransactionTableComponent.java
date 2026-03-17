@@ -14,23 +14,23 @@ public class RecentTransactionTableComponent extends BasePage {
         super(driver);
     }
 
-    public boolean hasAnyTransaction() {
-        return !finds(transactionRowsLocator).isEmpty();
-    }
-
-    public String getLatestTransactionDate() {
-        List<WebElement> rows = finds(transactionRowsLocator);
-        return rows.isEmpty() ? "" : rows.get(0).findElements(By.tagName("td")).get(0).getText().trim();
-    }
-
-    public String getLatestTransactionAccountNumber() {
-        List<WebElement> rows = finds(transactionRowsLocator);
-        return rows.isEmpty() ? "" : rows.get(0).findElements(By.tagName("td")).get(1).getText().trim();
-    }
-
-    public String getLatestTransactionAmount() {
-        List<WebElement> rows = finds(transactionRowsLocator);
-        return rows.isEmpty() ? "" : rows.get(0).findElements(By.tagName("td")).get(1).getText().trim();
-    }
+    // public boolean hasAnyTransaction() {
+    //     return !finds(transactionRowsLocator).isEmpty();
+    // }
+    //
+    // public String getLatestTransactionDate() {
+    //     List<WebElement> rows = finds(transactionRowsLocator);
+    //     return rows.isEmpty() ? "" : rows.get(0).findElements(By.tagName("td")).get(0).getText().trim();
+    // }
+    //
+    // public String getLatestTransactionAccountNumber() {
+    //     List<WebElement> rows = finds(transactionRowsLocator);
+    //     return rows.isEmpty() ? "" : rows.get(0).findElements(By.tagName("td")).get(1).getText().trim();
+    // }
+    //
+    // public String getLatestTransactionAmount() {
+    //     List<WebElement> rows = finds(transactionRowsLocator);
+    //     return rows.isEmpty() ? "" : rows.get(0).findElements(By.tagName("td")).get(1).getText().trim();
+    // }
 
 }

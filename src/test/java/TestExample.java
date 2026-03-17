@@ -1,7 +1,6 @@
 import base.BaseTest;
 import org.testng.annotations.Test;
 import pages.account.DashboardPage;
-import testdata.TestUsers;
 
 public class TestExample extends BaseTest {
     // @Test
@@ -13,7 +12,7 @@ public class TestExample extends BaseTest {
 
     @Test
     public void user_can_go_to_account_page_from_sidebar() {
-        DashboardPage dashboardPage = loginAsUser(TestUsers.STANDARD_USER);
+        DashboardPage dashboardPage = loginAsUser(TestData.STANDARD_USER);
 
         // SidebarComponent sidebar = new SidebarComponent(driver);
         // AccountPage accountPage = sidebar.goToAccount();
