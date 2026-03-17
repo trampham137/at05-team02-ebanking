@@ -3,6 +3,7 @@ package components;
 import base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import pages.admin.DepositMoneyPage;
 
 public class AdminSidebarComponent extends BasePage {
     private final By depositMoneyMenuLocator = By.linkText("Nộp Tiền");
@@ -12,8 +13,9 @@ public class AdminSidebarComponent extends BasePage {
         super(driver);
     }
 
-    public void goToDepositMoney() {
+    public DepositMoneyPage goToDepositMoney() {
         click(depositMoneyMenuLocator);
+        return new DepositMoneyPage(driver);
     }
 
     public void logout() {

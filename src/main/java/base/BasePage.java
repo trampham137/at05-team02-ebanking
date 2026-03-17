@@ -3,16 +3,21 @@ package base;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.DriverUtils;
 
+import java.time.Duration;
 import java.util.List;
 
 public class BasePage {
     protected WebDriver driver;
+    protected final WebDriverWait wait;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     protected WebElement find(By locator) {
@@ -42,8 +47,28 @@ public class BasePage {
         return this.driver.findElement(locator).getText();
     }
 
+    // protected boolean isDisplayed(By locator) {
+    //     return !driver.findElements(locator).isEmpty() && driver.findElement(locator).isDisplayed();
+    // }
+
     protected boolean isDisplayed(By locator) {
-        return !driver.findElements(locator).isEmpty() && driver.findElement(locator).isDisplayed();
+        try {
+            return waitVisible(locator).isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    protected WebElement waitVisible(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    protected WebElement waitClickable(By locator) {
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    protected void waitInvisible(By locator) {
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
 
     protected long parseCurrencyToLong(String text) {

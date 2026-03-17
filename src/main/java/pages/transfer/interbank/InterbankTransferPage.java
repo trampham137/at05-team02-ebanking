@@ -12,18 +12,18 @@ import utils.DriverUtils;
 import java.time.Duration;
 
 public class InterbankTransferPage extends BasePage {
-    private final By sourceAccountDropdownLocator = By.xpath("");
-    private final By availableBalanceValueLocator = By.xpath("");
-    private final By receiverAccountTextboxLocator = By.xpath("");
-
-
-    private final By bankDropdownLocator = getDropdownLabelLocator("Chọn ngân hàng");
-    private final By branchDropdownLocator = getDropdownLabelLocator("Chọn chi nhánh");
-
-    private final By receiverAccountNameTextBoxLocator = getItemTextBoxLocator("Tên tài khoản nhận ");
-    private final By transferInformationTextboxLocator = getItemTextBoxLocator("Nội dung chuyển tiền ");
-    private final By transferAmountTextboxLocator = getItemTextBoxLocator("Số tiền chuyển khoản");
-    private final By transferButtonLocator = By.xpath("//td//input[@value='Chuyển tiền']");
+    // private final By sourceAccountDropdownLocator = By.xpath("");
+    // private final By availableBalanceValueLocator = By.xpath("");
+    // private final By receiverAccountTextboxLocator = By.xpath("");
+    //
+    //
+    // private final By bankDropdownLocator = getDropdownLabelLocator("Chọn ngân hàng");
+    // private final By branchDropdownLocator = getDropdownLabelLocator("Chọn chi nhánh");
+    //
+    // private final By receiverAccountNameTextBoxLocator = getItemTextBoxLocator("Tên tài khoản nhận ");
+    // private final By transferInformationTextboxLocator = getItemTextBoxLocator("Nội dung chuyển tiền ");
+    // private final By transferAmountTextboxLocator = getItemTextBoxLocator("Số tiền chuyển khoản");
+    // private final By transferButtonLocator = By.xpath("//td//input[@value='Chuyển tiền']");
 
     public InterbankTransferPage(WebDriver driver) {
         super(driver);
