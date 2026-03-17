@@ -13,12 +13,10 @@ public class AdminManagementTest extends BaseTest {
     public void EB02_admin_can_deposit_money_to_user_account() {
         AdminDashboardPage adminDashboardPage = loginAsAdmin();
 
-        DepositMoneyPage depositMoneyPage = adminDashboardPage.sidebar().goToDepositMoney();
+        DepositMoneyPage depositMoneyPage = adminDashboardPage.goToDepositMoney();
         depositMoneyPage.depositToAccount(TestData.validDeposit());
 
         Assert.assertTrue(depositMoneyPage.isDepositSuccessful());
-
-        Assert.assertEquals(depositMoneyPage.getSuccessMessage(), "nộp tiền /n thành công");
-        // Assert.assertEquals(depositMoneyPage.getSuccessMessage(), TextUtils.normalizeUiText("nộp tiền thành công"));
+        Assert.assertEquals(depositMoneyPage.getSuccessMessage(), "nộp tiền thành công");
     }
 }

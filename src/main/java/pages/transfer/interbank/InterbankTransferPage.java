@@ -5,8 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import base.BasePage;
-import enums.Bank;
-import enums.Branch;
 import utils.DriverUtils;
 
 import java.time.Duration;

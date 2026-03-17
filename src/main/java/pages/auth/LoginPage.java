@@ -1,11 +1,12 @@
 package pages.auth;
 
 import base.BasePage;
+import base.UserBasePage;
 import models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class LoginPage extends BasePage {
+public class LoginPage extends UserBasePage {
     private final By usernameTextboxLocator = By.cssSelector("form input[type=text]");
     private final By passwordTextboxLocator = By.cssSelector("form input[type=password]");
     private final By loginButtonLocator = By.cssSelector("form input[type=submit]");

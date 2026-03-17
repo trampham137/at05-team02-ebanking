@@ -9,7 +9,7 @@ public class InternalTransferTest extends BaseTest {
     public void EB05_user_can_transfer_internally_successfully() {
         DashboardPage dashboardPage = loginAsUser(TestData.STANDARD_USER);
 
-        InternalTransferPage internalTransferPage = dashboardPage.sidebar().goToInternalTransfer();
+        InternalTransferPage internalTransferPage = dashboardPage.goToInternalTransfer();
         internalTransferPage.fillTransferForm(TestData.validInternalTransfer());
         // internalTransferPage.clickConfirmButton();
     }

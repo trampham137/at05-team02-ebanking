@@ -1,10 +1,11 @@
 package pages.account;
 
 import base.BasePage;
+import base.UserBasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class AccountDetailPage extends BasePage {
+public class AccountDetailPage extends UserBasePage {
     private By valueByLabel(String label) {
         return By.xpath("//td[.//label[text()='" + label + "']]/following-sibling::td");
     }

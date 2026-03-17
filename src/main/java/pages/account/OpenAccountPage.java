@@ -1,14 +1,12 @@
 package pages.account;
 
-import components.SidebarComponent;
+import base.UserBasePage;
 import models.OpenAccountData;
 import org.openqa.selenium.By;
 import base.BasePage;
 import org.openqa.selenium.WebDriver;
 
-public class OpenAccountPage extends BasePage {
-    private final SidebarComponent sidebar;
-
+public class OpenAccountPage extends UserBasePage {
     private final By accountTypeDropDownLocator = By.xpath("//div[label[contains(text(), 'Chọn tài khoản')]]");
     private final By createAccountButtonLocator = By.cssSelector("input[type=submit]");
     private final By successPopupMessageLocator = By.xpath("//div[contains(text(),'Mở tài khoản thành công')]");
@@ -16,13 +14,8 @@ public class OpenAccountPage extends BasePage {
 
     public OpenAccountPage(WebDriver driver) {
         super(driver);
-        this.sidebar = new SidebarComponent(driver);
     }
-
-    public SidebarComponent sidebar() {
-        return sidebar;
-    }
-
+    
     private By accountTypeOptionLocator(String accountType) {
         return By.xpath(String.format("//ul[contains(@class, 'ui-selectonemenu-list')]//li[text()='%s']", accountType));
     }

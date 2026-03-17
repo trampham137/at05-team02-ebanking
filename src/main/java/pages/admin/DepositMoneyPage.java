@@ -1,15 +1,11 @@
 package pages.admin;
 
-import base.BasePage;
+import base.AdminBasePage;
 import models.DepositData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utils.DriverUtils;
-import utils.TextUtils;
 
-import java.text.Normalizer;
-
-public class DepositMoneyPage extends BasePage {
+public class DepositMoneyPage extends AdminBasePage {
     private By inputByLabel(String label) {
         return By.xpath("//td[normalize-space()='" + label + "']/following-sibling::td[2]//input");
     }
@@ -45,8 +41,6 @@ public class DepositMoneyPage extends BasePage {
     }
 
     public String getSuccessMessage() {
-        // IO.println(getText(successMessageLocator));
-        // return TextUtils.normalizeUiText(getText(successMessageLocator).trim());
         return getText(successMessageLocator).trim();
     }
 }

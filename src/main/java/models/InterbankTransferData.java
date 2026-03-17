@@ -1,8 +1,5 @@
 package models;
 
-import enums.Bank;
-import enums.Branch;
-
 public class InterbankTransferData {
     private final String sourceAccount;
     private final String receiverAccount;

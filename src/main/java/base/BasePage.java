@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import utils.DriverUtils;
 
 import java.time.Duration;
 import java.util.List;
@@ -46,10 +45,6 @@ public class BasePage {
     protected String getText(By locator) {
         return this.driver.findElement(locator).getText();
     }
-
-    // protected boolean isDisplayed(By locator) {
-    //     return !driver.findElements(locator).isEmpty() && driver.findElement(locator).isDisplayed();
-    // }
 
     protected boolean isDisplayed(By locator) {
         try {

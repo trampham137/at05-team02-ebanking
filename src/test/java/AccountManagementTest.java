@@ -11,18 +11,18 @@ public class AccountManagementTest extends BaseTest {
     public void EB01_user_can_open_new_bank_account() {
         DashboardPage dashboardPage = loginAsUser(TestData.STANDARD_USER);
 
-        int beforeRowCount = dashboardPage.accountTable().getRowCount();
+        int beforeRowCount = dashboardPage.getAccountRowCount();
 
-        OpenAccountPage openAccountPage = dashboardPage.sidebar().goToOpenAccount();
+        OpenAccountPage openAccountPage = dashboardPage.goToOpenAccount();
         openAccountPage.createAccount(TestData.validOpenAccount());
 
         Assert.assertTrue(openAccountPage.isOpenAccountSuccessPopupDisplayed());
         Assert.assertEquals(openAccountPage.getOpenAccountSuccessPopupMessage(), "Mở tài khoản thành công");
         openAccountPage.closeSuccessPopup();
 
-        DashboardPage refreshedDashboardPage = openAccountPage.sidebar().goToAccounts();
+        DashboardPage refreshedDashboardPage = openAccountPage.goToAccounts();
 
-        int afterRowCount = refreshedDashboardPage.accountTable().getRowCount();
+        int afterRowCount = refreshedDashboardPage.getAccountRowCount();
         Assert.assertEquals(beforeRowCount + 1, afterRowCount);
 
         // TODO: check position

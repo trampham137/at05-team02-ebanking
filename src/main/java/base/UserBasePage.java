@@ -1,15 +1,13 @@
-package components;
+package base;
 
-import base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import pages.account.DashboardPage;
 import pages.account.OpenAccountPage;
-import pages.auth.LoginPage;
 import pages.transfer.interbank.InterbankTransferPage;
 import pages.transfer.internal.InternalTransferPage;
 
-public class SidebarComponent extends BasePage {
+public class UserBasePage extends BasePage {
     public By getMenuItem(String menuName) {
         return By.xpath("//a[.//span[text()='" + menuName + "']]");
     }
@@ -21,7 +19,7 @@ public class SidebarComponent extends BasePage {
     private final By interbankTransferMenuLocator = getMenuItem("Liên ngân hàng");
     private final By logoutMenuLocator = getMenuItem("Đăng xuất");
 
-    public SidebarComponent(WebDriver driver) {
+    public UserBasePage(WebDriver driver) {
         super(driver);
     }
 
@@ -35,11 +33,6 @@ public class SidebarComponent extends BasePage {
         return new OpenAccountPage(driver);
     }
 
-    // public TransactionLog goToTransactionLogMenu() {
-    //     click(transactionLogMenuLocator);
-    //     return new TransactionLog(driver);
-    // }
-
     public InternalTransferPage goToInternalTransfer() {
         click(internalTransferMenuLocator);
         return new InternalTransferPage(driver);
@@ -50,8 +43,7 @@ public class SidebarComponent extends BasePage {
         return new InterbankTransferPage(driver);
     }
 
-    public LoginPage logout() {
+    public void logout() {
         click(logoutMenuLocator);
-        return new LoginPage(driver);
     }
 }

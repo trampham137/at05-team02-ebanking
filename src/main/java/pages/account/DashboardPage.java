@@ -1,44 +1,42 @@
 package pages.account;
 
 import base.BasePage;
-import components.AccountTableComponent;
-import components.RecentTransactionTableComponent;
-import components.SidebarComponent;
+import base.UserBasePage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
-public class DashboardPage extends BasePage {
-    private final SidebarComponent sidebar;
-    private final AccountTableComponent accountTable;
-    private final RecentTransactionTableComponent recentTransactionTable;
+import java.util.List;
+
+public class DashboardPage extends UserBasePage {
+    private final By accountPanelLocator = By.xpath("//div[div/span[text()='THÔNG TIN TÀI KHOẢN']]");
+    private final By accountRowsLocator = By.xpath(".//table[@role='grid']/tbody/tr");
+    // //span[normalize-space()='THÔNG TIN TÀI KHOẢN']/parent::div/following-sibling::div//table[@role='grid']/tbody/tr
 
     public DashboardPage(WebDriver driver) {
         super(driver);
-
-        // TODO: move to BasePage
-        this.sidebar = new SidebarComponent(driver);
-        this.accountTable = new AccountTableComponent(driver);
-        this.recentTransactionTable = new RecentTransactionTableComponent(driver);
     }
 
-    public SidebarComponent sidebar() {
-        return sidebar;
-    }
-
-    public AccountTableComponent accountTable() {
-        return accountTable;
-    }
-
-    public RecentTransactionTableComponent recentTransactionTable() {
-        return recentTransactionTable;
+    public int getAccountRowCount() {
+        return find(accountPanelLocator).findElements(accountRowsLocator).size();
     }
 
     public String getLastAccountNumber() {
-        return accountTable.getLastAccountNumber();
+        List<WebElement> rows = find(accountPanelLocator).findElements(accountRowsLocator);
+        if (rows.isEmpty()) {
+            return "";
+        }
+
+        // TODO: column can be change position
+        return rows.getLast().findElements(By.tagName("td")).getFirst().getText().trim();
     }
 
     public AccountDetailPage openAccountDetail(String accountNumber) {
-        accountTable.openAccountDetail(accountNumber);
+        click(By.linkText(accountNumber));
         return new AccountDetailPage(driver);
     }
 
+    // public int getRecentTransactionRowCount() {
+    //     return find(recentTransactionPanelLocator).findElements(recentTransactionRowsLocator).size();
+    // }
 }
