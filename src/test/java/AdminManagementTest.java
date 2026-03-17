@@ -1,8 +1,12 @@
 import base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.account.DashboardPage;
 import pages.admin.AdminDashboardPage;
 import pages.admin.DepositMoneyPage;
+import utils.TextUtils;
+
+import java.text.Normalizer;
 
 public class AdminManagementTest extends BaseTest {
     @Test(description = "EB-02 Verify admin can deposit money to a user account and user balance is increased correctly.")
@@ -13,6 +17,8 @@ public class AdminManagementTest extends BaseTest {
         depositMoneyPage.depositToAccount(TestData.validDeposit());
 
         Assert.assertTrue(depositMoneyPage.isDepositSuccessful());
-        Assert.assertEquals(depositMoneyPage.getSuccessMessage(), "nộp tiền thành công");
+
+        Assert.assertEquals(depositMoneyPage.getSuccessMessage(), "nộp tiền /n thành công");
+        // Assert.assertEquals(depositMoneyPage.getSuccessMessage(), TextUtils.normalizeUiText("nộp tiền thành công"));
     }
 }

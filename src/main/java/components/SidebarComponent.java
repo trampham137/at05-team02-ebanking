@@ -26,7 +26,6 @@ public class SidebarComponent extends BasePage {
     }
 
     public DashboardPage goToAccounts() {
-        System.out.println(find(accountMenuLocator).getText());
         click(accountMenuLocator);
         return new DashboardPage(driver);
     }

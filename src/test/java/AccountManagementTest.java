@@ -23,14 +23,15 @@ public class AccountManagementTest extends BaseTest {
         DashboardPage refreshedDashboardPage = openAccountPage.sidebar().goToAccounts();
 
         int afterRowCount = refreshedDashboardPage.accountTable().getRowCount();
-        Assert.assertTrue(afterRowCount >= beforeRowCount + 1);
+        Assert.assertEquals(beforeRowCount + 1, afterRowCount);
 
+        // TODO: check position
         String newAccountNumber = refreshedDashboardPage.getLastAccountNumber();
         Assert.assertFalse(newAccountNumber.isBlank());
 
         AccountDetailPage detailPage = refreshedDashboardPage.openAccountDetail(newAccountNumber);
         Assert.assertEquals(detailPage.getBalance(), 0L);
-        // IO.println(newAccountNumber);
+        IO.println(newAccountNumber);
     }
 
 }

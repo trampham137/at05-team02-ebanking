@@ -14,6 +14,7 @@ public class DashboardPage extends BasePage {
     public DashboardPage(WebDriver driver) {
         super(driver);
 
+        // TODO: move to BasePage
         this.sidebar = new SidebarComponent(driver);
         this.accountTable = new AccountTableComponent(driver);
         this.recentTransactionTable = new RecentTransactionTableComponent(driver);
@@ -36,7 +37,7 @@ public class DashboardPage extends BasePage {
     }
 
     public AccountDetailPage openAccountDetail(String accountNumber) {
-        accountTable.clickAccount(accountNumber);
+        accountTable.openAccountDetail(accountNumber);
         return new AccountDetailPage(driver);
     }
 

@@ -10,10 +10,12 @@ public class TestData {
     private TestData() {
     }
 
+    // TODO: 2 account type, should be static variable
     public static OpenAccountData validOpenAccount() {
         return new OpenAccountData("Tài Khoản kỳ gửi không kỳ hạn");
     }
 
+    // TODO: amount > number
     public static DepositData validDeposit() {
         return new DepositData("100002274", "100000", "Testing");
     }
@@ -30,7 +32,7 @@ public class TestData {
         return new InternalTransferData(sourceAccount, "100002270", "10000", "Testing");
     }
 
-    public static InternalTransferData internalTransfer(String sourceAccount, String targetAccount, String amount, String description) {
-        return new InternalTransferData(sourceAccount, targetAccount, amount, description);
-    }
+    // public static InternalTransferData internalTransfer(String sourceAccount, String targetAccount, String amount, String description) {
+    //     return new InternalTransferData(sourceAccount, targetAccount, amount, description); >> use this
+    // }
 }

@@ -21,7 +21,7 @@ public class BaseTest {
     public void setUp() {
         DriverUtils.initDriver();
         driver = DriverUtils.getDriver();
-        driver.get(USER_BASE_URL);
+        // driver.get(USER_BASE_URL);
     }
 
     // @AfterMethod

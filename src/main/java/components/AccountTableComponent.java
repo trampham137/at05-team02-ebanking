@@ -26,10 +26,11 @@ public class AccountTableComponent extends BasePage {
             return "";
         }
 
-        return rows.get(rows.size() - 1).findElements(By.tagName("td")).get(0).getText().trim();
+        // TODO: column can be change position
+        return rows.getLast().findElements(By.tagName("td")).getFirst().getText().trim();
     }
 
-    public void clickAccount(String accountNumber) {
+    public void openAccountDetail(String accountNumber) {
         By accountLinkLocator = By.linkText(accountNumber);
         click(accountLinkLocator);
     }

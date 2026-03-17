@@ -18,8 +18,8 @@ public class AdminSidebarComponent extends BasePage {
         return new DepositMoneyPage(driver);
     }
 
-    public void logout() {
-        click(logoutButton);
-    }
+    // public void logout() {
+    //     click(logoutButton);
+    // }
 
 }

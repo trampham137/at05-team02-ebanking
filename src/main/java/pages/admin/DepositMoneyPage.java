@@ -5,6 +5,9 @@ import models.DepositData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import utils.DriverUtils;
+import utils.TextUtils;
+
+import java.text.Normalizer;
 
 public class DepositMoneyPage extends BasePage {
     private By inputByLabel(String label) {
@@ -15,32 +18,18 @@ public class DepositMoneyPage extends BasePage {
     private final By amountTextboxLocator = inputByLabel("Số tiền");
     private final By descriptionTextboxLocator = inputByLabel("Nội dung thanh toán");
 
-    private final By confirmButtonLocator = By.cssSelector("input[type=submit]");
+    private final By confirmButtonLocator = By.xpath("//input[@type='submit' and @value='Xác nhận']");
     private final By successMessageLocator = By.xpath("//td/label[text()='nộp tiền thành công']");
 
     public DepositMoneyPage(WebDriver driver) {
         super(driver);
     }
 
-    // public void depositToAccount(DepositData data) {
-    //     type(receiverAccountTextboxLocator, data.getReceiverAccount());
-    //     type(amountTextboxLocator, data.getAmount());
-    //     type(descriptionTextboxLocator, data.getDescription());
-    //     click(confirmButtonLocator);
-    // }
-
     public void depositToAccount(DepositData data) {
         type(receiverAccountTextboxLocator, data.getReceiverAccount());
-        sleep(3000);
-
         type(amountTextboxLocator, data.getAmount());
-        sleep(3000);
-
         type(descriptionTextboxLocator, data.getDescription());
-        sleep(3000);
-
         click(confirmButtonLocator);
-        sleep(3000);
     }
 
     private void sleep(int millis) {
@@ -52,11 +41,12 @@ public class DepositMoneyPage extends BasePage {
     }
 
     public boolean isDepositSuccessful() {
-        IO.println(getText(successMessageLocator));
         return isDisplayed(successMessageLocator);
     }
 
     public String getSuccessMessage() {
-        return getText(successMessageLocator);
+        // IO.println(getText(successMessageLocator));
+        // return TextUtils.normalizeUiText(getText(successMessageLocator).trim());
+        return getText(successMessageLocator).trim();
     }
 }
