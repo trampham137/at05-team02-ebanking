@@ -21,12 +21,12 @@ public class EB_03 extends TestBase {
         internalTransferUserPage.enterTransferInformation(info);
         internalTransferUserPage.goToTransferInformationReviewPage();
         transferInformationReviewPage.goToConfirmationPage();
+        Assert.assertTrue(confirmationPage.isTransactionCodeLabelDisPlay(), "Field Mã giao dịch is invisible");
         goToEmailPage();
         String OTP = emailPage.getEmail(email);
         backToBankPage();
         confirmationPage.enterOTP(OTP);
         confirmationPage.clickConfirmButton();
-        Assert.assertTrue(confirmationPage.isTransactionCodeLabelDisPlay(), "Field Mã giao dịch is invisible");
-    }
 
+    }
 }

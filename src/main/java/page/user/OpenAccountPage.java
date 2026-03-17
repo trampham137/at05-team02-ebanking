@@ -1,50 +1,40 @@
 package page.user;
 
+import base.BaseUserPage;
 import enums.AccountType;
 import org.openqa.selenium.By;
-import base.BaseUserPage;
 import utils.DriverUtils;
-import utils.WaitUtils;
 
-public class OpenAccountUserPage extends BaseUserPage {
-    // TODO: fix duplicate
+public class OpenAccountPage extends BaseUserPage {
     private final By accountTypeDropDownLocator = getDropdownLabelLocator("Chọn tài khoản");
-    private final By nonTermDepositAccountTypeLocator = getDropdownItemLocator("Tài Khoản kỳ gửi không kỳ hạn");
+    private final By nonTermDepositAccountTypeLocator =getDropdownItemLocator("Tài Khoản kỳ gửi không kỳ hạn");
     private final By savingAccountTypeLocator = getDropdownItemLocator("Tài Khoản tiết kiệm");
     private final By createAccountButton = By.xpath("//td//input[@value='Tạo tài khoản']");
     private final By closeNotificationPopupButtonLocator = By.xpath("//a[@role='button']");
-
     public void clickAccountTypeDropDown() {
         DriverUtils.DRIVER.findElement(accountTypeDropDownLocator).click();
     }
-
-    public void clickNonTermDepositAccountType() {
+    public void clickNonTermDepositAccountType(){
         DriverUtils.DRIVER.findElement(nonTermDepositAccountTypeLocator).click();
     }
-
-    public void clickSavingAccountType() {
+    public void clickSavingAccountType(){
         DriverUtils.DRIVER.findElement(savingAccountTypeLocator).click();
     }
-
-    public void clickCreateAccountButton() {
+    public void clickCreateAccountButton(){
         DriverUtils.DRIVER.findElement(createAccountButton).click();
     }
-
-    public void openAccountNonTermDepositAccountType() {
+    public void openAccountNonTermDepositAccountType(){
         clickAccountTypeDropDown();
         clickNonTermDepositAccountType();
         clickCreateAccountButton();
         closeNotificationPopup();
     }
-
-    public void openAccountSavingAccountType() {
+    public void openAccountSavingAccountType(){
         clickAccountTypeDropDown();
         clickSavingAccountType();
         clickCreateAccountButton();
         closeNotificationPopup();
     }
-
-    //TODO: add function - dynamic select account type
     public void selectAccountType(AccountType type) {
         if (type == AccountType.NON_TERM) {
             openAccountNonTermDepositAccountType();
@@ -54,7 +44,6 @@ public class OpenAccountUserPage extends BaseUserPage {
     }
 
     public void closeNotificationPopup() {
-        WaitUtils.waitForElementVisible(closeNotificationPopupButtonLocator);
         DriverUtils.DRIVER.findElement(closeNotificationPopupButtonLocator).click();
     }
 }

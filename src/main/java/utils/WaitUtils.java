@@ -12,3 +12,4 @@ public class WaitUtils {
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 }
+

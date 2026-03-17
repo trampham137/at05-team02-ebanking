@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 public class EB_01 extends TestBase {
     @Test
-    public void verifyNewBankAccountIsCreatedWithCorrectInitialBalance() {
+    public void verifyUserCanOpenNonTermDepositAccountSuccessfully() {
         goToUserPage();
         loginPage.Login(User.STANDARD_USER);
         int accountCountBefore = accountPage.countNumberOfAccounts();
@@ -25,6 +25,4 @@ public class EB_01 extends TestBase {
         Assert.assertEquals(accountDetailsPage.getCurrencyValue(), "VNĐ", "Currency value is not VND");
     }
 
-
 }
-

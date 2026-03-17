@@ -2,7 +2,6 @@ package page.user;
 
 import org.openqa.selenium.By;
 import utils.DriverUtils;
-import utils.WaitUtils;
 
 public class TransferConfirmationPage {
     private final By transactionTextBoxLocator = By.xpath("//td[label[text()='Mã giao dịch']]//following-sibling::td//input");
@@ -14,12 +13,10 @@ public class TransferConfirmationPage {
     }
 
     public void clickConfirmButton() {
-        WaitUtils.waitForElementVisible(transerferButtonLocator);
         DriverUtils.DRIVER.findElement(transerferButtonLocator).click();
     }
 
     public boolean isTransactionCodeLabelDisPlay() {
         return DriverUtils.DRIVER.findElement(transactionCodeLabelLocator).isDisplayed();
     }
-
 }

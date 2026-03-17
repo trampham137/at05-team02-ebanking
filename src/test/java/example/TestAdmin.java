@@ -4,32 +4,24 @@ import org.testng.annotations.Test;
 import page.admin.AdminLoginPage;
 import base.BaseAdminPage;
 import page.admin.DepositPage;
+import page.user.WithdrawPage;
 
 public class TestAdmin extends TestBase {
     // Set up the test environment
-    AdminLoginPage adminLoginPage = new AdminLoginPage();
+    AdminLoginPage loginPage = new AdminLoginPage();
     BaseAdminPage baseAdminPage = new BaseAdminPage();
     DepositPage depositPage = new DepositPage();
+    WithdrawPage withdrawPage = new WithdrawPage();
 
     @Test
-    public void verifyAdminLogin() {
-        adminLoginPage.Login("1", "admin");
-
-        baseAdminPage.goToCustomerListPage();
-        // adminSidebarPage.Logout();
-        // adminSidebarPage.goToByDatePage();
-        // adminSidebarPage.goToWithdrawPage();
-        // adminSidebarPage.goToByCustomerPage();
-        // adminSidebarPage.goToDepositPage();
-
+    public void verifyLogin() throws InterruptedException {
+        loginPage.Login("1", "admin");
+        Thread.sleep(3000);// khong dung thread ow day sua sau
+        //    adminSidebarPage.goToDepositPage();
+        //    depositPage.enterDepositForm(100002267,10000, "ck");
+        //   depositPage.clickConfirmButton();
+        baseAdminPage.goToWithdrawPage();
+        withdrawPage.enterWithdrawForm(100002267, 5000, "ck");
+        withdrawPage.clickTransactionButton();
     }
-
-    @Test
-    public void verifyDepositPage() {
-        adminLoginPage.Login("1", "admin");
-        baseAdminPage.goToDepositPage();
-        depositPage.enterDepositForm(100002267, 50000, "ck");
-        depositPage.clickConfirmButton();
-    }
-
 }

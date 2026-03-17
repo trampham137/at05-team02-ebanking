@@ -1,6 +1,5 @@
 package example;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -11,7 +10,6 @@ import page.admin.DepositPage;
 import page.admin.HomePage;
 import page.user.*;
 import utils.DriverUtils;
-import utils.WaitUtils;
 
 import java.util.HashMap;
 
@@ -26,15 +24,13 @@ public class TestBase {
         chromeOptions.setExperimentalOption("prefs", prefs);
 
         DriverUtils.DRIVER = new ChromeDriver(chromeOptions);
-        // DriverUtils.DRIVER.get("http://14.176.232.213:8080/EBankingWebsite/");
+        //  DriverUtils.DRIVER.get("http://14.176.232.213:8080/EBankingWebsite/");
         //  DriverUtils.DRIVER.get("http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml");
     }
 
     protected final String USER_URL = "http://14.176.232.213:8080/EBankingWebsite/";
 
     protected final String ADMIN_URL = "http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml";
-    protected final String Email_URL = "https://www.mailinator.com/";
-    protected String bankTab;
 
     protected void goToUserPage() {
         DriverUtils.DRIVER.get(USER_URL);
@@ -43,6 +39,9 @@ public class TestBase {
     protected void goToAdminPage() {
         DriverUtils.DRIVER.get(ADMIN_URL);
     }
+
+    protected final String Email_URL = "https://www.mailinator.com/";
+    protected String bankTab;
 
     protected void goToEmailPage() {
         bankTab = DriverUtils.DRIVER.getWindowHandle();
@@ -57,12 +56,12 @@ public class TestBase {
     @AfterClass(description = "Tear down the test environment")
     public void tearDown() {
         // Tear down the test environment
-        // DriverUtils.DRIVER.quit();
+        //  DriverUtils.DRIVER.quit();
     }
 
     protected LoginPage loginPage = new LoginPage();
     protected AccountUserPage accountPage = new AccountUserPage();
-    protected OpenAccountUserPage openAccountPage = new OpenAccountUserPage();
+    protected OpenAccountPage openAccountPage = new OpenAccountPage();
     protected AccountDetailsPage accountDetailsPage = new AccountDetailsPage();
     protected AdminLoginPage adminLoginPage = new AdminLoginPage();
     protected HomePage adminHomePage = new HomePage();
