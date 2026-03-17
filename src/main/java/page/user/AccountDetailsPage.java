@@ -15,9 +15,10 @@ public class AccountDetailsPage {
         return DriverUtils.DRIVER.findElement(accountBalanceAndCurrencyValueLocator).getText();
     }
 
-    public String getAccountBalanceValue() {
+    public int getAccountBalanceValue() {
         String AccountBalanceAndCurrencyText = getAccountBalanceAndCurrency();
-        return AccountBalanceAndCurrencyText.split(" ")[0];
+        String balance = AccountBalanceAndCurrencyText.split(" ")[0].replace(",", "");
+        return Integer.parseInt(balance);
     }
 
     public String getCurrencyValue() {

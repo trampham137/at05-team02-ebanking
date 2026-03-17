@@ -2,20 +2,20 @@ package example;
 
 import org.testng.annotations.Test;
 import page.admin.AdminLoginPage;
-import page.admin.AdminSidebarPage;
+import base.BaseAdminPage;
 import page.admin.DepositPage;
 
 public class TestAdmin extends TestBase {
     // Set up the test environment
     AdminLoginPage adminLoginPage = new AdminLoginPage();
-    AdminSidebarPage adminSidebarPage = new AdminSidebarPage();
+    BaseAdminPage baseAdminPage = new BaseAdminPage();
     DepositPage depositPage = new DepositPage();
 
     @Test
     public void verifyAdminLogin() {
         adminLoginPage.Login("1", "admin");
 
-        adminSidebarPage.goToCustomerListPage();
+        baseAdminPage.goToCustomerListPage();
         // adminSidebarPage.Logout();
         // adminSidebarPage.goToByDatePage();
         // adminSidebarPage.goToWithdrawPage();
@@ -27,7 +27,7 @@ public class TestAdmin extends TestBase {
     @Test
     public void verifyDepositPage() {
         adminLoginPage.Login("1", "admin");
-        adminSidebarPage.goToDepositPage();
+        baseAdminPage.goToDepositPage();
         depositPage.enterDepositForm(100002267, 50000, "ck");
         depositPage.clickConfirmButton();
     }

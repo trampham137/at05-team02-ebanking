@@ -1,10 +1,10 @@
-package page.admin;
+package base;
 
 import org.openqa.selenium.By;
 import utils.DriverUtils;
 import utils.WaitUtils;
 
-public class AdminSidebarPage {
+public class BaseAdminPage {
     // TODO: Bat theo link text
     private final By customerListMenuLocator = By.linkText("Danh sách khách hàng");
     private final By depositMenuLocator = By.linkText("Nộp Tiền");

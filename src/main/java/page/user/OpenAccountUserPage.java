@@ -2,10 +2,11 @@ package page.user;
 
 import enums.AccountType;
 import org.openqa.selenium.By;
-import base.BasePage;
+import base.BaseUserPage;
 import utils.DriverUtils;
+import utils.WaitUtils;
 
-public class OpenAccountPage extends BasePage {
+public class OpenAccountUserPage extends BaseUserPage {
     // TODO: fix duplicate
     private final By accountTypeDropDownLocator = getDropdownLabelLocator("Chọn tài khoản");
     private final By nonTermDepositAccountTypeLocator = getDropdownItemLocator("Tài Khoản kỳ gửi không kỳ hạn");
@@ -53,6 +54,7 @@ public class OpenAccountPage extends BasePage {
     }
 
     public void closeNotificationPopup() {
+        WaitUtils.waitForElementVisible(closeNotificationPopupButtonLocator);
         DriverUtils.DRIVER.findElement(closeNotificationPopupButtonLocator).click();
     }
 }

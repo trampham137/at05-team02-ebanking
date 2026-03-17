@@ -1,9 +1,10 @@
 package page.admin;
 
+import base.BaseAdminPage;
 import org.openqa.selenium.By;
 import utils.DriverUtils;
 
-public class DepositPage {
+public class DepositPage extends BaseAdminPage {
     //TODO: tao 2 package : admin , user
     private final By receiverAccountTextBoxLocator = By.name("j_idt23:j_idt27");
     private final By amountTextBoxLocator = By.name("j_idt23:j_idt29");

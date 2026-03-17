@@ -4,14 +4,14 @@ import models.InternalTransferInfo;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import base.BasePage;
+import base.BaseUserPage;
 
 
 import java.time.Duration;
 
 import static utils.DriverUtils.DRIVER;
 
-public class InternalTransferPage extends BasePage {
+public class InternalTransferUserPage extends BaseUserPage {
 
     private final By selectAccountSource = getDropdownLabelLocator("Chọn tài khoản");
     private final By receiverAccountTextBoxLocator = getItemTextBoxLocator("Tài khoản nhận");

@@ -4,7 +4,7 @@ import models.ExternalTransferInfo;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import base.BasePage;
+import base.BaseUserPage;
 import enums.Bank;
 import enums.Branch;
 import utils.DriverUtils;
@@ -13,7 +13,7 @@ import java.time.Duration;
 
 import static utils.DriverUtils.DRIVER;
 
-public class ExternalTransferPage extends BasePage {
+public class ExternalTransferUserPage extends BaseUserPage {
 
     private final By transferButtonLocator = By.xpath("//td//input[@value='Chuyển tiền']");
     private final By selectAccountSourceDropdownLocator = getDropdownLabelLocator("Chọn tài khoản");

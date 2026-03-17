@@ -2,21 +2,19 @@ package example;
 
 import org.testng.annotations.Test;
 import models.User;
-import base.BasePage;
-import enums.Bank;
-import enums.Branch;
+import base.BaseUserPage;
 import page.user.*;
 
 public class TestUser extends TestBase {
     // TODO: tao class model them user trong util vao
 
     LoginPage loginPage = new LoginPage();
-    BasePage basePage = new BasePage();
-    OpenAccountPage openAccountPage = new OpenAccountPage();
-    InternalTransferPage internalTransferPage = new InternalTransferPage();
+    BaseUserPage baseUserPage = new BaseUserPage();
+    OpenAccountUserPage openAccountPage = new OpenAccountUserPage();
+    InternalTransferUserPage internalTransferPage = new InternalTransferUserPage();
     TransferInformationReviewPage transferInformationReviewPage = new TransferInformationReviewPage();
     TransferConfirmationPage transferConfirmationPage = new TransferConfirmationPage();
-    ExternalTransferPage externalTransferPage = new ExternalTransferPage();
+    ExternalTransferUserPage externalTransferPage = new ExternalTransferUserPage();
 
     @Test
     public void verifyLoginSucessful() {
