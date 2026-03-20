@@ -2,6 +2,7 @@ package pages.transfer.internal;
 
 import org.openqa.selenium.By;
 import utils.DriverUtils;
+import utils.WaitUtils;
 
 public class InternalTransferOtpPage {
 
@@ -10,6 +11,8 @@ public class InternalTransferOtpPage {
     private final By transferButtonLocator = By.xpath("//input[@type='submit']");
     private final By inlineMessLocator = By.xpath("//span[text()='Sai mã OTP']");
     private final By toastMessage = By.xpath("//span[@class='ui-growl-title']");
+    private final By transferMessLocator = By.xpath("//div[text()='Chuyển tiền thành công']");
+    private final By closeNotificationPopupButtonLocator = By.xpath("//span[@class='ui-icon ui-icon-closethick']");
 
     public boolean isTransactionIdDisplayed() {
         DriverUtils.getDriver().findElement(transactionId);
@@ -34,5 +37,16 @@ public class InternalTransferOtpPage {
         return DriverUtils.getDriver().findElement(toastMessage).getText();
     }
 
+    public String getTransferSuccessMessage() {
+        WaitUtils.waitForElementVisible(transferMessLocator);
+        String mess = DriverUtils.getDriver().findElement(transferMessLocator).getText().trim();
+        System.out.println(mess);
+        return mess;
+    }
+
+    public void closeNotificationPopup() {
+        DriverUtils.getDriver().findElement(closeNotificationPopupButtonLocator);
+        DriverUtils.getDriver().findElement(closeNotificationPopupButtonLocator).click();
+    }
 
 }
