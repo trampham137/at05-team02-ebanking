@@ -11,6 +11,7 @@ import java.util.List;
 public class DashboardPage extends UserBasePage {
     private final By accountPanelLocator = By.xpath("//div[div/span[text()='THÔNG TIN TÀI KHOẢN']]");
     private final By accountRowsLocator = By.xpath(".//table[@role='grid']/tbody/tr");
+    
     // //span[normalize-space()='THÔNG TIN TÀI KHOẢN']/parent::div/following-sibling::div//table[@role='grid']/tbody/tr
 
     public DashboardPage(WebDriver driver) {

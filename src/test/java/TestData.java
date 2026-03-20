@@ -4,7 +4,7 @@ import models.OpenAccountData;
 import models.User;
 
 public class TestData {
-    public static final User STANDARD_USER = new User("tram_test_01", "123456789");
+    public static final User STANDARD_USER = new User("lyy_test", "123456789");
     public static final User ADMIN_USER = new User("1", "admin");
 
     private TestData() {
@@ -25,7 +25,7 @@ public class TestData {
     }
 
     public static InternalTransferData validInternalTransfer() {
-        return new InternalTransferData("100002274", "100002270", "10000", "Testing");
+        return new InternalTransferData("100002315", "100002316", "10000", "Testing");
     }
 
     public static InternalTransferData validInternalTransferFrom(String sourceAccount) {

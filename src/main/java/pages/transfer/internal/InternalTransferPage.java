@@ -1,5 +1,6 @@
 package pages.transfer.internal;
 
+import base.UserBasePage;
 import models.InternalTransferData;
 import models.OpenAccountData;
 import org.openqa.selenium.By;
@@ -7,11 +8,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import base.BasePage;
+import utils.DriverUtils;
 
 
 import java.time.Duration;
 
-public class InternalTransferPage extends BasePage {
+public class InternalTransferPage extends UserBasePage {
 
     private By dropdownByLabel(String label) {
         return By.xpath("//td[label[normalize-space()='" + label + "']]/following-sibling::td//div[contains(@class,'ui-selectonemenu')]");
@@ -68,7 +70,11 @@ public class InternalTransferPage extends BasePage {
         enterDescription(data.getDescription());
     }
 
-    public void clickConfirmButton() {
-        click(confirmButtonLocator);
+    // public void clickConfirmButton() {
+    //   click(confirmButtonLocator);
+    // }
+    public InternalTransferConfirmPage clickConfirmButton() {
+        DriverUtils.getDriver().findElement(confirmButtonLocator).click();
+        return new InternalTransferConfirmPage();
     }
 }

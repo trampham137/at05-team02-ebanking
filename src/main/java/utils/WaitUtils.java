@@ -11,4 +11,14 @@ public class WaitUtils {
         WebDriverWait wait = new WebDriverWait(DriverUtils.getDriver(), Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
+
+    public static void waitForElementClickable(By locator) {
+        WebDriverWait wait = new WebDriverWait(DriverUtils.getDriver(), Duration.ofSeconds(15));
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    public static void waitForFrameAndSwitch(By locator) {
+        WebDriverWait wait = new WebDriverWait(DriverUtils.getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(locator));
+    }
 }
