@@ -64,7 +64,7 @@ public class InternalTransferPage extends UserBasePage {
     public void fillTransferForm(InternalTransferData data) {
         selectSourceAccount(data.getSourceAccount());
         enterReceiverAccount(data.getReceiverAccount());
-        enterAmount(data.getAmount());
+        enterAmount(Long.parseLong(data.getAmount()));
         enterDescription(data.getDescription());
     }
 

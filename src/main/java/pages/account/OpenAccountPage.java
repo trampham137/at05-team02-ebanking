@@ -15,14 +15,14 @@ public class OpenAccountPage extends UserBasePage {
     public OpenAccountPage(WebDriver driver) {
         super(driver);
     }
-    
+
     private By accountTypeOptionLocator(String accountType) {
         return By.xpath(String.format("//ul[contains(@class, 'ui-selectonemenu-list')]//li[text()='%s']", accountType));
     }
 
-    public void createAccount(OpenAccountData data) {
+    public void createAccount(String accountType) {
         click(accountTypeDropDownLocator);
-        click(accountTypeOptionLocator(data.getAccountType()));
+        click(accountTypeOptionLocator(accountType));
         click(createAccountButtonLocator);
     }
 

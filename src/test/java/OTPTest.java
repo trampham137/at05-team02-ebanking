@@ -1,5 +1,4 @@
 import base.BaseTest;
-import models.InterbankTransferData;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.account.DashboardPage;

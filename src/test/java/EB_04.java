@@ -6,8 +6,6 @@ import org.testng.annotations.Test;
 import pages.account.AccountDetailPage;
 import pages.account.DashboardPage;
 import pages.account.UserProfilePage;
-import pages.admin.AdminDashboardPage;
-import pages.admin.DepositMoneyPage;
 import pages.email.MailInboxPage;
 import pages.transfer.internal.InternalTransferConfirmPage;
 import pages.transfer.internal.InternalTransferOtpPage;

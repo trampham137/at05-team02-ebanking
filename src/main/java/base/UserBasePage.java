@@ -5,9 +5,9 @@ import org.openqa.selenium.WebDriver;
 import pages.account.DashboardPage;
 import pages.account.OpenAccountPage;
 import pages.account.UserProfilePage;
-import pages.transfer.interbank.InterbankTransferPage;
 import pages.transfer.internal.InternalTransferPage;
 
+// TODO: Don't user page.sidebar().goToPage().
 public class UserBasePage extends BasePage {
     public By getMenuItem(String menuName) {
         return By.xpath("//a[.//span[text()='" + menuName + "']]");

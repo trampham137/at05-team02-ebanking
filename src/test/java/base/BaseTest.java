@@ -27,19 +27,19 @@ public class BaseTest {
         // driver.get(USER_BASE_URL);
     }
 
-    // @AfterMethod
-    // public void quitDriver() {
-    //     DriverUtils.quitDriver();
-    // }
-
     @AfterMethod
     public void quitDriver() {
+        DriverUtils.quitDriver();
+    }
 
-        //  DriverUtils.quitDriver();
+    protected void clearSession() {
+        driver.get("about:blank");
+        driver.manage().deleteAllCookies();
     }
 
     protected LoginPage openUserLoginPage() {
         driver.get(USER_BASE_URL);
+        System.out.println("Open user login page: " + driver.getCurrentUrl());
         return new LoginPage(driver);
     }
 

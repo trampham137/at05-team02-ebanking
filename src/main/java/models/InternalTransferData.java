@@ -3,10 +3,17 @@ package models;
 public class InternalTransferData {
     private final String sourceAccount;
     private final String receiverAccount;
-    private final long amount;
+    private final String amount;
     private final String description;
 
     public InternalTransferData(String sourceAccount, String receiverAccount, long amount, String description) {
+        this.sourceAccount = sourceAccount;
+        this.receiverAccount = receiverAccount;
+        this.amount = String.valueOf(amount);
+        this.description = description;
+    }
+
+    public InternalTransferData(String sourceAccount, String receiverAccount, String amount, String description) {
         this.sourceAccount = sourceAccount;
         this.receiverAccount = receiverAccount;
         this.amount = amount;
@@ -21,11 +28,24 @@ public class InternalTransferData {
         return receiverAccount;
     }
 
-    public long getAmount() {
+    public String getAmount() {
         return amount;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public long getAmountAsLong() {
+        return Long.parseLong(amount);
+    }
+
+    public boolean isAmountNumeric() {
+        try {
+            Long.parseLong(amount);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

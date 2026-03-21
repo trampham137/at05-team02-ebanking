@@ -14,7 +14,7 @@ public class AccountManagementTest extends BaseTest {
         int beforeRowCount = dashboardPage.getAccountRowCount();
 
         OpenAccountPage openAccountPage = dashboardPage.goToOpenAccount();
-        openAccountPage.createAccount(TestData.validOpenAccount());
+        openAccountPage.createAccount(TestData.ACCOUNT_TYPE_CURRENT);
 
         Assert.assertTrue(openAccountPage.isOpenAccountSuccessPopupDisplayed());
         Assert.assertEquals(openAccountPage.getOpenAccountSuccessPopupMessage(), "Mở tài khoản thành công");
