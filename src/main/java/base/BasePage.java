@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.DriverUtils;
 
 import java.time.Duration;
 import java.util.List;
@@ -31,6 +32,10 @@ public class BasePage {
         WebElement element = this.driver.findElement(locator);
         element.clear();
         element.sendKeys(text);
+    }
+
+    public void clear(By locator) {
+        DriverUtils.getDriver().findElement(locator).clear();
     }
 
     protected void selectByVisibleText(By locator, String visibleText) {

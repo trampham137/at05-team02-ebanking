@@ -3,10 +3,10 @@ package models;
 public class InternalTransferData {
     private final String sourceAccount;
     private final String receiverAccount;
-    private final String amount;
+    private final long amount;
     private final String description;
 
-    public InternalTransferData(String sourceAccount, String receiverAccount, String amount, String description) {
+    public InternalTransferData(String sourceAccount, String receiverAccount, long amount, String description) {
         this.sourceAccount = sourceAccount;
         this.receiverAccount = receiverAccount;
         this.amount = amount;
@@ -21,7 +21,7 @@ public class InternalTransferData {
         return receiverAccount;
     }
 
-    public String getAmount() {
+    public long getAmount() {
         return amount;
     }
 

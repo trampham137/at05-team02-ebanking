@@ -46,7 +46,7 @@ public class EB_04 extends BaseTest {
         InternalTransferPage internalTransferPage = accountDetailPage1.goToInternalTransfer();
         internalTransferPage.selectSourceAccount(accountSource);
         internalTransferPage.enterReceiverAccount(accountReceiver);
-        internalTransferPage.enterAmount("10000");
+        internalTransferPage.enterAmount(10000);
         internalTransferPage.enterDescription("ck");
 
         InternalTransferConfirmPage internalTransferConfirmPage = internalTransferPage.clickConfirmButton();
@@ -77,7 +77,6 @@ public class EB_04 extends BaseTest {
         long balanceReceiverAfter = accountDetailPage3.getBalance();
         System.out.println(balanceReceiverAfter);
         Assert.assertTrue(accountDetailPage3.isReceiverBalanceIncreasedCorrectly(balanceReceiver, balanceReceiverAfter, 10000), "Receiver account balance is not increased correctly");
-
 
     }
 }

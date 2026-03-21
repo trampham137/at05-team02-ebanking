@@ -2,16 +2,9 @@ package pages.transfer.internal;
 
 import base.UserBasePage;
 import models.InternalTransferData;
-import models.OpenAccountData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import base.BasePage;
 import utils.DriverUtils;
-
-
-import java.time.Duration;
 
 public class InternalTransferPage extends UserBasePage {
 
@@ -55,8 +48,13 @@ public class InternalTransferPage extends UserBasePage {
         type(receiverAccountTextboxLocator, receiverAccount);
     }
 
-    public void enterAmount(String amount) {
-        type(amountTextboxLocator, amount);
+    public void clearReceiverAccount() {
+        clear(receiverAccountTextboxLocator);
+    }
+
+    public void enterAmount(long amount) {
+        //  type(amountTextboxLocator, amount);
+        DriverUtils.getDriver().findElement(amountTextboxLocator).sendKeys(String.valueOf(amount));
     }
 
     public void enterDescription(String description) {
@@ -76,5 +74,25 @@ public class InternalTransferPage extends UserBasePage {
     public InternalTransferConfirmPage clickConfirmButton() {
         DriverUtils.getDriver().findElement(confirmButtonLocator).click();
         return new InternalTransferConfirmPage();
+    }
+
+    public By getRequiredMessageByText(String text) {
+        return By.xpath("//span[text()='" + text + "']");
+    }
+
+    public String getSourceAccountRequiredMessage() {
+        return getText(getRequiredMessageByText("Mời chọn tài khoản"));
+    }
+
+    public String getRequiredAmountMessage() {
+        return getText(getRequiredMessageByText("Nhập số tiền"));
+    }
+
+    public String getRequiredContentMessage() {
+        return getText(getRequiredMessageByText("Nhập nội dung"));
+    }
+
+    public String getAmountGreaterThanBalanceMessage() {
+        return getText(getRequiredMessageByText("Số tiền vượt mức"));
     }
 }

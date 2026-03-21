@@ -25,11 +25,11 @@ public class TestData {
     }
 
     public static InternalTransferData validInternalTransfer() {
-        return new InternalTransferData("100002315", "100002316", "10000", "Testing");
+        return new InternalTransferData("100002315", "100002316", 10000, "Testing");
     }
 
     public static InternalTransferData validInternalTransferFrom(String sourceAccount) {
-        return new InternalTransferData(sourceAccount, "100002270", "10000", "Testing");
+        return new InternalTransferData(sourceAccount, "100002270", 10000, "Testing");
     }
 
     // public static InternalTransferData internalTransfer(String sourceAccount, String targetAccount, String amount, String description) {
