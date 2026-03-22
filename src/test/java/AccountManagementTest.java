@@ -1,4 +1,5 @@
 import base.BaseTest;
+import models.enums.AccountType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.account.AccountDetailPage;
@@ -14,7 +15,7 @@ public class AccountManagementTest extends BaseTest {
         int beforeRowCount = dashboardPage.getAccountRowCount();
 
         OpenAccountPage openAccountPage = dashboardPage.goToOpenAccount();
-        openAccountPage.createAccount(TestData.ACCOUNT_TYPE_CURRENT);
+        openAccountPage.createAccount(AccountType.CURRENT_ACCOUNT);
 
         Assert.assertTrue(openAccountPage.isOpenAccountSuccessPopupDisplayed());
         Assert.assertEquals(openAccountPage.getOpenAccountSuccessPopupMessage(), "Mở tài khoản thành công");

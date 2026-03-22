@@ -1,5 +1,6 @@
 import base.BaseTest;
 import models.DepositData;
+import models.enums.AccountType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.account.AccountDetailPage;
@@ -14,7 +15,7 @@ public class AdminManagementTest extends BaseTest {
     public void EB02_admin_can_deposit_money_to_user_account() {
         DashboardPage dashboardPage = loginAsUser(TestData.STANDARD_USER);
         OpenAccountPage openAccountPage = dashboardPage.goToOpenAccount();
-        openAccountPage.createAccount(TestData.ACCOUNT_TYPE_CURRENT);
+        openAccountPage.createAccount(AccountType.CURRENT_ACCOUNT);
         openAccountPage.closeSuccessPopup();
 
         DashboardPage refreshedDashboardPage = openAccountPage.goToAccounts();

@@ -2,6 +2,7 @@ package pages.account;
 
 import base.UserBasePage;
 import models.OpenAccountData;
+import models.enums.AccountType;
 import org.openqa.selenium.By;
 import base.BasePage;
 import org.openqa.selenium.WebDriver;
@@ -20,9 +21,9 @@ public class OpenAccountPage extends UserBasePage {
         return By.xpath(String.format("//ul[contains(@class, 'ui-selectonemenu-list')]//li[text()='%s']", accountType));
     }
 
-    public void createAccount(String accountType) {
+    public void createAccount(AccountType accountType) {
         click(accountTypeDropDownLocator);
-        click(accountTypeOptionLocator(accountType));
+        click(accountTypeOptionLocator(accountType.getDisplayName()));
         click(createAccountButtonLocator);
     }
 

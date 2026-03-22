@@ -19,7 +19,7 @@ public class DriverUtils {
         options.addArguments("--start-maximized");
 
         DRIVER = new ChromeDriver(options);
-        DRIVER.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+        DRIVER.manage().timeouts().implicitlyWait(Duration.ofSeconds(7));
     }
 
     public static WebDriver getDriver() {

@@ -1,6 +1,8 @@
 package base;
 
+import models.RegisterData;
 import models.User;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 import org.testng.annotations.AfterMethod;
@@ -9,6 +11,7 @@ import pages.account.DashboardPage;
 import pages.admin.AdminDashboardPage;
 import pages.admin.AdminLoginPage;
 import pages.auth.LoginPage;
+import pages.auth.RegisterPage;
 import pages.email.MailInboxPage;
 import utils.DriverUtils;
 
@@ -39,7 +42,6 @@ public class BaseTest {
 
     protected LoginPage openUserLoginPage() {
         driver.get(USER_BASE_URL);
-        System.out.println("Open user login page: " + driver.getCurrentUrl());
         return new LoginPage(driver);
     }
 
@@ -60,6 +62,11 @@ public class BaseTest {
         return new AdminDashboardPage(driver);
     }
 
+    protected RegisterPage goToRegister() {
+        LoginPage loginPage = openUserLoginPage();
+        loginPage.clickRegisterLink();
+        return new RegisterPage(driver);
+    }
 
     protected MailInboxPage goToEmailPage() {
         bankTab = DriverUtils.getDriver().getWindowHandle();

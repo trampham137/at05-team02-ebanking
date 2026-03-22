@@ -10,6 +10,7 @@ import utils.DriverUtils;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 public class BasePage {
     protected WebDriver driver;
@@ -78,5 +79,24 @@ public class BasePage {
         }
 
         return Long.parseLong(digits);
+    }
+
+    public void switchToFrame(By locator) {
+        waitVisible(locator);
+        driver.switchTo().frame(find(locator));
+    }
+
+    public void switchToDefaultContent() {
+        driver.switchTo().defaultContent();
+    }
+
+    public void switchToNewWindow(String oldWindow) {
+        Set<String> windows = driver.getWindowHandles();
+        for (String window : windows) {
+            if (!window.equals(oldWindow)) {
+                driver.switchTo().window(window);
+                break;
+            }
+        }
     }
 }

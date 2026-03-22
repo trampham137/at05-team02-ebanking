@@ -1,13 +1,15 @@
 package models;
 
-public class OpenAccountData {
-    private final String accountType;
+import models.enums.AccountType;
 
-    public OpenAccountData(String accountType) {
+public class OpenAccountData {
+    private final AccountType accountType;
+
+    public OpenAccountData(AccountType accountType) {
         this.accountType = accountType;
     }
 
-    public String getAccountType() {
+    public AccountType getAccountType() {
         return accountType;
     }
 }
