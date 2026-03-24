@@ -13,7 +13,6 @@ import java.util.List;
 public class DashboardPage extends UserBasePage {
     private final By accountPanelLocator = By.xpath("//div[div/span[text()='THÔNG TIN TÀI KHOẢN']]");
     private final By accountRowsLocator = By.xpath(".//table[@role='grid']/tbody/tr");
-    private final String accountNumberByIndex = "(//tbody[@id='j_idt27_data']//a)[%d]";
     // //span[normalize-space()='THÔNG TIN TÀI KHOẢN']/parent::div/following-sibling::div//table[@role='grid']/tbody/tr
 
     public DashboardPage(WebDriver driver) {
@@ -39,14 +38,5 @@ public class DashboardPage extends UserBasePage {
         return new AccountDetailPage(driver);
     }
 
-    public String getAccountByIndex(int index) {
-        By locator = By.xpath(String.format(accountNumberByIndex, index));
-        WaitUtils.waitForElementVisible(locator);
-        return DriverUtils.getDriver().findElement(locator).getText();
-    }
 
-
-    // public int getRecentTransactionRowCount() {
-    //     return find(recentTransactionPanelLocator).findElements(recentTransactionRowsLocator).size();
-    // }
 }

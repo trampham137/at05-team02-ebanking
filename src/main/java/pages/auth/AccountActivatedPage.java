@@ -12,7 +12,7 @@ public class AccountActivatedPage extends BasePage {
     }
 
     public boolean isActivationSuccessDisplayed() {
-        waitVisible(successMessage);
+        // waitVisible(successMessage);
         return isDisplayed(successMessage);
     }
 }

@@ -7,7 +7,7 @@ import pages.account.OpenAccountPage;
 import pages.account.UserProfilePage;
 import pages.transfer.internal.InternalTransferPage;
 
-// TODO: Don't user page.sidebar().goToPage().
+// TODO: Don't use page.sidebar().goToPage() >> DONE
 public class UserBasePage extends BasePage {
     public By getMenuItem(String menuName) {
         return By.xpath("//a[.//span[text()='" + menuName + "']]");
@@ -18,7 +18,7 @@ public class UserBasePage extends BasePage {
     private final By openAccountMenuLocator = getMenuItem("Mở tài khoản");
     private final By transactionLogMenuLocator = getMenuItem("Nhật kí giao dịch");
     private final By internalTransferMenuLocator = getMenuItem("Chuyển  khoản");
-    private final By interbankTransferMenuLocator = getMenuItem("Liên ngân hàng");
+    private final By interbankTransferMenuLocator = getMenuItem("Liên Ngân Hàng");
     private final By logoutMenuLocator = getMenuItem("Đăng xuất");
 
     public UserBasePage(WebDriver driver) {

@@ -1,18 +1,25 @@
 package base;
 
+import models.DepositData;
 import models.RegisterData;
 import models.User;
-import org.openqa.selenium.By;
+import models.enums.AccountType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import pages.account.DashboardPage;
+import pages.account.OpenAccountPage;
 import pages.admin.AdminDashboardPage;
 import pages.admin.AdminLoginPage;
+import pages.admin.DepositMoneyPage;
+import pages.auth.AccountActivatedPage;
 import pages.auth.LoginPage;
 import pages.auth.RegisterPage;
-import pages.email.MailInboxPage;
+import pages.email.MailinatorEmailPage;
+import pages.email.MailinatorHomePage;
+import pages.email.MailinatorInboxPage;
 import utils.DriverUtils;
 
 public class BaseTest {
@@ -68,15 +75,88 @@ public class BaseTest {
         return new RegisterPage(driver);
     }
 
-    protected MailInboxPage goToEmailPage() {
-        bankTab = DriverUtils.getDriver().getWindowHandle();
-        DriverUtils.getDriver().switchTo().newWindow(WindowType.TAB);
-        DriverUtils.getDriver().get(MAILINATOR_URL);
-        return new MailInboxPage();
+    protected String openNewTab(String url) {
+        driver.switchTo().newWindow(WindowType.TAB);
+        driver.get(url);
+        return driver.getWindowHandle();
     }
 
-    protected void backToBankPage() {
-        DriverUtils.getDriver().switchTo().window(bankTab);
+    protected void switchToTab(String windowHandle) {
+        driver.switchTo().window(windowHandle);
+    }
+
+    protected void closeCurrentTab() {
+        driver.close();
+    }
+
+    // reusable business flows
+    protected void registerAndActivateUser(RegisterData registerData) {
+        RegisterPage registerPage = goToRegister();
+        registerPage.register(registerData);
+
+        String mailinatorTab = openNewTab(MAILINATOR_URL);
+
+        MailinatorHomePage mailinatorHomePage = new MailinatorHomePage(driver);
+        MailinatorInboxPage inboxPage = mailinatorHomePage.openInbox(registerData.getEmail());
+        inboxPage.waitForInboxLoaded();
+
+        MailinatorEmailPage activationEmailPage = inboxPage.openEmailBySubject("Kich hoat tai khoan");
+        activationEmailPage.clickActivationLink();
+
+        activationEmailPage.switchToNewestWindow();
+        String activationSuccessBTab = driver.getWindowHandle();
+
+        AccountActivatedPage activatedPage = new AccountActivatedPage(driver);
+        Assert.assertTrue(activatedPage.isActivationSuccessDisplayed());
+    }
+
+    protected String openBankAccount(DashboardPage dashboardPage, AccountType accountType) {
+        String lastAccountBefore = dashboardPage.getLastAccountNumber();
+
+        OpenAccountPage openAccountPage = dashboardPage.goToOpenAccount();
+        openAccountPage.createAccount(accountType);
+
+        Assert.assertTrue(
+                openAccountPage.isOpenAccountSuccessPopupDisplayed(),
+                "Open account success popup is not displayed."
+        );
+        Assert.assertEquals(
+                openAccountPage.getOpenAccountSuccessPopupMessage(),
+                "Mở tài khoản thành công"
+        );
+
+        openAccountPage.closeSuccessPopup();
+
+        DashboardPage refreshedDashboardPage = openAccountPage.goToAccounts();
+        String lastAccountAfter = refreshedDashboardPage.getLastAccountNumber();
+
+        // TODO: check position >> DONE
+        Assert.assertNotEquals(
+                lastAccountAfter,
+                lastAccountBefore,
+                "Last account should be newly created account"
+        );
+
+        return lastAccountAfter;
+    }
+
+    protected void depositMoneyAndLogout(String accountNumber, long amount) {
+        AdminDashboardPage adminDashboardPage = loginAsAdmin();
+        DepositMoneyPage depositMoneyPage = adminDashboardPage.goToDepositMoney();
+
+        DepositData depositData = new DepositData(accountNumber, amount, "Testing");
+        depositMoneyPage.depositToAccount(depositData);
+
+        Assert.assertTrue(
+                depositMoneyPage.isDepositSuccessful(),
+                "Deposit success message is not displayed."
+        );
+        Assert.assertEquals(
+                depositMoneyPage.getSuccessMessage(),
+                "nộp tiền thành công"
+        );
+
+        depositMoneyPage.logout();
     }
 
 }

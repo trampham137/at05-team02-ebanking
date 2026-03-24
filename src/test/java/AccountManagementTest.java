@@ -1,4 +1,6 @@
 import base.BaseTest;
+import models.RegisterData;
+import models.User;
 import models.enums.AccountType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -10,29 +12,24 @@ public class AccountManagementTest extends BaseTest {
 
     @Test(description = "EB-01 Verify user can create a new bank account and the initial balance is displayed correctly.")
     public void EB01_user_can_open_new_bank_account() {
-        DashboardPage dashboardPage = loginAsUser(TestData.STANDARD_USER);
+        RegisterData registerData = TestData.validRegister("tram_test");
+        User userData = new User(registerData.getUsername(), registerData.getPassword());
 
-        int beforeRowCount = dashboardPage.getAccountRowCount();
+        registerAndActivateUser(registerData);
 
-        OpenAccountPage openAccountPage = dashboardPage.goToOpenAccount();
-        openAccountPage.createAccount(AccountType.CURRENT_ACCOUNT);
+        // openNewTab(USER_BASE_URL);
+        DashboardPage dashboardPage = loginAsUser(userData);
 
-        Assert.assertTrue(openAccountPage.isOpenAccountSuccessPopupDisplayed());
-        Assert.assertEquals(openAccountPage.getOpenAccountSuccessPopupMessage(), "Mở tài khoản thành công");
-        openAccountPage.closeSuccessPopup();
+        // int beforeRowCount = dashboardPage.getAccountRowCount();
+        String newAccountNumber = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
 
-        DashboardPage refreshedDashboardPage = openAccountPage.goToAccounts();
-
+        DashboardPage refreshedDashboardPage = new DashboardPage(driver);
         int afterRowCount = refreshedDashboardPage.getAccountRowCount();
-        Assert.assertEquals(beforeRowCount + 1, afterRowCount);
 
-        // TODO: check position
-        String newAccountNumber = refreshedDashboardPage.getLastAccountNumber();
-        Assert.assertFalse(newAccountNumber.isBlank());
+        Assert.assertEquals(afterRowCount, 1);
 
         AccountDetailPage detailPage = refreshedDashboardPage.openAccountDetail(newAccountNumber);
         Assert.assertEquals(detailPage.getBalance(), 0L);
-        IO.println(newAccountNumber);
     }
 
 }

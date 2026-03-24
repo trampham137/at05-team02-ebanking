@@ -1,6 +1,7 @@
 package base;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -9,16 +10,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.DriverUtils;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.NoSuchElementException;
 
 public class BasePage {
-    protected WebDriver driver;
+    protected final WebDriver driver;
     protected final WebDriverWait wait;
+
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, DEFAULT_TIMEOUT);
     }
 
     protected WebElement find(By locator) {
@@ -30,36 +34,45 @@ public class BasePage {
     }
 
     protected void type(By locator, String text) {
-        WebElement element = this.driver.findElement(locator);
+        WebElement element = waitVisible(locator);
         element.clear();
         element.sendKeys(text);
     }
 
-    public void clear(By locator) {
-        DriverUtils.getDriver().findElement(locator).clear();
-    }
-
-    protected void selectByVisibleText(By locator, String visibleText) {
-        Select select = new Select(find(locator));
-        select.selectByVisibleText(visibleText);
+    protected void clear(By locator) {
+        waitVisible(locator).clear();
     }
 
     protected void click(By locator) {
-        this.driver.findElement(locator).click();
+        waitClickable(locator).click();
+    }
+
+    protected void selectByVisibleText(By locator, String visibleText) {
+        Select select = new Select(waitVisible(locator));
+        select.selectByVisibleText(visibleText);
     }
 
     protected String getText(By locator) {
-        return this.driver.findElement(locator).getText();
+        return waitVisible(locator).getText().trim();
     }
 
     protected boolean isDisplayed(By locator) {
         try {
             return waitVisible(locator).isDisplayed();
-        } catch (Exception e) {
+        } catch (TimeoutException | NoSuchElementException e) {
             return false;
         }
     }
 
+    protected long parseCurrencyToLong(String text) {
+        String digits = text.replaceAll("[^0-9-]", "");
+        if (digits.isBlank() || digits.equals("-")) {
+            return 0L;
+        }
+        return Long.parseLong(digits);
+    }
+
+    // wait
     protected WebElement waitVisible(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
@@ -68,35 +81,29 @@ public class BasePage {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
-    protected void waitInvisible(By locator) {
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+    protected void waitUntilTextNotEmpty(By locator) {
+        wait.until(driver -> {
+            String text = driver.findElement(locator).getText();
+            return !text.trim().isEmpty();
+        });
     }
 
-    protected long parseCurrencyToLong(String text) {
-        String digits = text.replaceAll("[^0-9-]", "");
-        if (digits == null || digits.isBlank() || digits.equals("-")) {
-            return 0L;
-        }
-
-        return Long.parseLong(digits);
+    protected void waitForFrameAndSwitch(By locator) {
+        wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(locator));
     }
 
-    public void switchToFrame(By locator) {
-        waitVisible(locator);
-        driver.switchTo().frame(find(locator));
-    }
-
-    public void switchToDefaultContent() {
+    // switch
+    protected void switchToDefaultContent() {
         driver.switchTo().defaultContent();
     }
 
-    public void switchToNewWindow(String oldWindow) {
-        Set<String> windows = driver.getWindowHandles();
-        for (String window : windows) {
-            if (!window.equals(oldWindow)) {
-                driver.switchTo().window(window);
-                break;
-            }
-        }
+    protected void switchToWindowByIndex(int index) {
+        List<String> windows = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(windows.get(index));
+    }
+
+    protected void switchToNewestWindow() {
+        java.util.List<String> windows = new java.util.ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(windows.getLast());
     }
 }

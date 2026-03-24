@@ -4,6 +4,9 @@ import base.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MailinatorEmailPage extends BasePage {
     private final By emailBodyFrame = By.id("texthtml_msg_body");
 
@@ -15,7 +18,7 @@ public class MailinatorEmailPage extends BasePage {
         By activationLink = By.xpath("//a[contains(@href,'EBankingWebsite')]");
 
         waitVisible(emailBodyFrame);
-        switchToFrame(emailBodyFrame);
+        waitForFrameAndSwitch(emailBodyFrame);
 
         waitClickable(activationLink);
         click(activationLink);
@@ -23,22 +26,22 @@ public class MailinatorEmailPage extends BasePage {
         switchToDefaultContent();
     }
 
-    // public String getOtpCode() {
-    //     waitForElementVisible(emailBodyFrame);
-    //     switchToFrame(emailBodyFrame);
-    //
-    //     String bodyText = driver.findElement(By.tagName("body")).getText();
-    //
-    //     switchToDefaultContent();
-    //
-    //     // ví dụ OTP 6 số
-    //     Pattern pattern = Pattern.compile("\\b\\d{6}\\b");
-    //     Matcher matcher = pattern.matcher(bodyText);
-    //
-    //     if (matcher.find()) {
-    //         return matcher.group();
-    //     }
-    //
-    //     throw new RuntimeException("OTP code not found in email body");
-    // }
+    public String getOtpCode() {
+        waitVisible(emailBodyFrame);
+        waitForFrameAndSwitch(emailBodyFrame);
+
+        String bodyText = getText(By.tagName("body"));
+        System.out.println("Email body: " + bodyText);
+
+        switchToDefaultContent();
+
+        Pattern pattern = Pattern.compile("OTP:\\s*([A-Z0-9]+)");
+        Matcher matcher = pattern.matcher(bodyText);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+
+        throw new RuntimeException("OTP code not found in email body");
+    }
 }

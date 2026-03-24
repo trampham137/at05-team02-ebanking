@@ -1,47 +1,35 @@
 import base.BaseTest;
-import models.DepositData;
+import models.RegisterData;
+import models.User;
 import models.enums.AccountType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.account.AccountDetailPage;
 import pages.account.DashboardPage;
-import pages.account.OpenAccountPage;
-import pages.admin.AdminDashboardPage;
-import pages.admin.DepositMoneyPage;
 
 public class AdminManagementTest extends BaseTest {
     // TODO: Question - should verify again case open account?
     @Test(description = "EB-02 Verify admin can deposit money to a user account and user balance is increased correctly.")
     public void EB02_admin_can_deposit_money_to_user_account() {
-        DashboardPage dashboardPage = loginAsUser(TestData.STANDARD_USER);
-        OpenAccountPage openAccountPage = dashboardPage.goToOpenAccount();
-        openAccountPage.createAccount(AccountType.CURRENT_ACCOUNT);
-        openAccountPage.closeSuccessPopup();
+        RegisterData registerData = TestData.validRegister("tram_test");
+        User userData = new User(registerData.getUsername(), registerData.getPassword());
 
-        DashboardPage refreshedDashboardPage = openAccountPage.goToAccounts();
-        String newAccountNumber = refreshedDashboardPage.getLastAccountNumber();
-        long balanceBefore = refreshedDashboardPage.openAccountDetail(newAccountNumber).getBalance();
+        registerAndActivateUser(registerData);
 
-        refreshedDashboardPage.logout();
+        // openNewTab(USER_BASE_URL);
+        DashboardPage dashboardPage = loginAsUser(userData);
+        String newAccountNumber = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
+
+        long balanceBefore = dashboardPage.openAccountDetail(newAccountNumber).getBalance();
+        dashboardPage.logout();
+        clearSession();
 
         // admin
-        AdminDashboardPage adminDashboardPage = loginAsAdmin();
-        DepositMoneyPage depositMoneyPage = adminDashboardPage.goToDepositMoney();
-
-        long depositAmount = 100000;
-        DepositData depositData = new DepositData(newAccountNumber, depositAmount, "Testing");
-        depositMoneyPage.depositToAccount(depositData);
-
-        Assert.assertTrue(depositMoneyPage.isDepositSuccessful());
-        Assert.assertEquals(depositMoneyPage.getSuccessMessage(), "nộp tiền thành công");
-
-        depositMoneyPage.logout();
-
-        // user
+        depositMoneyAndLogout(newAccountNumber, 100_000);
         clearSession();
-        DashboardPage userDashboardPage = loginAsUser(TestData.STANDARD_USER);
-        long balanceAfter = userDashboardPage.openAccountDetail(newAccountNumber).getBalance();
 
-        Assert.assertEquals(balanceAfter, balanceBefore + depositAmount, "Balance should be increased correctly after deposit.");
+        DashboardPage userDashboardPageAfter = loginAsUser(userData);
+        long balanceAfter = userDashboardPageAfter.openAccountDetail(newAccountNumber).getBalance();
+
+        Assert.assertEquals(balanceAfter, balanceBefore + 100_000);
     }
 }

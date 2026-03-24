@@ -7,54 +7,45 @@ import org.openqa.selenium.WebDriver;
 import utils.DriverUtils;
 
 public class InternalTransferPage extends UserBasePage {
-
-    private By dropdownByLabel(String label) {
-        return By.xpath("//td[label[normalize-space()='" + label + "']]/following-sibling::td//div[contains(@class,'ui-selectonemenu')]");
-    }
-
-    private By inputByLabel(String label) {
-        return By.xpath("//td[label[normalize-space()='" + label + "']]/following-sibling::td//input[@type='text']");
-    }
-
-    private By valueByLabel(String label) {
-        return By.xpath("//td[label[normalize-space()='" + label + "']]/following-sibling::td//label");
+    public InternalTransferPage(WebDriver driver) {
+        super(driver);
     }
 
     private By dropdownOption(String optionText) {
         return By.xpath("//li[normalize-space()='" + optionText + "']");
     }
 
-    private final By sourceAccountDropdownLocator = dropdownByLabel("Tài khoản nguồn");
-    private final By availableBalanceValueLocator = valueByLabel("Số dư khả dụng");
-    private final By receiverAccountTextboxLocator = inputByLabel("Tài khoản nhận");
-    private final By amountTextboxLocator = inputByLabel("Số tiền");
-    private final By descriptionTextboxLocator = inputByLabel("Nội dung thanh toán");
+    private final By sourceAccountDropdownLocator = By.xpath("//td[label[text()='Tài khoản nguồn']]/following-sibling::td/div");
+    private final By receiverAccountTextboxLocator = By.xpath("//td[label[text()='Tài khoản nhận']]/following-sibling::td/input");
+    private final By amountTextboxLocator = By.xpath("//td[label[text()='Số tiền']]/following-sibling::td/input");
+    private final By descriptionTextboxLocator = By.xpath("//td[label[text()='Nội dung thanh toán']]/following-sibling::td/input");
     private final By confirmButtonLocator = By.xpath("//td//input[@value='Xác nhận']");
 
-    public InternalTransferPage(WebDriver driver) {
-        super(driver);
-    }
+    private final By availableBalanceLocator = By.xpath("//td[label[text()='Số dư khả dụng']]/following-sibling::td/label");
+    private final By receiverNameLocator = By.xpath("//td[label[text()='Tên người nhận']]/following-sibling::td/label");
+
 
     public void selectSourceAccount(String sourceAccount) {
         click(sourceAccountDropdownLocator);
         click(dropdownOption(sourceAccount));
     }
 
-    public long getAvailableBalance() {
-        return parseCurrencyToLong(getText(availableBalanceValueLocator));
+    public void waitUntilAvailableBalanceLoaded() {
+        waitVisible(availableBalanceLocator);
+        waitUntilTextNotEmpty(availableBalanceLocator);
     }
 
     public void enterReceiverAccount(String receiverAccount) {
         type(receiverAccountTextboxLocator, receiverAccount);
     }
 
-    public void clearReceiverAccount() {
-        clear(receiverAccountTextboxLocator);
+    public void waitUntilReceiverNameLoaded() {
+        waitVisible(receiverNameLocator);
+        waitUntilTextNotEmpty(receiverNameLocator);
     }
 
     public void enterAmount(long amount) {
-        //  type(amountTextboxLocator, amount);
-        DriverUtils.getDriver().findElement(amountTextboxLocator).sendKeys(String.valueOf(amount));
+        type(amountTextboxLocator, String.valueOf(amount));
     }
 
     public void enterDescription(String description) {
@@ -63,36 +54,17 @@ public class InternalTransferPage extends UserBasePage {
 
     public void fillTransferForm(InternalTransferData data) {
         selectSourceAccount(data.getSourceAccount());
+        waitUntilAvailableBalanceLoaded();
+
         enterReceiverAccount(data.getReceiverAccount());
+        waitUntilReceiverNameLoaded();
+
         enterAmount(Long.parseLong(data.getAmount()));
         enterDescription(data.getDescription());
     }
 
-    // public void clickConfirmButton() {
-    //   click(confirmButtonLocator);
-    // }
-    public InternalTransferConfirmPage clickConfirmButton() {
-        DriverUtils.getDriver().findElement(confirmButtonLocator).click();
-        return new InternalTransferConfirmPage();
+    public void clickConfirmButton() {
+        click(confirmButtonLocator);
     }
 
-    public By getRequiredMessageByText(String text) {
-        return By.xpath("//span[text()='" + text + "']");
-    }
-
-    public String getSourceAccountRequiredMessage() {
-        return getText(getRequiredMessageByText("Mời chọn tài khoản"));
-    }
-
-    public String getRequiredAmountMessage() {
-        return getText(getRequiredMessageByText("Nhập số tiền"));
-    }
-
-    public String getRequiredContentMessage() {
-        return getText(getRequiredMessageByText("Nhập nội dung"));
-    }
-
-    public String getAmountGreaterThanBalanceMessage() {
-        return getText(getRequiredMessageByText("Số tiền vượt mức"));
-    }
 }

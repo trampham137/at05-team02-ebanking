@@ -8,20 +8,22 @@ public class TestData {
     public static final User STANDARD_USER = new User("lyy_test", "123456789");
     public static final User ADMIN_USER = new User("1", "admin");
 
-    // TODO: 2 account type, should be static variable
-    public static final String ACCOUNT_TYPE_CURRENT = "Tài Khoản kỳ gửi không kỳ hạn";
-    public static final String ACCOUNT_TYPE_SAVINGS = "Tài Khoản tiết kiệm";
-
     private TestData() {
     }
 
-    public static RegisterData validRegister(String username, String password, String email) {
+    public static RegisterData validRegister(String prefix) {
+        long timestamp = System.currentTimeMillis() % 100000;
+
+        String username = prefix + "_" + timestamp;
+        String email = username + "@mailinator.com";
+        String fullName = "testing_note_" + username;
+
         return new RegisterData(
                 username,
-                password,
-                password,
-                "Tester Testing",
-                "012",
+                "1234567889",
+                "1234567889",
+                fullName,
+                "01234567899",
                 LocalDate.of(2000, 1, 1),
                 Gender.FEMALE,
                 City.DA_NANG,
@@ -30,7 +32,7 @@ public class TestData {
         );
     }
 
-    // TODO: amount > number
+    // TODO: amount should be number >> DONE
     public static DepositData validDeposit() {
         return new DepositData("100002274", 100_000, "Testing");
     }
