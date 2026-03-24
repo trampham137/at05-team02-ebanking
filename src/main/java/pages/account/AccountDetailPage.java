@@ -30,18 +30,4 @@ public class AccountDetailPage extends UserBasePage {
     public long getBalance() {
         return parseCurrencyToLong(getText(balanceValueLocator));
     }
-
-    public boolean isInternalTransferSourceBalanceCorrect(long balanceBefore, long balanceAfter, long transferAmount) {
-        double fee = 1100;
-        return balanceAfter == balanceBefore - (transferAmount + fee);
-    }
-
-    public boolean isReceiverBalanceIncreasedCorrectly(
-            double balanceBefore,
-            double balanceAfter,
-            double transferAmount
-    ) {
-        return balanceAfter == balanceBefore + transferAmount;
-    }
-
 }

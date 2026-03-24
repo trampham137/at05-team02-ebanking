@@ -14,11 +14,12 @@ import pages.email.MailinatorEmailPage;
 import pages.email.MailinatorHomePage;
 import pages.email.MailinatorInboxPage;
 import pages.transfer.internal.InternalTransferConfirmPage;
+import pages.transfer.internal.InternalTransferOtpPage;
 import pages.transfer.internal.InternalTransferPage;
 
 public class InternalTransferTest extends BaseTest {
     private static final long DEPOSIT_AMOUNT = 100_000;
-    private static final long TRANSFER_AMOUNT = 50_000;
+    private static final long TRANSFER_AMOUNT = 10_000;
     private static final long TRANSFER_FEE = 1100;
 
     @Test(description = "EB-05 Verify user can successfully perform an internal transfer using OTP")
@@ -34,8 +35,8 @@ public class InternalTransferTest extends BaseTest {
 
         User userA = new User(registerDataA.getUsername(), registerDataA.getPassword());
         User userB = new User(registerDataB.getUsername(), registerDataB.getPassword());
-        // User userA = new User("tram_test_a_85102", "123456789");
-        // User userB = new User("tram_test_b_29638", "123456789");
+        // User userA = new User("tram_test_a_29635", "1234567889");
+        // User userB = new User("tram_test_b_12760", "1234567889");
 
         rootTab = driver.getWindowHandle();
 
@@ -63,6 +64,9 @@ public class InternalTransferTest extends BaseTest {
         tabAdmin = openNewTab(ADMIN_BASE_URL);
         depositMoneyAndLogout(accountNumberB, DEPOSIT_AMOUNT);
 
+        // String accountNumberA = "100002347";
+        // String accountNumberB = "100002350";
+
         // PHASE 4: Login B again + verify balance >> transfer money
         tabB = openNewTab(USER_BASE_URL);
         DashboardPage dashboardPageB1 = loginAsUser(userB);
@@ -84,67 +88,56 @@ public class InternalTransferTest extends BaseTest {
         internalTransferPage.fillTransferForm(transferData);
         internalTransferPage.clickConfirmButton();
 
-        // InternalTransferConfirmPage confirmPage = transferPage.fillTransferInformation(transferData);
+        // confirm
+        InternalTransferConfirmPage confirmPage = new InternalTransferConfirmPage(driver);
 
-        // Assert.assertEquals(confirmPage.getSourceAccount(), accountNumberB);
-        // Assert.assertEquals(confirmPage.getTargetAccount(), accountNumberA);
-        // Assert.assertEquals(confirmPage.getAmount(), TRANSFER_AMOUNT);
-        // Assert.assertEquals(confirmPage.getFee(), TRANSFER_FEE);
-        // Assert.assertEquals(confirmPage.getTotalAmount(), TRANSFER_AMOUNT + TRANSFER_FEE);
-        //
-        // InternalTransferOtpPage otpPage = confirmPage.clickConfirm();
-        //
-        // // =========================
-        // // PHASE 7: Get OTP
-        // // =========================
-        // switchToTab(rootTab);
-        //
-        // tabOtpMail = openNewTab(MAILINATOR_URL);
-        //
-        // MailinatorHomePage otpHome = new MailinatorHomePage(driver);
-        // MailinatorInboxPage otpInbox = otpHome.openInbox(registerDataB.getEmail());
-        // otpInbox.waitForInboxLoaded();
-        //
-        // MailinatorEmailPage otpEmail = otpInbox.openLatestEmail();
-        // String otpCode = otpEmail.getOtpCode();
-        //
-        // // =========================
-        // // PHASE 8: Transfer
-        // // =========================
-        // switchToTab(tabB);
-        //
-        // otpPage.enterOtp(otpCode);
-        // otpPage.clickTransfer();
-        //
-        // Assert.assertTrue(otpPage.isTransferSuccessPopupDisplayed());
-        // Assert.assertEquals(otpPage.getTransferSuccessMessage(), "Chuyển khoản thành công");
-        //
-        // DashboardPage dashboardAfterTransfer = otpPage.goToAccounts();
-        // AccountDetailPage detailAfter = dashboardAfterTransfer.openAccountDetail(accountNumberB);
-        //
-        // long balanceAfter = detailAfter.getBalance();
-        //
-        // Assert.assertEquals(
-        //         balanceAfter,
-        //         balanceBefore - TRANSFER_AMOUNT - TRANSFER_FEE
-        // );
-        //
-        // // =========================
-        // // PHASE 9: Verify account A
-        // // =========================
-        // switchToTab(tabA);
-        //
-        // DashboardPage userADashboard = loginAsUser(userA);
-        // AccountDetailPage accountADetail = userADashboard.openAccountDetail(accountNumberA);
-        //
-        // long balanceAAfter = accountADetail.getBalance();
-        //
-        // Assert.assertEquals(balanceAAfter, TRANSFER_AMOUNT);
-        //
-    }
+        Assert.assertEquals(confirmPage.getSourceAccount(), accountNumberB);
+        Assert.assertEquals(confirmPage.getTargetAccount(), accountNumberA);
+        Assert.assertEquals(confirmPage.getAmount(), TRANSFER_AMOUNT);
 
-    private void activationBackToPreviousTab() {
-        java.util.List<String> windows = new java.util.ArrayList<>(driver.getWindowHandles());
-        driver.switchTo().window(windows.getLast());
+        InternalTransferOtpPage otpPage = confirmPage.clickConfirm();
+
+        // PHASE 5: Get OTP
+        tabOtpMail = openNewTab(MAILINATOR_URL);
+
+        MailinatorHomePage otpHome = new MailinatorHomePage(driver);
+        MailinatorInboxPage otpInbox = otpHome.openInbox(registerDataB.getEmail());
+        // MailinatorInboxPage otpInbox = otpHome.openInbox("tram_test_b_12760@@mailinator.com");
+
+        otpInbox.waitForInboxLoaded();
+        MailinatorEmailPage otpEmail = otpInbox.waitAndOpenEmailBySubject("Send Code OPT", 90);
+        String otpCode = otpEmail.getOtpCode();
+
+        // PHASE 6: Transfer
+        switchToTab(tabB);
+
+        otpPage.enterOtp(otpCode);
+        otpPage.clickTransfer();
+
+        Assert.assertTrue(otpPage.isTransferSuccessPopupDisplayed());
+        Assert.assertEquals(otpPage.getTransferSuccessMessage(), "Chuyển tiền thành công");
+        otpPage.closeSuccessPopup();
+
+        DashboardPage dashboardAfterTransfer = otpPage.goToAccounts();
+        AccountDetailPage detailAfter = dashboardAfterTransfer.openAccountDetail(accountNumberB);
+
+        long balanceAfter = detailAfter.getBalance();
+
+        Assert.assertEquals(
+                balanceAfter,
+                balanceBefore - TRANSFER_AMOUNT - TRANSFER_FEE
+        );
+
+        detailAfter.logout();
+        clearSession();
+
+        // PHASE 7: Verify account A
+        tabA = openNewTab(USER_BASE_URL);
+
+        DashboardPage userADashboard = loginAsUser(userA);
+        AccountDetailPage accountADetail = userADashboard.openAccountDetail(accountNumberA);
+
+        long balanceAAfter = accountADetail.getBalance();
+        Assert.assertEquals(balanceAAfter, TRANSFER_AMOUNT);
     }
 }

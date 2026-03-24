@@ -20,8 +20,8 @@ public class TestData {
 
         return new RegisterData(
                 username,
-                "1234567889",
-                "1234567889",
+                "123456789",
+                "123456789",
                 fullName,
                 "01234567899",
                 LocalDate.of(2000, 1, 1),
