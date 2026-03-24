@@ -17,6 +17,9 @@ public class InternalTransferOtpPage extends UserBasePage {
     private final By successPopupMsgLocator = By.xpath("//div[@id='primefacesmessagedlg']//*[contains(text(),'Chuyển tiền thành công')]");
     private final By closePopupButtonLocator = By.cssSelector("#primefacesmessagedlg a.ui-dialog-titlebar-close");
 
+    private final By toastMessageLocator = By.xpath("//div[@id='j_idt8:messages_container']//span[text()='Sai mã OTP']");
+    private final By inlineMessageLocator = By.xpath("//div[contains(@class, 'ui-messages')]//*[text()='Sai mã OTP']");
+
     public InternalTransferOtpPage(WebDriver driver) {
         super(driver);
     }
@@ -39,5 +42,21 @@ public class InternalTransferOtpPage extends UserBasePage {
 
     public void closeSuccessPopup() {
         click(closePopupButtonLocator);
+    }
+
+    public String getToastMessage() {
+        return getText(toastMessageLocator).trim();
+    }
+
+    public boolean isToastMessageDisplayed() {
+        return isDisplayed(toastMessageLocator);
+    }
+
+    public String getInlineErrorMessage() {
+        return getText(toastMessageLocator).trim();
+    }
+
+    public boolean isInlineErrorDisplayed() {
+        return isDisplayed(inlineMessageLocator);
     }
 }
