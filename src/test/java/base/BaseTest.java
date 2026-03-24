@@ -28,7 +28,10 @@ public class BaseTest {
     protected static final String USER_BASE_URL = "http://14.176.232.213:8080/EBankingWebsite";
     protected static final String ADMIN_BASE_URL = "http://14.176.232.213:8080/EBankingWebsite/faces/admin/Login.xhtml";
     protected static final String MAILINATOR_URL = "https://www.mailinator.com/";
-    protected String bankTab;
+
+    protected static final String ACTIVATION_EMAIL_SUBJECT = "Kich hoat tai khoan";
+    protected static final String OTP_EMAIL_SUBJECT = "Send Code OPT";
+    protected static final int OTP_TIMEOUT_SECONDS = 90;
 
     @BeforeMethod
     public void setUp() {
@@ -94,20 +97,21 @@ public class BaseTest {
         RegisterPage registerPage = goToRegister();
         registerPage.register(registerData);
 
-        String mailinatorTab = openNewTab(MAILINATOR_URL);
+        openNewTab(MAILINATOR_URL);
 
         MailinatorHomePage mailinatorHomePage = new MailinatorHomePage(driver);
         MailinatorInboxPage inboxPage = mailinatorHomePage.openInbox(registerData.getEmail());
         inboxPage.waitForInboxLoaded();
 
-        MailinatorEmailPage activationEmailPage = inboxPage.openEmailBySubject("Kich hoat tai khoan");
+        MailinatorEmailPage activationEmailPage = inboxPage.openEmailBySubject(ACTIVATION_EMAIL_SUBJECT);
         activationEmailPage.clickActivationLink();
-
         activationEmailPage.switchToNewestWindow();
-        String activationSuccessBTab = driver.getWindowHandle();
 
         AccountActivatedPage activatedPage = new AccountActivatedPage(driver);
-        Assert.assertTrue(activatedPage.isActivationSuccessDisplayed());
+        Assert.assertTrue(
+                activatedPage.isActivationSuccessDisplayed(),
+                "Activation success message is not displayed."
+        );
     }
 
     protected String openBankAccount(DashboardPage dashboardPage, AccountType accountType) {
@@ -122,7 +126,8 @@ public class BaseTest {
         );
         Assert.assertEquals(
                 openAccountPage.getOpenAccountSuccessPopupMessage(),
-                "Mở tài khoản thành công"
+                "Mở tài khoản thành công",
+                "Open account success message is incorrect."
         );
 
         openAccountPage.closeSuccessPopup();
@@ -140,6 +145,25 @@ public class BaseTest {
         return lastAccountAfter;
     }
 
+    protected String registerActivateLoginAndOpenAccount(RegisterData registerData, AccountType accountType) {
+        User user = new User(registerData.getUsername(), registerData.getPassword());
+
+        registerAndActivateUser(registerData);
+
+        DashboardPage dashboardPage = loginAsUser(user);
+        String accountNumber = openBankAccount(dashboardPage, accountType);
+
+        Assert.assertFalse(
+                accountNumber.isBlank(),
+                "New account number should not be blank."
+        );
+
+        dashboardPage.logout();
+        clearSession();
+
+        return accountNumber;
+    }
+
     protected void depositMoneyAndLogout(String accountNumber, long amount) {
         AdminDashboardPage adminDashboardPage = loginAsAdmin();
         DepositMoneyPage depositMoneyPage = adminDashboardPage.goToDepositMoney();
@@ -153,10 +177,24 @@ public class BaseTest {
         );
         Assert.assertEquals(
                 depositMoneyPage.getSuccessMessage(),
-                "nộp tiền thành công"
+                "nộp tiền thành công",
+                "Deposit success message is incorrect."
         );
 
         depositMoneyPage.logout();
+        clearSession();
+    }
+
+    protected String getOtpCodeFromMailinator(String email) {
+        openNewTab(MAILINATOR_URL);
+
+        MailinatorHomePage otpHome = new MailinatorHomePage(driver);
+        MailinatorInboxPage otpInbox = otpHome.openInbox(email);
+        otpInbox.waitForInboxLoaded();
+
+        MailinatorEmailPage otpEmail = otpInbox.waitAndOpenEmailBySubject(OTP_EMAIL_SUBJECT, OTP_TIMEOUT_SECONDS);
+
+        return otpEmail.getOtpCode();
     }
 
 }

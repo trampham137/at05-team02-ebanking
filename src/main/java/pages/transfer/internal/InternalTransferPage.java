@@ -63,8 +63,14 @@ public class InternalTransferPage extends UserBasePage {
         enterDescription(data.getDescription());
     }
 
-    public void clickConfirmButton() {
+    public InternalTransferConfirmPage clickConfirmButton() {
         click(confirmButtonLocator);
+        return new InternalTransferConfirmPage(driver);
+    }
+
+    public InternalTransferPage clickConfirmButtonExpectingError() {
+        click(confirmButtonLocator);
+        return this;
     }
 
 }
