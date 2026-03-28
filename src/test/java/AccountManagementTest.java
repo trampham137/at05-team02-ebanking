@@ -17,18 +17,17 @@ public class AccountManagementTest extends BaseTest {
 
         registerAndActivateUser(registerData);
 
-        // openNewTab(USER_BASE_URL);
         DashboardPage dashboardPage = loginAsUser(userData);
 
         // int beforeRowCount = dashboardPage.getAccountRowCount();
         String newAccountNumber = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
 
-        DashboardPage refreshedDashboardPage = new DashboardPage(driver);
-        int afterRowCount = refreshedDashboardPage.getAccountRowCount();
+        // TODO: reuse dashboardPage var >> DONE
+        int afterRowCount = dashboardPage.getAccountRowCount();
 
         Assert.assertEquals(afterRowCount, 1);
 
-        AccountDetailPage detailPage = refreshedDashboardPage.openAccountDetail(newAccountNumber);
+        AccountDetailPage detailPage = dashboardPage.openAccountDetail(newAccountNumber);
         Assert.assertEquals(detailPage.getBalance(), 0L);
     }
 

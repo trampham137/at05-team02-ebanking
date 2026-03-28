@@ -23,17 +23,9 @@ public class DepositMoneyPage extends AdminBasePage {
 
     public void depositToAccount(DepositData data) {
         type(receiverAccountTextboxLocator, data.getReceiverAccount());
-        type(amountTextboxLocator, data.getAmount());
+        type(amountTextboxLocator, String.valueOf(data.getAmount()));
         type(descriptionTextboxLocator, data.getDescription());
         click(confirmButtonLocator);
-    }
-
-    private void sleep(int millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public boolean isDepositSuccessful() {

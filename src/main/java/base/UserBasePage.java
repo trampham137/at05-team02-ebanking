@@ -7,7 +7,6 @@ import pages.account.OpenAccountPage;
 import pages.account.UserProfilePage;
 import pages.transfer.internal.InternalTransferPage;
 
-// TODO: Don't use page.sidebar().goToPage() >> DONE
 public class UserBasePage extends BasePage {
     public By getMenuItem(String menuName) {
         return By.xpath("//a[.//span[text()='" + menuName + "']]");

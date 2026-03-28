@@ -59,11 +59,11 @@ public class InternalTransferPage extends UserBasePage {
         enterReceiverAccount(data.getReceiverAccount());
         waitUntilReceiverNameLoaded();
 
-        enterAmount(Long.parseLong(data.getAmount()));
+        enterAmount(data.getAmount());
         enterDescription(data.getDescription());
     }
 
-    public InternalTransferConfirmPage clickConfirmButton() {
+    public InternalTransferConfirmPage clickConfirm() {
         click(confirmButtonLocator);
         return new InternalTransferConfirmPage(driver);
     }

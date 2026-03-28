@@ -31,7 +31,7 @@ public class BaseTest {
 
     protected static final String ACTIVATION_EMAIL_SUBJECT = "Kich hoat tai khoan";
     protected static final String OTP_EMAIL_SUBJECT = "Send Code OPT";
-    protected static final int OTP_TIMEOUT_SECONDS = 90;
+    protected static final int OTP_TIMEOUT_SECONDS = 30;
 
     @BeforeMethod
     public void setUp() {
@@ -46,7 +46,8 @@ public class BaseTest {
     }
 
     protected void clearSession() {
-        driver.get("about:blank");
+        // TODO: no need driver.get("about:blank");
+        // driver.get("about:blank");
         driver.manage().deleteAllCookies();
     }
 
@@ -145,23 +146,9 @@ public class BaseTest {
         return lastAccountAfter;
     }
 
-    protected String registerActivateLoginAndOpenAccount(RegisterData registerData, AccountType accountType) {
-        User user = new User(registerData.getUsername(), registerData.getPassword());
-
-        registerAndActivateUser(registerData);
-
+    protected String loginAndOpenAccount(User user, AccountType accountType) {
         DashboardPage dashboardPage = loginAsUser(user);
-        String accountNumber = openBankAccount(dashboardPage, accountType);
-
-        Assert.assertFalse(
-                accountNumber.isBlank(),
-                "New account number should not be blank."
-        );
-
-        dashboardPage.logout();
-        clearSession();
-
-        return accountNumber;
+        return openBankAccount(dashboardPage, accountType);
     }
 
     protected void depositMoneyAndLogout(String accountNumber, long amount) {

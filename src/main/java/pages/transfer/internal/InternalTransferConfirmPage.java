@@ -1,6 +1,7 @@
 package pages.transfer.internal;
 
 import base.UserBasePage;
+import models.InternalTransferData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -12,6 +13,7 @@ public class InternalTransferConfirmPage extends UserBasePage {
     private final By sourceAccountTextLocator = valueByLabel("Tài khoản gửi");
     private final By targetAccountTextLocator = valueByLabel("Tài khoản nhận");
     private final By amountTextLocator = valueByLabel("Số tiền chuyển khoản");
+    private final By DescriptionTextLocator = valueByLabel("Nội dung chuyển khoản");
     private final By confirmButtonLocator = By.cssSelector("input[type=submit]");
 
     public InternalTransferConfirmPage(WebDriver driver) {
@@ -28,6 +30,19 @@ public class InternalTransferConfirmPage extends UserBasePage {
 
     public long getAmount() {
         return parseCurrencyToLong(getText(amountTextLocator));
+    }
+
+    public String getDescription() {
+        return getText(DescriptionTextLocator);
+    }
+
+    public InternalTransferData getTransferData() {
+        return new InternalTransferData(
+                getSourceAccount(),
+                getTargetAccount(),
+                getAmount(),
+                getDescription()
+        );
     }
 
     public InternalTransferOtpPage clickConfirm() {

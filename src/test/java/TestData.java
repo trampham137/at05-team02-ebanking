@@ -12,9 +12,18 @@ public class TestData {
     }
 
     public static RegisterData validRegister(String prefix) {
-        long timestamp = System.currentTimeMillis() % 100000;
+        return validRegister(prefix, true);
+    }
 
-        String username = prefix + "_" + timestamp;
+    public static RegisterData validRegister(String prefix, boolean useTimestamp) {
+        String suffix = "";
+
+        if (useTimestamp) {
+            long timestamp = System.currentTimeMillis() % 100000;
+            suffix = "_" + timestamp;
+        }
+
+        String username = prefix + suffix;
         String email = username + "@mailinator.com";
         String fullName = "testing_note_" + username;
 

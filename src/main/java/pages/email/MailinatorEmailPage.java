@@ -31,7 +31,7 @@ public class MailinatorEmailPage extends BasePage {
         waitForFrameAndSwitch(emailBodyFrame);
 
         String bodyText = getText(By.tagName("body"));
-        System.out.println("Email body: " + bodyText);
+        // System.out.println("Email body: " + bodyText);
 
         switchToDefaultContent();
 
