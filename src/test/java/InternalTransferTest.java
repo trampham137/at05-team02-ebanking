@@ -1,5 +1,6 @@
 import base.BaseTest;
 import models.InternalTransferData;
+import models.OtpEmailData;
 import models.RegisterData;
 import models.User;
 import models.enums.AccountType;
@@ -7,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.account.AccountDetailPage;
 import pages.account.DashboardPage;
+import pages.email.MailinatorEmailPage;
 import pages.transfer.internal.InternalTransferConfirmPage;
 import pages.transfer.internal.InternalTransferOtpPage;
 import pages.transfer.internal.InternalTransferPage;
@@ -20,7 +22,7 @@ public class InternalTransferTest extends BaseTest {
 
 
     @Test(description = "EB-04 Verify user can successfully perform an internal transfer using OTP")
-    public void EB05_user_can_transfer_internally_successfully() {
+    public void EB04_user_can_transfer_internally_successfully() {
         RegisterData registerDataA = TestData.validRegister("tram_test_a");
         RegisterData registerDataB = TestData.validRegister("tram_test_b");
 
@@ -110,7 +112,7 @@ public class InternalTransferTest extends BaseTest {
 
         AccountDetailPage accountADetail = dashboardPage.openAccountDetail(accountNumberA);
         long balanceAAfter = accountADetail.getBalance();
-        
+
         Assert.assertEquals(
                 balanceAAfter,
                 TRANSFER_AMOUNT,
@@ -118,88 +120,116 @@ public class InternalTransferTest extends BaseTest {
         );
     }
 
-    // @Test(description = "EB-03 Verify OTP email is received and system shows error when an invalid OTP is entered")
-    // public void EB03_verify_invalid_otp_shows_error() {
-    //
-    //     RegisterData registerDataA = TestData.validRegister("tram_test_a");
-    //     RegisterData registerDataB = TestData.validRegister("tram_test_b");
-    //     // RegisterData registerDataA = TestData.validRegister("tram_test_a_9947", false);
-    //     // RegisterData registerDataB = TestData.validRegister("tram_test_b_94289", false);
-    //
-    //     User userA = new User(registerDataA.getUsername(), registerDataA.getPassword());
-    //     User userB = new User(registerDataB.getUsername(), registerDataB.getPassword());
-    //
-    //     // PHASE 1: Setup accounts
-    //     String accountNumberA = registerActivateLoginAndOpenAccount(registerDataA, AccountType.CURRENT_ACCOUNT);
-    //     String accountNumberB = registerActivateLoginAndOpenAccount(registerDataB, AccountType.CURRENT_ACCOUNT);
-    //     // String accountNumberA = "100002359";
-    //     // String accountNumberB = "100002358";
-    //
-    //
-    //     // PHASE 2: Deposit money to B
-    //     openNewTab(ADMIN_BASE_URL);
-    //     depositMoneyAndLogout(accountNumberB, DEPOSIT_AMOUNT);
-    //
-    //     // PHASE 3: User B transfer to OTP page
-    //     String userBTab = openNewTab(USER_BASE_URL);
-    //     DashboardPage dashboardPageB = loginAsUser(userB);
-    //
-    //     AccountDetailPage accountDetailPageB = dashboardPageB.openAccountDetail(accountNumberB);
-    //     long balanceBefore = accountDetailPageB.getBalance();
-    //
-    //     InternalTransferPage transferPage = accountDetailPageB.goToInternalTransfer();
-    //
-    //     InternalTransferData transferData = new InternalTransferData(
-    //             accountNumberB,
-    //             accountNumberA,
-    //             TRANSFER_AMOUNT,
-    //             "Invalid OTP test"
-    //     );
-    //
-    //     transferPage.fillTransferForm(transferData);
-    //     InternalTransferConfirmPage confirmPage = transferPage.clickConfirmButton();
-    //
-    //     InternalTransferOtpPage otpPage = confirmPage.clickConfirm();
-    //
-    //     // PHASE 4: Verify OTP email
-    //     String otpCode = getOtpCodeFromMailinator(registerDataB.getEmail());
-    //
-    //     // verify OTP format
-    //     // TODO: no need check 10 character
-    //     // Assert.assertEquals(otpCode.length(), 10, "OTP length should be 10 characters.");
-    //     Assert.assertTrue(
-    //             otpCode.matches("^[A-Z0-9]{10}$"),
-    //             "OTP format is invalid. Must be uppercase letters and digits."
-    //     );
-    //
-    //     // PHASE 5: Enter INVALID OTP
-    //     switchToTab(userBTab);
-    //
-    //     String invalidOtp = "AAAAAAAAAA";
-    //     otpPage.enterOtp(invalidOtp);
-    //     otpPage.clickTransfer();
-    //
-    //     // PHASE 6: Verify error
-    //     Assert.assertTrue(
-    //             otpPage.isToastMessageDisplayed(),
-    //             "Toast message is not displayed."
-    //     );
-    //
-    //     Assert.assertEquals(
-    //             otpPage.getToastMessage(),
-    //             "Sai mã OTP",
-    //             "Toast message is incorrect."
-    //     );
-    //
-    //     Assert.assertTrue(
-    //             otpPage.isInlineErrorDisplayed(),
-    //             "Inline error message is not displayed."
-    //     );
-    //
-    //     Assert.assertEquals(
-    //             otpPage.getInlineErrorMessage(),
-    //             "Sai mã OTP",
-    //             "Inline error message is incorrect."
-    //     );
-    // }
+    @Test(description = "EB-03 Verify OTP email is received and system shows error when an invalid OTP is entered")
+    public void EB03_verify_invalid_otp_shows_error() {
+        RegisterData registerDataA = TestData.validRegister("tram_test_a");
+        RegisterData registerDataB = TestData.validRegister("tram_test_b");
+
+        User userA = new User(registerDataA.getUsername(), registerDataA.getPassword());
+        User userB = new User(registerDataB.getUsername(), registerDataB.getPassword());
+
+        DashboardPage dashboardPage;
+
+        // PHASE 1: Register, activate, and open account for user A
+        registerAndActivateUser(registerDataA);
+        dashboardPage = loginAsUser(userA);
+        String accountNumberA = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
+        dashboardPage.logout();
+
+        // PHASE 2: Register, activate, and open account for user B
+        registerAndActivateUser(registerDataB);
+        dashboardPage = loginAsUser(userB);
+        String accountNumberB = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
+        dashboardPage.logout();
+        clearSession();
+
+        // PHASE 3: Admin deposits money into account B
+        openNewTab(ADMIN_BASE_URL);
+        depositMoneyAndLogout(accountNumberB, DEPOSIT_AMOUNT);
+
+        // PHASE 4: User B logs in and performs transfer until OTP page
+        String userBTab = openNewTab(USER_BASE_URL);
+        dashboardPage = loginAsUser(userB);
+
+        AccountDetailPage accountBDetail = dashboardPage.openAccountDetail(accountNumberB);
+        long balanceBeforeTransfer = accountBDetail.getBalance();
+
+        Assert.assertEquals(
+                balanceBeforeTransfer,
+                DEPOSIT_AMOUNT,
+                "Account B balance before transfer is incorrect."
+        );
+
+        InternalTransferData transferData = new InternalTransferData(
+                accountNumberB,
+                accountNumberA,
+                TRANSFER_AMOUNT,
+                "Invalid OTP test"
+        );
+
+        InternalTransferPage transferPage = accountBDetail.goToInternalTransfer();
+        transferPage.fillTransferForm(transferData);
+        InternalTransferConfirmPage confirmPage = transferPage.clickConfirm();
+
+        assertThat(confirmPage.getTransferData())
+                .usingRecursiveComparison()
+                .isEqualTo(transferData);
+
+        InternalTransferOtpPage otpPage = confirmPage.clickConfirm();
+
+        // PHASE 5: Verify OTP email
+        MailinatorEmailPage otpEmailPage = openOtpEmail(registerDataB.getEmail());
+        OtpEmailData otpEmailData = otpEmailPage.getOtpEmailData();
+
+        Assert.assertEquals(
+                otpEmailData.getSubject(),
+                OTP_EMAIL_SUBJECT,
+                "OTP email subject is incorrect."
+        );
+
+        Assert.assertTrue(
+                otpEmailData.getBody().contains("OTP: "),
+                "OTP email body should contain 'OTP: '"
+        );
+
+        Assert.assertTrue(
+                otpEmailData.getOtpCode().matches("^[A-Z0-9]{10}$"),
+                "OTP format is invalid."
+        );
+
+        // PHASE 6: Enter invalid OTP
+        switchToTab(userBTab);
+
+        String invalidOtp = "AAAAAAAAAA";
+        Assert.assertNotEquals(
+                invalidOtp,
+                otpEmailData.getOtpCode(),
+                "Invalid OTP must be different from actual OTP."
+        );
+
+        otpPage.submitOtp(invalidOtp);
+
+        // PHASE 7: Verify error messages
+        Assert.assertEquals(
+                otpPage.getToastMessage().trim(),
+                "Sai mã OTP",
+                "Toast message is incorrect."
+        );
+        Assert.assertEquals(
+                otpPage.getInlineErrorMessage().trim(),
+                "Sai mã OTP",
+                "Inline error message is incorrect."
+        );
+
+        // PHASE 8: Verify balance is unchanged
+        dashboardPage = otpPage.goToAccounts();
+        accountBDetail = dashboardPage.openAccountDetail(accountNumberB);
+        long balanceAfterFailed = accountBDetail.getBalance();
+
+        Assert.assertEquals(
+                balanceAfterFailed,
+                balanceBeforeTransfer,
+                "Balance should remain unchanged after failed transfer."
+        );
+    }
 }

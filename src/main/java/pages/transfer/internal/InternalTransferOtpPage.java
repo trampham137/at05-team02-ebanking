@@ -20,6 +20,14 @@ public class InternalTransferOtpPage extends UserBasePage {
         super(driver);
     }
 
+    public void enterOtp(String otp) {
+        type(otpInputLocator, otp);
+    }
+
+    public void clickTransfer() {
+        click(transferButtonLocator);
+    }
+
     public void submitOtp(String otp) {
         type(otpInputLocator, otp);
         click(transferButtonLocator);

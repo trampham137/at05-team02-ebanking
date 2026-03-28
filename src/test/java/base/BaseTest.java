@@ -146,11 +146,6 @@ public class BaseTest {
         return lastAccountAfter;
     }
 
-    protected String loginAndOpenAccount(User user, AccountType accountType) {
-        DashboardPage dashboardPage = loginAsUser(user);
-        return openBankAccount(dashboardPage, accountType);
-    }
-
     protected void depositMoneyAndLogout(String accountNumber, long amount) {
         AdminDashboardPage adminDashboardPage = loginAsAdmin();
         DepositMoneyPage depositMoneyPage = adminDashboardPage.goToDepositMoney();
@@ -172,16 +167,19 @@ public class BaseTest {
         clearSession();
     }
 
-    protected String getOtpCodeFromMailinator(String email) {
+    protected MailinatorEmailPage openOtpEmail(String email) {
         openNewTab(MAILINATOR_URL);
 
         MailinatorHomePage otpHome = new MailinatorHomePage(driver);
         MailinatorInboxPage otpInbox = otpHome.openInbox(email);
         otpInbox.waitForInboxLoaded();
 
-        MailinatorEmailPage otpEmail = otpInbox.waitAndOpenEmailBySubject(OTP_EMAIL_SUBJECT, OTP_TIMEOUT_SECONDS);
+        return otpInbox.waitAndOpenEmailBySubject(OTP_EMAIL_SUBJECT, OTP_TIMEOUT_SECONDS);
+    }
 
-        return otpEmail.getOtpCode();
+    protected String getOtpCodeFromMailinator(String email) {
+        MailinatorEmailPage otpEmail = openOtpEmail(email);
+        return otpEmail.getOtpEmailData().getOtpCode();
     }
 
 }
