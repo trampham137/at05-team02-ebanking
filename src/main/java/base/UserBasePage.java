@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import pages.account.DashboardPage;
 import pages.account.OpenAccountPage;
 import pages.account.UserProfilePage;
-import pages.transfer.internal.InternalTransferPage;
+import pages.transfer.InternalTransferPage;
 
 public class UserBasePage extends BasePage {
     public By getMenuItem(String menuName) {

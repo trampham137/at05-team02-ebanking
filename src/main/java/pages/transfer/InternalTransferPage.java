@@ -1,10 +1,9 @@
-package pages.transfer.internal;
+package pages.transfer;
 
 import base.UserBasePage;
 import models.InternalTransferData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utils.DriverUtils;
 
 public class InternalTransferPage extends UserBasePage {
     public InternalTransferPage(WebDriver driver) {
@@ -63,9 +62,9 @@ public class InternalTransferPage extends UserBasePage {
         enterDescription(data.getDescription());
     }
 
-    public InternalTransferConfirmPage clickConfirm() {
+    public TransferConfirmPage clickConfirm() {
         click(confirmButtonLocator);
-        return new InternalTransferConfirmPage(driver);
+        return new TransferConfirmPage(driver);
     }
 
     public InternalTransferPage clickConfirmButtonExpectingError() {

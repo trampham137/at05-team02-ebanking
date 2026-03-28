@@ -7,9 +7,9 @@ public class InterbankTransferData {
     private final String bank;
     private final String branch;
     private final String description;
-    private final String amount;
+    private final long amount;
 
-    public InterbankTransferData(String sourceAccount, String receiverAccount, String receiverName, String bank, String branch, String description, String amount) {
+    public InterbankTransferData(String sourceAccount, String receiverAccount, String receiverName, String bank, String branch, String description, long amount) {
         this.sourceAccount = sourceAccount;
         this.receiverAccount = receiverAccount;
         this.receiverName = receiverName;
@@ -43,7 +43,7 @@ public class InterbankTransferData {
         return description;
     }
 
-    public String getAmount() {
+    public long getAmount() {
         return amount;
     }
 }

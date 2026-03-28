@@ -1,11 +1,11 @@
-package pages.transfer.internal;
+package pages.transfer;
 
 import base.UserBasePage;
 import models.InternalTransferData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class InternalTransferConfirmPage extends UserBasePage {
+public class TransferConfirmPage extends UserBasePage {
     private By valueByLabel(String label) {
         return By.xpath("//td[label[text()='" + label + "']]/following-sibling::td/label");
     }
@@ -13,10 +13,10 @@ public class InternalTransferConfirmPage extends UserBasePage {
     private final By sourceAccountTextLocator = valueByLabel("Tài khoản gửi");
     private final By targetAccountTextLocator = valueByLabel("Tài khoản nhận");
     private final By amountTextLocator = valueByLabel("Số tiền chuyển khoản");
-    private final By DescriptionTextLocator = valueByLabel("Nội dung chuyển khoản");
+    private final By descriptionTextLocator = valueByLabel("Nội dung chuyển khoản");
     private final By confirmButtonLocator = By.cssSelector("input[type=submit]");
 
-    public InternalTransferConfirmPage(WebDriver driver) {
+    public TransferConfirmPage(WebDriver driver) {
         super(driver);
     }
 
@@ -33,7 +33,7 @@ public class InternalTransferConfirmPage extends UserBasePage {
     }
 
     public String getDescription() {
-        return getText(DescriptionTextLocator);
+        return getText(descriptionTextLocator);
     }
 
     public InternalTransferData getTransferData() {
@@ -45,8 +45,8 @@ public class InternalTransferConfirmPage extends UserBasePage {
         );
     }
 
-    public InternalTransferOtpPage clickConfirm() {
+    public TransferOtpPage clickConfirm() {
         click(confirmButtonLocator);
-        return new InternalTransferOtpPage(driver);
+        return new TransferOtpPage(driver);
     }
 }
