@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import pages.account.DashboardPage;
 import pages.account.OpenAccountPage;
 import pages.account.UserProfilePage;
+import pages.transfer.InterbankTransferPage;
 import pages.transfer.InternalTransferPage;
 
 public class UserBasePage extends BasePage {
@@ -38,6 +39,11 @@ public class UserBasePage extends BasePage {
     public InternalTransferPage goToInternalTransfer() {
         click(internalTransferMenuLocator);
         return new InternalTransferPage(driver);
+    }
+
+    public InterbankTransferPage goToInterbankTransfer() {
+        click(interbankTransferMenuLocator);
+        return new InterbankTransferPage(driver);
     }
 
     public UserProfilePage goToUserProfile() {

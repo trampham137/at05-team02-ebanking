@@ -6,6 +6,7 @@ import models.enums.Gender;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+// TODO: gop voi user
 public class RegisterData {
     private final String username;
     private final String password;

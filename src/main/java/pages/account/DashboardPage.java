@@ -63,13 +63,6 @@ public class DashboardPage extends UserBasePage {
         );
     }
 
-    public void waitForLatestRecentTransactionChanged(String previousDateTimeText) {
-        wait.until(driver -> {
-            String currentDateTime = getLatestRecentTransaction().getDateTimeText();
-            return !currentDateTime.equals(previousDateTimeText);
-        });
-    }
-
     private WebElement getLatestRecentTransactionRow() {
         WebElement transactionTable = find(recentTransactionPanelLocator);
         List<WebElement> rows = transactionTable.findElements(recentTransactionRowsLocator);

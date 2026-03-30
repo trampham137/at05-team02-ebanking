@@ -41,20 +41,15 @@ public class TestData {
         );
     }
 
-    // TODO: amount should be number >> DONE
-    public static DepositData validDeposit() {
-        return new DepositData("100002274", 100_000, "Testing");
+    public static InterbankTransferData validInterbankTransferFrom(String sourceAccount, long amount) {
+        return new InterbankTransferData(
+                sourceAccount,
+                "10001111",
+                "Nguyen Van A",
+                "Ngân hàng Đông Á",
+                "Chi nhánh Đà Nẵng",
+                "Interbank transfer test",
+                amount
+        );
     }
-
-    public static InternalTransferData validInternalTransfer() {
-        return new InternalTransferData("100002315", "100002316", 10000, "Testing");
-    }
-
-    public static InternalTransferData validInternalTransferFrom(String sourceAccount) {
-        return new InternalTransferData(sourceAccount, "100002270", 10000, "Testing");
-    }
-
-    // public static InternalTransferData internalTransfer(String sourceAccount, String targetAccount, String amount, String description) {
-    //     return new InternalTransferData(sourceAccount, targetAccount, amount, description); >> use this
-    // }
 }

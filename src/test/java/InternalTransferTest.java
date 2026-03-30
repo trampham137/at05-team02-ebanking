@@ -1,6 +1,7 @@
 import base.BaseTest;
 import models.*;
 import models.enums.AccountType;
+import models.enums.TransferType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.account.AccountDetailPage;
@@ -15,9 +16,10 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InternalTransferTest extends BaseTest {
+    // TODO: should be global constants >> DONE
     private static final long DEPOSIT_AMOUNT = 100_000;
     private static final long TRANSFER_AMOUNT = 10_000;
-    private static final long TRANSFER_FEE = 1100;
+    DashboardPage dashboardPage;
 
     @Test(description = "EB-03 Verify OTP email is received and system shows error when an invalid OTP is entered")
     public void EB03_verify_invalid_otp_shows_error() {
@@ -70,10 +72,11 @@ public class InternalTransferTest extends BaseTest {
         transferPage.fillTransferForm(transferData);
         TransferConfirmPage confirmPage = transferPage.clickConfirm();
 
+        // TODO: assertJ
         assertThat(confirmPage.getTransferData())
                 .usingRecursiveComparison()
                 .isEqualTo(transferData);
-
+        
         TransferOtpPage otpPage = confirmPage.clickConfirm();
 
         // PHASE 5: Verify OTP email
@@ -144,7 +147,6 @@ public class InternalTransferTest extends BaseTest {
         User userA = new User(registerDataA.getUsername(), registerDataA.getPassword());
         User userB = new User(registerDataB.getUsername(), registerDataB.getPassword());
 
-        DashboardPage dashboardPage;
 
         // PHASE 1: Register, activate, and open account for user A
         registerAndActivateUser(registerDataA);
@@ -241,7 +243,7 @@ public class InternalTransferTest extends BaseTest {
 
         Assert.assertEquals(
                 balanceAfterTransfer,
-                balanceBeforeTransfer - TRANSFER_AMOUNT - TRANSFER_FEE,
+                balanceBeforeTransfer - TRANSFER_AMOUNT - TransferType.INTERNAL.getFee(),
                 "Account B balance after transfer is incorrect."
         );
 
