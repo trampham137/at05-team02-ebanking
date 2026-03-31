@@ -1,6 +1,7 @@
 import base.BaseTest;
 import models.*;
 import models.enums.AccountType;
+import models.enums.TransferType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.account.AccountDetailPage;
@@ -60,6 +61,70 @@ public class InterbankTransferTest extends BaseTest {
         InterbankTransferPage interbankTransferPage = accountADetailBeforeTransfer.goToInterbankTransfer();
         interbankTransferPage.fillTransferForm(transferData);
         TransferConfirmPage confirmPage = interbankTransferPage.clickConfirm();
+
+        // PHASE 5: Get OTP
+        LocalDateTime transferConfirmStartTime = LocalDateTime.now();
+
+        TransferOtpPage otpPage = confirmPage.clickConfirm();
+
+        LocalDateTime transferConfirmEndTime = LocalDateTime.now();
+
+// Lấy OTP từ email
+        MailinatorEmailPage otpEmail = openOtpEmail(registerDataA.getEmail());
+        String otpCode = otpEmail.getOtpEmailData().getOtpCode();
+
+// PHASE 6: Submit OTP
+        switchToTab(userATab);
+
+        otpPage.submitOtp(otpCode);
+
+// Verify success
+        Assert.assertEquals(
+                otpPage.getTransferSuccessMessage(),
+                "Chuyển tiền thành công",
+                "Transfer success message is incorrect."
+        );
+
+        otpPage.closeSuccessPopup();
+
+// PHASE 7: Verify transaction
+        dashboardPage = otpPage.goToAccounts();
+
+        RecentTransactionData latestTransaction = dashboardPage.getLatestRecentTransaction();
+
+// Check thời gian
+        LocalDateTime actualMinute = latestTransaction.getDateTime().withSecond(0).withNano(0);
+        LocalDateTime startMinute = transferConfirmStartTime.minusMinutes(1).withSecond(0).withNano(0);
+        LocalDateTime endMinute = transferConfirmEndTime.plusMinutes(1).withSecond(0).withNano(0);
+
+        Assert.assertTrue(
+                !actualMinute.isBefore(startMinute) && !actualMinute.isAfter(endMinute),
+                "Latest transaction datetime is incorrect."
+        );
+
+// Check account
+        Assert.assertEquals(
+                latestTransaction.getAccountNumber(),
+                accountNumberA,
+                "Account number is incorrect."
+        );
+
+// Check amount (trừ tiền)
+        Assert.assertEquals(
+                latestTransaction.getAmountValue(),
+                -TRANSFER_AMOUNT,
+                "Transaction amount is incorrect."
+        );
+
+// PHASE 8: Verify balance
+        AccountDetailPage accountADetailAfter = dashboardPage.openAccountDetail(accountNumberA);
+        long balanceAfter = accountADetailAfter.getBalance();
+
+        Assert.assertEquals(
+                balanceAfter,
+                balanceBeforeTransfer - TRANSFER_AMOUNT - TransferType.INTERBANK.getFee(),
+                "Balance after interbank transfer is incorrect."
+        );
 
         // assertThat(confirmPage.getTransferData())
         //         .usingRecursiveComparison()
