@@ -2,6 +2,7 @@ import base.BaseTest;
 import models.RegisterData;
 import models.User;
 import models.enums.AccountType;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.account.AccountDetailPage;
 import pages.account.DashboardPage;
@@ -14,7 +15,7 @@ public class EB_06 extends BaseTest {
 
     public void EB_06_verify_required_fields_validation() {
         // Prepare test data
-        RegisterData registerData = TestData.validRegister("tram_test_required");
+        RegisterData registerData = TestData.validRegister("lyy_test");
         User user = new User(registerData.getUsername(), registerData.getPassword());
 
         // PHASE 1: Register + login
@@ -28,7 +29,13 @@ public class EB_06 extends BaseTest {
         AccountDetailPage accountDetailPage = dashboardPage.openAccountDetail(accountNumber);
         InternalTransferPage transferPage = accountDetailPage.goToInternalTransfer();
 
+        transferPage.clearReceiverAccount();
+
         // PHASE 4: Leave all fields empty and click Confirm
         transferPage.clickConfirm();
+
+        Assert.assertTrue(transferPage.isSourceAccountRequiredMessageDisplayed(), "Không hiển thị message: Mời chọn tài khoản");
+        Assert.assertTrue(transferPage.isAmountRequiredMessageDisplayed(), "Không hiển thị message: Nhập số tiền");
+        Assert.assertTrue(transferPage.isContentRequiredMessageDisplayed(), "Không hiển thị message: Nhập nội dung");
     }
 }

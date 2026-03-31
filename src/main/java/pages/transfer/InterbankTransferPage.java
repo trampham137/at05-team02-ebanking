@@ -27,6 +27,7 @@ public class InterbankTransferPage extends UserBasePage {
     private final By confirmButtonLocator = By.xpath("//td//input[@value='Chuyển tiền']");
     private final By availableBalanceLocator = By.xpath("//td[label[text()='Số dư khả dụng']]/following-sibling::td/label");
 
+
     public void selectSourceAccount(String sourceAccount) {
         click(sourceAccountDropdownLocator);
         click(dropdownOption(sourceAccount));
@@ -96,4 +97,6 @@ public class InterbankTransferPage extends UserBasePage {
         fillTransferForm(data);
         return clickConfirm();
     }
+
+
 }
