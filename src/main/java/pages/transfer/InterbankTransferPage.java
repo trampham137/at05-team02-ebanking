@@ -64,12 +64,7 @@ public class InterbankTransferPage extends UserBasePage {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        // TODO:
-
-        waitInVisible(dropdownOption(bank));
-
-        // By bodyLocator = By.tagName("body");
-        // click(bodyLocator);
+        // waitInVisible(dropdownOption(bank));
     }
 
     public void selectReceiverBranch(String branch) {

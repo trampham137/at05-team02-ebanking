@@ -68,34 +68,4 @@ public class InternalTransferPage extends UserBasePage {
         click(confirmButtonLocator);
         return new TransferConfirmPage(driver);
     }
-
-    public InternalTransferPage clickConfirmButtonExpectingError() {
-        click(confirmButtonLocator);
-        return this;
-    }
-
-    public void clearReceiverAccount() {
-        clear(receiverAccountTextboxLocator);
-    }
-
-    public By getRequiredMessageByText(String text) {
-        return By.xpath("//span[text()='" + text + "']");
-    }
-
-    public boolean isSourceAccountRequiredMessageDisplayed() {
-        return isDisplayed(getRequiredMessageByText("Mời chọn tài khoản"));
-    }
-
-    public boolean isAmountRequiredMessageDisplayed() {
-        return isDisplayed(getRequiredMessageByText("Nhập số tiền"));
-    }
-
-    public boolean isContentRequiredMessageDisplayed() {
-        return isDisplayed(getRequiredMessageByText("Nhập nội dung"));
-    }
-
-    public boolean isAmountGreaterThanBalanceMessageDisplayed() {
-        return isDisplayed(getRequiredMessageByText("Số tiền vượt mức"));
-    }
-
 }

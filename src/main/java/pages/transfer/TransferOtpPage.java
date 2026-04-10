@@ -17,6 +17,14 @@ public class TransferOtpPage extends UserBasePage {
         super(driver);
     }
 
+    public void waitForOtpPageLoaded() {
+        waitVisible(otpInputLocator);
+    }
+
+    public boolean isOtpInputDisplayed() {
+        return isDisplayed(otpInputLocator);
+    }
+
     public void submitOtp(String otp) {
         type(otpInputLocator, otp);
         click(transferButtonLocator);

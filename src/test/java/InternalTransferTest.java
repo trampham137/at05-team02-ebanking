@@ -13,74 +13,72 @@ import pages.transfer.InternalTransferPage;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class InternalTransferTest extends BaseTest {
-    // TODO: should be global constants >> DONE
     private static final long DEPOSIT_AMOUNT = 100_000;
     private static final long TRANSFER_AMOUNT = 10_000;
-    DashboardPage dashboardPage;
+
+    private static final RegisterData FIXED_SENDER = TestData.TRANSFER_SENDER;
+    private static final RegisterData FIXED_RECEIVER = TestData.TRANSFER_RECEIVER;
+
+    private DashboardPage dashboardPage;
 
     @Test(description = "EB-03 Verify OTP email is received and system shows error when an invalid OTP is entered")
     public void EB03_verify_invalid_otp_shows_error() {
-        RegisterData registerDataA = TestData.validRegister("tram_test_a");
-        RegisterData registerDataB = TestData.validRegister("tram_test_b");
-
-        User userA = new User(registerDataA.getUsername(), registerDataA.getPassword());
-        User userB = new User(registerDataB.getUsername(), registerDataB.getPassword());
-
-        DashboardPage dashboardPage;
-
-        // PHASE 1: Register, activate, and open account for user A
-        registerAndActivateUser(registerDataA);
-        dashboardPage = loginAsUser(userA);
-        String accountNumberA = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
+        // PHASE 1: Login fixed receiver and open account
+        dashboardPage = loginAsUser(FIXED_RECEIVER);
+        String receiverAccountNumber = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
         dashboardPage.logout();
 
-        // PHASE 2: Register, activate, and open account for user B
-        registerAndActivateUser(registerDataB);
-        dashboardPage = loginAsUser(userB);
-        String accountNumberB = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
+        // PHASE 2: Login fixed sender and open account
+        dashboardPage = loginAsUser(FIXED_SENDER);
+        String senderAccountNumber = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
         dashboardPage.logout();
         clearSession();
 
-        // PHASE 3: Admin deposits money into account B
+        // PHASE 3: Admin deposits money into sender account
         openNewTab(ADMIN_BASE_URL);
-        depositMoneyAndLogout(accountNumberB, DEPOSIT_AMOUNT);
+        depositMoneyAndLogout(senderAccountNumber, DEPOSIT_AMOUNT);
 
-        // PHASE 4: User B logs in and performs transfer until OTP page
-        String userBTab = openNewTab(USER_BASE_URL);
-        dashboardPage = loginAsUser(userB);
+        // PHASE 4: Sender logs in and performs transfer until OTP page
+        String senderTab = openNewTab(USER_BASE_URL);
+        dashboardPage = loginAsUser(FIXED_SENDER);
 
-        AccountDetailPage accountBDetail = dashboardPage.openAccountDetail(accountNumberB);
-        long balanceBeforeTransfer = accountBDetail.getBalance();
+        AccountDetailPage senderAccountDetail = dashboardPage.openAccountDetail(senderAccountNumber);
+        long balanceBeforeTransfer = senderAccountDetail.getBalance();
 
         Assert.assertEquals(
                 balanceBeforeTransfer,
                 DEPOSIT_AMOUNT,
-                "Account B balance before transfer is incorrect."
+                "Sender account balance before transfer is incorrect."
         );
 
         InternalTransferData transferData = new InternalTransferData(
-                accountNumberB,
-                accountNumberA,
+                senderAccountNumber,
+                receiverAccountNumber,
                 TRANSFER_AMOUNT,
                 "Invalid OTP test"
         );
 
-        InternalTransferPage transferPage = accountBDetail.goToInternalTransfer();
+        InternalTransferPage transferPage = senderAccountDetail.goToInternalTransfer();
         transferPage.fillTransferForm(transferData);
         TransferConfirmPage confirmPage = transferPage.clickConfirm();
 
-        // TODO: assertJ
-        assertThat(confirmPage.getTransferData())
-                .usingRecursiveComparison()
-                .isEqualTo(transferData);
+        Assert.assertEquals(
+                confirmPage.getTransferData(),
+                transferData,
+                "Transfer confirm data is incorrect."
+        );
 
         TransferOtpPage otpPage = confirmPage.clickConfirm();
 
+        otpPage.waitForOtpPageLoaded();
+        Assert.assertTrue(
+                otpPage.isOtpInputDisplayed(),
+                "OTP input is not displayed."
+        );
+
         // PHASE 5: Verify OTP email
-        MailinatorEmailPage otpEmailPage = openOtpEmail(registerDataB.getEmail());
+        MailinatorEmailPage otpEmailPage = openOtpEmail(FIXED_SENDER.getEmail());
         OtpEmailData otpEmailData = otpEmailPage.getOtpEmailData();
 
         Assert.assertEquals(
@@ -100,12 +98,12 @@ public class InternalTransferTest extends BaseTest {
         );
 
         // PHASE 6: Enter invalid OTP
-        switchToTab(userBTab);
+        switchToTab(senderTab);
 
         String invalidOtp = "AAAAAAAAAA";
         Assert.assertNotEquals(
-                invalidOtp,
                 otpEmailData.getOtpCode(),
+                invalidOtp,
                 "Invalid OTP must be different from actual OTP."
         );
 
@@ -125,11 +123,11 @@ public class InternalTransferTest extends BaseTest {
 
         // PHASE 8: Verify balance is unchanged
         dashboardPage = otpPage.goToAccounts();
-        accountBDetail = dashboardPage.openAccountDetail(accountNumberB);
-        long balanceAfterFailed = accountBDetail.getBalance();
+        senderAccountDetail = dashboardPage.openAccountDetail(senderAccountNumber);
+        long balanceAfterFailedTransfer = senderAccountDetail.getBalance();
 
         Assert.assertEquals(
-                balanceAfterFailed,
+                balanceAfterFailedTransfer,
                 balanceBeforeTransfer,
                 "Balance should remain unchanged after failed transfer."
         );
@@ -137,25 +135,22 @@ public class InternalTransferTest extends BaseTest {
 
     @Test(description = "Verify user can complete an internal transfer via OTP and the transaction is recorded in GIAO DỊCH GẦN NHẤT.")
     public void EB04_user_can_transfer_internally_successfully() {
-        RegisterData registerDataA = TestData.validRegister("user_a");
-        RegisterData registerDataB = TestData.validRegister("user_b");
+        RegisterData userARegisterData = TestData.validRegister("user_a");
+        RegisterData userBRegisterData = TestData.validRegister("user_b");
         // RegisterData registerDataA = TestData.validRegister("user_a_101437550", false);
         // RegisterData registerDataB = TestData.validRegister("user_b_101446376", false);
         // String accountNumberA = "100002424";
         // String accountNumberB = "100002426";
 
-        User userA = new User(registerDataA.getUsername(), registerDataA.getPassword());
-        User userB = new User(registerDataB.getUsername(), registerDataB.getPassword());
-
         // PHASE 1: Register, activate, and open account for user A
-        registerAndActivateUser(registerDataA);
-        dashboardPage = loginAsUser(userA);
+        registerAndActivateUser(userARegisterData);
+        dashboardPage = loginAsUser(userARegisterData);
         String accountNumberA = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
         dashboardPage.logout();
 
         // PHASE 2: Register, activate, and open account for user B
-        registerAndActivateUser(registerDataB);
-        dashboardPage = loginAsUser(userB);
+        registerAndActivateUser(userBRegisterData);
+        dashboardPage = loginAsUser(userBRegisterData);
         String accountNumberB = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
         dashboardPage.logout();
         clearSession();
@@ -166,10 +161,10 @@ public class InternalTransferTest extends BaseTest {
 
         // PHASE 4: User B logs in and performs internal transfer
         String userBTab = openNewTab(USER_BASE_URL);
-        dashboardPage = loginAsUser(userB);
+        dashboardPage = loginAsUser(userBRegisterData);
 
-        AccountDetailPage accountBDetailBeforeTransfer = dashboardPage.openAccountDetail(accountNumberB);
-        long balanceBeforeTransfer = accountBDetailBeforeTransfer.getBalance();
+        AccountDetailPage userBAccountDetailBeforeTransfer = dashboardPage.openAccountDetail(accountNumberB);
+        long balanceBeforeTransfer = userBAccountDetailBeforeTransfer.getBalance();
 
         Assert.assertEquals(
                 balanceBeforeTransfer,
@@ -184,7 +179,7 @@ public class InternalTransferTest extends BaseTest {
                 "Internal transfer test"
         );
 
-        InternalTransferPage internalTransferPage = accountBDetailBeforeTransfer.goToInternalTransfer();
+        InternalTransferPage internalTransferPage = userBAccountDetailBeforeTransfer.goToInternalTransfer();
         internalTransferPage.fillTransferForm(transferData);
         TransferConfirmPage confirmPage = internalTransferPage.clickConfirm();
 
@@ -201,7 +196,13 @@ public class InternalTransferTest extends BaseTest {
         TransferOtpPage otpPage = confirmPage.clickConfirm();
         LocalDateTime transferConfirmEndTime = LocalDateTime.now();
 
-        MailinatorEmailPage otpEmail = openOtpEmail(registerDataB.getEmail());
+        otpPage.waitForOtpPageLoaded();
+        Assert.assertTrue(
+                otpPage.isOtpInputDisplayed(),
+                "OTP input is not displayed."
+        );
+
+        MailinatorEmailPage otpEmail = openOtpEmail(userBRegisterData.getEmail());
         String otpCode = otpEmail.getOtpEmailData().getOtpCode();
 
         // PHASE 6: Submit OTP and verify sender balance + transaction log
@@ -241,8 +242,8 @@ public class InternalTransferTest extends BaseTest {
                 "Latest transaction amount is incorrect."
         );
 
-        AccountDetailPage accountBDetailAfterTransfer = dashboardPage.openAccountDetail(accountNumberB);
-        long balanceAfterTransfer = accountBDetailAfterTransfer.getBalance();
+        AccountDetailPage userBAccountDetailAfterTransfer = dashboardPage.openAccountDetail(accountNumberB);
+        long balanceAfterTransfer = userBAccountDetailAfterTransfer.getBalance();
 
         Assert.assertEquals(
                 balanceAfterTransfer,
@@ -250,14 +251,14 @@ public class InternalTransferTest extends BaseTest {
                 "Account B balance after transfer is incorrect."
         );
 
-        accountBDetailAfterTransfer.logout();
+        userBAccountDetailAfterTransfer.logout();
 
         // PHASE 7: Verify receiver account A received money
         openNewTab(USER_BASE_URL);
-        dashboardPage = loginAsUser(userA);
+        dashboardPage = loginAsUser(userARegisterData);
 
-        AccountDetailPage accountADetail = dashboardPage.openAccountDetail(accountNumberA);
-        long balanceAAfter = accountADetail.getBalance();
+        AccountDetailPage userAAccountDetail = dashboardPage.openAccountDetail(accountNumberA);
+        long balanceAAfter = userAAccountDetail.getBalance();
 
         Assert.assertEquals(
                 balanceAAfter,

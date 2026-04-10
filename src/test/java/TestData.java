@@ -7,11 +7,36 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class TestData {
-    public static final User STANDARD_USER = new User("lyy_test", "123456789");
-    public static final User ADMIN_USER = new User("1", "admin");
-
     private TestData() {
     }
+
+    public static final User ADMIN_USER = new User("1", "admin");
+
+    public static final RegisterData TRANSFER_SENDER = new RegisterData(
+            "transfer_sender",
+            "123456789",
+            "123456789",
+            "Transfer Sender",
+            "01234567899",
+            LocalDate.of(1998, 1, 1),
+            Gender.FEMALE,
+            City.DA_NANG,
+            "01234567899",
+            "transfer_sender@mailinator.com"
+    );
+
+    public static final RegisterData TRANSFER_RECEIVER = new RegisterData(
+            "transfer_receiver",
+            "123456789",
+            "123456789",
+            "Transfer Receiver",
+            "01234567899",
+            LocalDate.of(1999, 1, 1),
+            Gender.FEMALE,
+            City.DA_NANG,
+            "01234567899",
+            "transfer_receiver@mailinator.com"
+    );
 
     public static RegisterData validRegister(String prefix) {
         return validRegister(prefix, true);
@@ -23,7 +48,7 @@ public class TestData {
 
         String username = prefix + suffix;
         String email = username + "@mailinator.com";
-        String fullName = "fullName_" + username;
+        String fullName = "Test User " + username;
 
         return new RegisterData(
                 username,
