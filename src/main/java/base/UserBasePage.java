@@ -1,10 +1,10 @@
 package base;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import pages.account.DashboardPage;
 import pages.account.OpenAccountPage;
-import pages.account.UserProfilePage;
 import pages.transfer.InterbankTransferPage;
 import pages.transfer.InternalTransferPage;
 
@@ -25,32 +25,31 @@ public class UserBasePage extends BasePage {
         super(driver);
     }
 
-
+    @Step("Navigate to Accounts page")
     public DashboardPage goToAccounts() {
         click(accountMenuLocator);
         return new DashboardPage(driver);
     }
 
+    @Step("Navigate to Open Account page")
     public OpenAccountPage goToOpenAccount() {
         click(openAccountMenuLocator);
         return new OpenAccountPage(driver);
     }
 
+    @Step("Navigate to Internal Transfer page")
     public InternalTransferPage goToInternalTransfer() {
         click(internalTransferMenuLocator);
         return new InternalTransferPage(driver);
     }
 
+    @Step("Navigate to Interbank Transfer page")
     public InterbankTransferPage goToInterbankTransfer() {
         click(interbankTransferMenuLocator);
         return new InterbankTransferPage(driver);
     }
 
-    public UserProfilePage goToUserProfile() {
-        click(userProfileMenuLocator);
-        return new UserProfilePage(driver);
-    }
-
+    @Step("Logout user account")
     public void logout() {
         click(logoutMenuLocator);
     }

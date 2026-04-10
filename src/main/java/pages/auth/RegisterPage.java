@@ -1,6 +1,7 @@
 package pages.auth;
 
 import base.UserBasePage;
+import io.qameta.allure.Step;
 import models.RegisterData;
 import models.enums.City;
 import models.enums.Gender;
@@ -34,6 +35,7 @@ public class RegisterPage extends UserBasePage {
         super(driver);
     }
 
+    @Step("Register new user with username: {data.username}, email: {data.email}")
     public void register(RegisterData data) {
         type(usernameTextboxLocator, data.getUsername());
         type(passwordTextboxLocator, data.getPassword());

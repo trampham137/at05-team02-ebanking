@@ -2,6 +2,7 @@ package pages.account;
 
 import base.BasePage;
 import base.UserBasePage;
+import io.qameta.allure.Step;
 import models.RecentTransactionData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -27,10 +28,12 @@ public class DashboardPage extends UserBasePage {
         super(driver);
     }
 
+    @Step("Get total account row count")
     public int getAccountRowCount() {
         return find(accountPanelLocator).findElements(accountRowsLocator).size();
     }
 
+    @Step("Get last account number")
     public String getLastAccountNumber() {
         List<WebElement> rows = find(accountPanelLocator).findElements(accountRowsLocator);
         if (rows.isEmpty()) {
@@ -41,12 +44,14 @@ public class DashboardPage extends UserBasePage {
         return rows.getLast().findElements(By.tagName("td")).getFirst().getText().trim();
     }
 
+    @Step("Open account detail for account number: {accountNumber}")
     public AccountDetailPage openAccountDetail(String accountNumber) {
         click(By.linkText(accountNumber));
         return new AccountDetailPage(driver);
     }
 
     // transaction log
+    @Step("Get latest recent transaction")
     public RecentTransactionData getLatestRecentTransaction() {
         WebElement firstRow = getLatestRecentTransactionRow();
         List<WebElement> cells = firstRow.findElements(By.tagName("td"));
@@ -73,5 +78,4 @@ public class DashboardPage extends UserBasePage {
 
         return rows.getFirst();
     }
-
 }

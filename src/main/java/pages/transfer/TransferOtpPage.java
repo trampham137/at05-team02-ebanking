@@ -1,6 +1,7 @@
 package pages.transfer;
 
 import base.UserBasePage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -17,31 +18,38 @@ public class TransferOtpPage extends UserBasePage {
         super(driver);
     }
 
+    @Step("Wait for OTP page loaded")
     public void waitForOtpPageLoaded() {
         waitVisible(otpInputLocator);
     }
 
+    @Step("Check OTP input displayed")
     public boolean isOtpInputDisplayed() {
         return isDisplayed(otpInputLocator);
     }
 
+    @Step("Submit OTP code")
     public void submitOtp(String otp) {
         type(otpInputLocator, otp);
         click(transferButtonLocator);
     }
 
+    @Step("Close transfer success popup")
     public void closeSuccessPopup() {
         click(closePopupButtonLocator);
     }
 
+    @Step("Get transfer success message")
     public String getTransferSuccessMessage() {
         return getText(successPopupMsgLocator).trim();
     }
 
+    @Step("Get OTP toast error message")
     public String getToastMessage() {
         return getText(toastMessageLocator);
     }
 
+    @Step("Get OTP inline error message")
     public String getInlineErrorMessage() {
         return getText(inlineMessageLocator);
     }

@@ -1,6 +1,7 @@
 package pages.admin;
 
 import base.BasePage;
+import io.qameta.allure.Step;
 import models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,13 +16,10 @@ public class AdminLoginPage extends BasePage {
         super(driver);
     }
 
+    @Step("Login admin with username: {username}")
     public void login(String username, String password) {
         type(usernameTextboxLocator, username);
         type(passwordTextboxLocator, password);
         click(loginButtonLocator);
-    }
-
-    public void login(User user) {
-        login(user.getUsername(), user.getPassword());
     }
 }

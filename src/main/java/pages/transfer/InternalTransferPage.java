@@ -1,6 +1,7 @@
 package pages.transfer;
 
 import base.UserBasePage;
+import io.qameta.allure.Step;
 import models.InternalTransferData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -28,37 +29,45 @@ public class InternalTransferPage extends UserBasePage {
 
     private final By toastMessagesLocator = By.xpath("//div[@id='j_idt8:messages_container']//span[@class='ui-growl-title']");
 
+    @Step("Select source account: {sourceAccount}")
     public void selectSourceAccount(String sourceAccount) {
         click(sourceAccountDropdownLocator);
         click(dropdownOption(sourceAccount));
     }
 
+    @Step("Wait until available balance loaded")
     public void waitUntilAvailableBalanceLoaded() {
         waitVisible(availableBalanceLocator);
         waitUntilTextNotEmpty(availableBalanceLocator);
     }
 
+    @Step("Enter receiver account: {receiverAccount}")
     public void enterReceiverAccount(String receiverAccount) {
         type(receiverAccountTextboxLocator, receiverAccount);
     }
 
+    @Step("Clear receiver account")
     public void clearReceiverAccount() {
         clear(receiverAccountTextboxLocator);
     }
 
+    @Step("Wait until receiver name loaded")
     public void waitUntilReceiverNameLoaded() {
         waitVisible(receiverNameLocator);
         waitUntilTextNotEmpty(receiverNameLocator);
     }
 
+    @Step("Enter transfer amount: {amount}")
     public void enterAmount(long amount) {
         type(amountTextboxLocator, String.valueOf(amount));
     }
 
+    @Step("Enter transfer description: {description}")
     public void enterDescription(String description) {
         type(descriptionTextboxLocator, description);
     }
 
+    @Step("Fill internal transfer form")
     public void fillTransferForm(InternalTransferData data) {
         selectSourceAccount(data.getSourceAccount());
         waitUntilAvailableBalanceLoaded();
@@ -71,23 +80,20 @@ public class InternalTransferPage extends UserBasePage {
         enterDescription(data.getDescription());
     }
 
+    @Step("Click transfer confirm button")
     public TransferConfirmPage clickConfirm() {
         click(confirmButtonLocator);
         return new TransferConfirmPage(driver);
     }
 
+    @Step("Check still on transfer page")
     public boolean isStillOnTransferPage() {
         return isDisplayed(confirmButtonLocator);
     }
 
+    @Step("Get toast messages")
     public List<String> getToastMessages() {
         waitVisible(toastMessagesLocator);
-
-        // List<String> messages = new ArrayList<>();
-        // for (WebElement e : driver.findElements(toastMessagesLocator)) {
-        //     messages.add(e.getText());
-        // }
-        // return messages;
 
         return driver.findElements(toastMessagesLocator)
                 .stream()
@@ -95,18 +101,22 @@ public class InternalTransferPage extends UserBasePage {
                 .collect(Collectors.toList());
     }
 
+    @Step("Check source account field invalid")
     public boolean isSourceAccountInvalid() {
         return getAttribute(sourceAccountDropdownLocator, "class").contains("ui-state-error");
     }
 
+    @Step("Check receiver account field invalid")
     public boolean isReceiverAccountInvalid() {
         return getAttribute(receiverAccountTextboxLocator, "class").contains("ui-state-error");
     }
 
+    @Step("Check amount field invalid")
     public boolean isAmountInvalid() {
         return getAttribute(amountTextboxLocator, "class").contains("ui-state-error");
     }
 
+    @Step("Check description field invalid")
     public boolean isDescriptionInvalid() {
         return getAttribute(descriptionTextboxLocator, "class").contains("ui-state-error");
     }

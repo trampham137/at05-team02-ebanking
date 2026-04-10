@@ -1,5 +1,6 @@
 package base;
 
+import io.qameta.allure.Step;
 import models.DepositData;
 import models.RegisterData;
 import models.User;
@@ -45,40 +46,47 @@ public class BaseTest {
         DriverUtils.quitDriver();
     }
 
+    @Step("Clear browser session")
     protected void clearSession() {
         // TODO: no need driver.get("about:blank");
         // driver.get("about:blank");
         driver.manage().deleteAllCookies();
     }
 
+    @Step("Open user login page")
     protected LoginPage openUserLoginPage() {
         driver.get(USER_BASE_URL);
         return new LoginPage(driver);
     }
 
+    @Step("Open admin login page")
     protected AdminLoginPage openAdminLoginPage() {
         driver.get(ADMIN_BASE_URL);
         return new AdminLoginPage(driver);
     }
 
+    @Step("Login as user")
     protected DashboardPage loginAsUser(User user) {
         LoginPage loginPage = openUserLoginPage();
         loginPage.login(user);
         return new DashboardPage(driver);
     }
 
+    @Step("Login as admin")
     protected AdminDashboardPage loginAsAdmin() {
         AdminLoginPage adminLoginPage = openAdminLoginPage();
         adminLoginPage.login("1", "admin");
         return new AdminDashboardPage(driver);
     }
 
+    @Step("Go to register page")
     protected RegisterPage goToRegister() {
         LoginPage loginPage = openUserLoginPage();
         loginPage.clickRegisterLink();
         return new RegisterPage(driver);
     }
 
+    @Step("Open new tab: {url}")
     protected String openNewTab(String url) {
         driver.switchTo().newWindow(WindowType.TAB);
         driver.get(url);
@@ -94,6 +102,7 @@ public class BaseTest {
     }
 
     // reusable business flows
+    @Step("Register and activate user account")
     protected void registerAndActivateUser(RegisterData registerData) {
         RegisterPage registerPage = goToRegister();
         registerPage.register(registerData);
@@ -115,6 +124,7 @@ public class BaseTest {
         );
     }
 
+    @Step("Open new bank account with type: {accountType}")
     protected String openBankAccount(DashboardPage dashboardPage, AccountType accountType) {
         String lastAccountBefore = dashboardPage.getLastAccountNumber();
 
@@ -146,6 +156,7 @@ public class BaseTest {
         return lastAccountAfter;
     }
 
+    @Step("Deposit money to account: {accountNumber}, amount: {amount}")
     protected void depositMoneyAndLogout(String accountNumber, long amount) {
         AdminDashboardPage adminDashboardPage = loginAsAdmin();
         DepositMoneyPage depositMoneyPage = adminDashboardPage.goToDepositMoney();
@@ -167,6 +178,7 @@ public class BaseTest {
         clearSession();
     }
 
+    @Step("Open OTP email for: {email}")
     protected MailinatorEmailPage openOtpEmail(String email) {
         openNewTab(MAILINATOR_URL);
 
@@ -177,9 +189,9 @@ public class BaseTest {
         return otpInbox.waitAndOpenEmailBySubject(OTP_EMAIL_SUBJECT, OTP_TIMEOUT_SECONDS);
     }
 
+    @Step("Get OTP code from Mailinator for: {email}")
     protected String getOtpCodeFromMailinator(String email) {
         MailinatorEmailPage otpEmail = openOtpEmail(email);
         return otpEmail.getOtpEmailData().getOtpCode();
     }
-
 }

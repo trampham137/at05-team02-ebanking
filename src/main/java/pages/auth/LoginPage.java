@@ -2,6 +2,7 @@ package pages.auth;
 
 import base.BasePage;
 import base.UserBasePage;
+import io.qameta.allure.Step;
 import models.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +18,7 @@ public class LoginPage extends UserBasePage {
         super(driver);
     }
 
+    @Step("Login with username: {username}")
     public void login(String username, String password) {
         type(usernameTextboxLocator, username);
         type(passwordTextboxLocator, password);
@@ -27,6 +29,7 @@ public class LoginPage extends UserBasePage {
         login(user.getUsername(), user.getPassword());
     }
 
+    @Step("Click register link")
     public void clickRegisterLink() {
         click(registerLink);
     }

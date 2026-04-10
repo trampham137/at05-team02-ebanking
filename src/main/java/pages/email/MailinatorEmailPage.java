@@ -1,6 +1,7 @@
 package pages.email;
 
 import base.BasePage;
+import io.qameta.allure.Step;
 import models.OtpEmailData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -18,11 +19,13 @@ public class MailinatorEmailPage extends BasePage {
         super(driver);
     }
 
+    @Step("Get email subject")
     public String getSubject() {
         waitVisible(subjectLocator);
         return getText(subjectLocator).trim();
     }
 
+    @Step("Get email body")
     public String getBody() {
         waitVisible(bodyFrameLocator);
         waitForFrameAndSwitch(bodyFrameLocator);
@@ -33,6 +36,7 @@ public class MailinatorEmailPage extends BasePage {
         return body;
     }
 
+    @Step("Extract OTP code from email body")
     public String getOtpCode(String body) {
         Pattern pattern = Pattern.compile("OTP:\\s*([A-Z0-9]+)");
         Matcher matcher = pattern.matcher(body);
@@ -44,6 +48,7 @@ public class MailinatorEmailPage extends BasePage {
         throw new RuntimeException("OTP code not found in email body");
     }
 
+    @Step("Get OTP email data")
     public OtpEmailData getOtpEmailData() {
         String subject = getSubject();
         String body = getBody();
@@ -52,6 +57,7 @@ public class MailinatorEmailPage extends BasePage {
         return new OtpEmailData(subject, body, otpCode);
     }
 
+    @Step("Click activation link in email")
     public void clickActivationLink() {
         waitVisible(bodyFrameLocator);
         waitForFrameAndSwitch(bodyFrameLocator);
