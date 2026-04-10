@@ -64,6 +64,10 @@ public class BasePage {
         }
     }
 
+    protected String getAttribute(By locator, String attributeName) {
+        return driver.findElement(locator).getAttribute(attributeName);
+    }
+
     protected long parseCurrencyToLong(String text) {
         String digits = text.replaceAll("[^0-9-]", "");
         if (digits.isBlank() || digits.equals("-")) {

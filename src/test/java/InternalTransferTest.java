@@ -12,6 +12,7 @@ import pages.transfer.TransferOtpPage;
 import pages.transfer.InternalTransferPage;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class InternalTransferTest extends BaseTest {
     private static final long DEPOSIT_AMOUNT = 100_000;
@@ -133,7 +134,7 @@ public class InternalTransferTest extends BaseTest {
         );
     }
 
-    @Test(description = "Verify user can complete an internal transfer via OTP and the transaction is recorded in GIAO DỊCH GẦN NHẤT.")
+    @Test(description = "EB-04 Verify user can complete an internal transfer via OTP and the transaction is recorded in GIAO DỊCH GẦN NHẤT.")
     public void EB04_user_can_transfer_internally_successfully() {
         RegisterData userARegisterData = TestData.validRegister("user_a");
         RegisterData userBRegisterData = TestData.validRegister("user_b");
@@ -264,6 +265,119 @@ public class InternalTransferTest extends BaseTest {
                 balanceAAfter,
                 TRANSFER_AMOUNT,
                 "Account A balance after receiving transfer is incorrect."
+        );
+    }
+
+    @Test(description = "EB-05 Verify validation is displayed when required fields are empty")
+    public void EB05_verify_required_fields_when_empty() {
+        dashboardPage = loginAsUser(FIXED_SENDER);
+        InternalTransferPage transferPage = dashboardPage.goToInternalTransfer();
+
+        // Leave all required fields empty and click confirm
+        transferPage.clearReceiverAccount();
+        transferPage.clickConfirm();
+
+        // Verify system does not navigate to confirmation page
+        Assert.assertTrue(
+                transferPage.isStillOnTransferPage(),
+                "System should not navigate to confirmation page."
+        );
+
+        // Verify all required fields are highlighted invalid
+        Assert.assertTrue(
+                transferPage.isSourceAccountInvalid(),
+                "Source account field is not highlighted invalid."
+        );
+
+        Assert.assertTrue(
+                transferPage.isReceiverAccountInvalid(),
+                "Receiver account field is not highlighted invalid."
+        );
+
+        Assert.assertTrue(
+                transferPage.isAmountInvalid(),
+                "Amount field is not highlighted invalid."
+        );
+
+        Assert.assertTrue(
+                transferPage.isDescriptionInvalid(),
+                "Description field is not highlighted invalid."
+        );
+
+        // Verify all validation toast messages are displayed
+        List<String> actualToastMessages = transferPage.getToastMessages();
+
+        Assert.assertTrue(
+                actualToastMessages.contains("Mời chọn tài khoản"),
+                "Toast message 'Mời chọn tài khoản' is not displayed."
+        );
+
+        Assert.assertTrue(
+                actualToastMessages.contains("Nhập số tiền"),
+                "Toast message 'Nhập số tiền' is not displayed."
+        );
+
+        // Count how many times the toast message appears
+        Assert.assertEquals(
+                java.util.Collections.frequency(actualToastMessages, "Nhập nội dung"),
+                2,
+                "Toast message 'Nhập nội dung' should be displayed twice."
+        );
+    }
+
+    @Test(description = "EB-06 Verify system prevents internal transfer when transfer amount is greater than available balance")
+    public void EB06_verify_transfer_amount_greater_than_available_balance() {
+        // PHASE 1: Login fixed receiver and open account
+        dashboardPage = loginAsUser(FIXED_RECEIVER);
+        String receiverAccountNumber = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
+        dashboardPage.logout();
+
+        // PHASE 2: Login fixed sender and open account
+        dashboardPage = loginAsUser(FIXED_SENDER);
+        String senderAccountNumber = openBankAccount(dashboardPage, AccountType.CURRENT_ACCOUNT);
+        dashboardPage.logout();
+        clearSession();
+
+        // PHASE 3: Admin deposits money into sender account
+        openNewTab(ADMIN_BASE_URL);
+        depositMoneyAndLogout(senderAccountNumber, DEPOSIT_AMOUNT);
+
+        // PHASE 4: Sender logs in and performs transfer until OTP page
+        openNewTab(USER_BASE_URL);
+        dashboardPage = loginAsUser(FIXED_SENDER);
+
+        AccountDetailPage senderAccountDetail = dashboardPage.openAccountDetail(senderAccountNumber);
+        long balanceBeforeTransfer = senderAccountDetail.getBalance();
+
+        Assert.assertEquals(
+                balanceBeforeTransfer,
+                DEPOSIT_AMOUNT,
+                "Sender account balance before transfer is incorrect."
+        );
+
+        long invalidTransferAmount = balanceBeforeTransfer + 1;
+
+        InternalTransferData transferData = new InternalTransferData(
+                senderAccountNumber,
+                receiverAccountNumber,
+                invalidTransferAmount,
+                "Amount greater than balance test"
+        );
+
+        InternalTransferPage transferPage = senderAccountDetail.goToInternalTransfer();
+        transferPage.fillTransferForm(transferData);
+        transferPage.clickConfirm();
+
+        // PHASE 5: Verify system does not navigate to confirmation page
+        Assert.assertTrue(
+                transferPage.isStillOnTransferPage(),
+                "System should not navigate to the confirmation page."
+        );
+
+        // PHASE 6: Verify toast message
+        Assert.assertTrue(
+                transferPage.getToastMessages().contains("Số tiền vượt mức"),
+                "Toast message 'Số tiền vượt mức' is not displayed."
         );
     }
 }

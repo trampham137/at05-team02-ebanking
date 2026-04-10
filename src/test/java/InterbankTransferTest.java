@@ -4,6 +4,7 @@ import models.enums.AccountType;
 import models.enums.TransferType;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import pages.account.AccountDetailPage;
 import pages.account.DashboardPage;
 import pages.email.MailinatorEmailPage;
@@ -12,6 +13,7 @@ import pages.transfer.TransferConfirmPage;
 import pages.transfer.TransferOtpPage;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class InterbankTransferTest extends BaseTest {
     private static final long DEPOSIT_AMOUNT = 100_000;
@@ -122,5 +124,99 @@ public class InterbankTransferTest extends BaseTest {
                 balanceBeforeTransfer - TRANSFER_AMOUNT - TransferType.INTERBANK.getFee(),
                 "Balance after interbank transfer is incorrect."
         );
+    }
+
+    @Test(description = "EB-08 Verify validation is displayed when required fields are empty in interbank transfer")
+    public void EB08_verify_required_fields_when_empty() {
+        SoftAssert softAssert = new SoftAssert();
+
+        dashboardPage = loginAsUser(FIXED_SENDER);
+        InterbankTransferPage transferPage = dashboardPage.goToInterbankTransfer();
+
+        // Leave all required fields empty and click confirm
+        transferPage.clickConfirm();
+
+        // Verify system does not navigate to confirmation page
+        softAssert.assertTrue(
+                transferPage.isStillOnTransferPage(),
+                "System should not navigate to confirmation page."
+        );
+
+        // Verify invalid highlight
+        softAssert.assertTrue(
+                transferPage.isSourceAccountInvalid(),
+                "Source account field is not highlighted invalid."
+        );
+
+        softAssert.assertTrue(
+                transferPage.isReceiverAccountInvalid(),
+                "Receiver account field is not highlighted invalid."
+        );
+
+        softAssert.assertTrue(
+                transferPage.isReceiverNameInvalid(),
+                "Receiver name field is not highlighted invalid."
+        );
+
+        softAssert.assertTrue(
+                transferPage.isBankInvalid(),
+                "Bank field is not highlighted invalid."
+        );
+
+        softAssert.assertTrue(
+                transferPage.isBranchInvalid(),
+                "Branch field is not highlighted invalid."
+        );
+
+        softAssert.assertTrue(
+                transferPage.isAmountInvalid(),
+                "Amount field is not highlighted invalid."
+        );
+
+        softAssert.assertTrue(
+                transferPage.isDescriptionInvalid(),
+                "Description field is not highlighted invalid."
+        );
+
+        // Verify toast messages
+        List<String> actualToastMessages = transferPage.getToastMessages();
+
+        softAssert.assertTrue(
+                actualToastMessages.contains("Chọn tài khoản"),
+                "Toast message 'Chọn tài khoản' is not displayed."
+        );
+
+        softAssert.assertTrue(
+                actualToastMessages.contains("Nhập số tài khoản"),
+                "Toast message 'Nhập số tài khoản' is not displayed."
+        );
+
+        softAssert.assertTrue(
+                actualToastMessages.contains("Nhập tên người nhận"),
+                "Toast message 'Nhập tên người nhận' is not displayed."
+        );
+
+        softAssert.assertTrue(
+                actualToastMessages.contains("Mời chọn Ngân hàng"),
+                "Toast message 'Mời chọn ngân hàng' is not displayed."
+        );
+
+        softAssert.assertTrue(
+                actualToastMessages.contains("Mời chọn chi nhánh"),
+                "Toast message 'Mời chọn chi nhánh' is not displayed."
+        );
+
+        softAssert.assertTrue(
+                actualToastMessages.contains("Nhập số tiền"),
+                "Toast message 'Nhập số tiền' is not displayed."
+        );
+
+        softAssert.assertTrue(
+                actualToastMessages.contains("Nhập nội dung"),
+                "Toast message 'Nhập nội dung' is not displayed."
+        );
+
+        // IMPORTANT
+        softAssert.assertAll();
     }
 }
