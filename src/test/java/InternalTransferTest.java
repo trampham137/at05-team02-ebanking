@@ -76,7 +76,7 @@ public class InternalTransferTest extends BaseTest {
         assertThat(confirmPage.getTransferData())
                 .usingRecursiveComparison()
                 .isEqualTo(transferData);
-        
+
         TransferOtpPage otpPage = confirmPage.clickConfirm();
 
         // PHASE 5: Verify OTP email
@@ -135,18 +135,17 @@ public class InternalTransferTest extends BaseTest {
         );
     }
 
-    @Test(description = "EB-04 Verify user can successfully perform an internal transfer using OTP")
+    @Test(description = "Verify user can complete an internal transfer via OTP and the transaction is recorded in GIAO DỊCH GẦN NHẤT.")
     public void EB04_user_can_transfer_internally_successfully() {
-        RegisterData registerDataA = TestData.validRegister("tram_test_a");
-        RegisterData registerDataB = TestData.validRegister("tram_test_b");
-        // RegisterData registerDataA = TestData.validRegister("tram_test_a_69013", false);
-        // RegisterData registerDataB = TestData.validRegister("tram_test_b_48362", false);
-        // String accountNumberA = "100002376";
-        // String accountNumberB = "100002371";
+        RegisterData registerDataA = TestData.validRegister("user_a");
+        RegisterData registerDataB = TestData.validRegister("user_b");
+        // RegisterData registerDataA = TestData.validRegister("user_a_101437550", false);
+        // RegisterData registerDataB = TestData.validRegister("user_b_101446376", false);
+        // String accountNumberA = "100002424";
+        // String accountNumberB = "100002426";
 
         User userA = new User(registerDataA.getUsername(), registerDataA.getPassword());
         User userB = new User(registerDataB.getUsername(), registerDataB.getPassword());
-
 
         // PHASE 1: Register, activate, and open account for user A
         registerAndActivateUser(registerDataA);
@@ -189,9 +188,13 @@ public class InternalTransferTest extends BaseTest {
         internalTransferPage.fillTransferForm(transferData);
         TransferConfirmPage confirmPage = internalTransferPage.clickConfirm();
 
-        assertThat(confirmPage.getTransferData())
-                .usingRecursiveComparison()
-                .isEqualTo(transferData);
+        Assert.assertEquals(
+                confirmPage.getTransferData(),
+                transferData,
+                "Transfer confirm data is incorrect."
+        );
+        // Assert.assertEquals(actual, expected)
+        // actual.equals(expected)
 
         // PHASE 5: Get OTP from Mailinator
         LocalDateTime transferConfirmStartTime = LocalDateTime.now();

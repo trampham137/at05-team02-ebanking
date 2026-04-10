@@ -57,6 +57,7 @@ public class InternalTransferPage extends UserBasePage {
         waitUntilAvailableBalanceLoaded();
 
         enterReceiverAccount(data.getReceiverAccount());
+        click(amountTextboxLocator);
         waitUntilReceiverNameLoaded();
 
         enterAmount(data.getAmount());

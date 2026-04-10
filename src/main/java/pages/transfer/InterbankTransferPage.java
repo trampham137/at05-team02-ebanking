@@ -26,11 +26,11 @@ public class InterbankTransferPage extends UserBasePage {
     private final By descriptionTextboxLocator = By.xpath("//td[label[text()='Nội dung chuyển tiền ']]/following-sibling::td/input");
     private final By confirmButtonLocator = By.xpath("//td//input[@value='Chuyển tiền']");
     private final By availableBalanceLocator = By.xpath("//td[label[text()='Số dư khả dụng']]/following-sibling::td/label");
-    private final By emptyAccountSourceMessageLocator = getMessLocatorByLabel("Chọn tài khoản");
-    private final By emptyReceiverAccountMessageLocator = getMessLocatorByLabel("Nhập số tài khoản");
-    private final By emptyReceiverAccountNameMessageLocator = getMessLocatorByLabel("Nhập tên người nhận");
-    private final By emptyBankMessageLocator = getMessLocatorByLabel("Mời chọn Ngân hàng");
-    private final By emptyBranchMessageLocator = getMessLocatorByLabel("Mời chọn chi nhánh");
+    // private final By emptyAccountSourceMessageLocator = getMessLocatorByLabel("Chọn tài khoản");
+    // private final By emptyReceiverAccountMessageLocator = getMessLocatorByLabel("Nhập số tài khoản");
+    // private final By emptyReceiverAccountNameMessageLocator = getMessLocatorByLabel("Nhập tên người nhận");
+    // private final By emptyBankMessageLocator = getMessLocatorByLabel("Mời chọn Ngân hàng");
+    // private final By emptyBranchMessageLocator = getMessLocatorByLabel("Mời chọn chi nhánh");
 
 
     //  private By getMessLocatorByLabel(String mess) {

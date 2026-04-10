@@ -3,6 +3,8 @@ import models.enums.City;
 import models.enums.Gender;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class TestData {
     public static final User STANDARD_USER = new User("lyy_test", "123456789");
@@ -16,16 +18,12 @@ public class TestData {
     }
 
     public static RegisterData validRegister(String prefix, boolean useTimestamp) {
-        String suffix = "";
-
-        if (useTimestamp) {
-            long timestamp = System.currentTimeMillis() % 100000;
-            suffix = "_" + timestamp;
-        }
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddHHssSSS"));
+        String suffix = useTimestamp ? "_" + timestamp : "";
 
         String username = prefix + suffix;
         String email = username + "@mailinator.com";
-        String fullName = "testing_note_" + username;
+        String fullName = "fullName_" + username;
 
         return new RegisterData(
                 username,
